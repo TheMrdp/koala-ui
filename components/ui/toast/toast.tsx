@@ -17,7 +17,7 @@ import { type ToastData, startDismiss } from "./use-toast"
  * (surface) owns all visible styling and the enter/exit animations, keeping both axes of
  * motion independent so they never fight each other.
  *
- * make-interfaces-feel-better applied:
+ * polish applied:
  *   #1 – concentric radius: viewport rounded-xl, surface rounded-xl (viewport is not visible so no nesting issue)
  *   #3 – layered box-shadow instead of a plain border for natural depth
  *   #5 – staggered enter: icon, title, description each start slightly offset (via CSS delay)
@@ -37,7 +37,7 @@ export const toastVariants = tv({
     // Visible card surface <div>.
     surface: [
       "relative flex w-full items-start gap-3 rounded-xl bg-background p-4",
-      // make-interfaces-feel-better #3/#11: layered shadow + inset ring (no solid border)
+      // polish/#11: layered shadow + inset ring (no solid border)
       "[box-shadow:0_8px_24px_-4px_oklch(0_0_0/0.12),0_2px_8px_-2px_oklch(0_0_0/0.08),inset_0_0_0_1px_oklch(0_0_0/0.07)]",
       "dark:[box-shadow:0_8px_24px_-4px_oklch(0_0_0/0.4),0_2px_8px_-2px_oklch(0_0_0/0.3),inset_0_0_0_1px_oklch(1_0_0/0.08)]",
       // Enter/exit animation only on translate + opacity (never "all").
@@ -52,7 +52,7 @@ export const toastVariants = tv({
       "grid size-6 shrink-0 place-items-center rounded-md",
       "text-muted-foreground/60",
       "transition-[color,background-color] duration-fast ease-out",
-      // make-interfaces-feel-better #12
+      // polish
       "active:scale-[0.96]",
       "hover:bg-accent hover:text-foreground",
       "outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1",
@@ -123,7 +123,7 @@ export interface ToastItemProps {
 
 export const ToastItem = React.forwardRef<HTMLLIElement, ToastItemProps>(
   function ToastItem({ toast, stackStyle, onHeightChange, onExpand, onCollapse }, forwardedRef) {
-    // make-interfaces-feel-better #5: trigger enter animation after first paint.
+    // polish: trigger enter animation after first paint.
     const [entered, setEntered] = React.useState(false)
     const surfaceRef = React.useRef<HTMLDivElement>(null)
 
@@ -189,7 +189,7 @@ export const ToastItem = React.forwardRef<HTMLLIElement, ToastItemProps>(
             slots.surface(),
             // Enter: start slightly below + transparent, then transition to resting state.
             !entered && "translate-y-2 opacity-0",
-            // make-interfaces-feel-better #6: exit slides right (directional cue).
+            // polish: exit slides right (directional cue).
             !toast.open && "translate-x-full",
           )}
         >

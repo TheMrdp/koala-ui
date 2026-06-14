@@ -4,10 +4,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CodeSnippet } from "./code-snippet"
 
 /**
- * Installation — the "CLI or manually" block every component page carries, modeled on
- * AlignUI/Untitled UI: a registry one-liner (CLI) and the copy-the-source steps (Manual).
- * Koala ships source in-repo, so Manual is the source of truth; the CLI tab mirrors the
- * structure the references use. Drop it inside a `<DocSection title="Installation">`.
+ * Installation — the "CLI or manually" block every component page carries: a registry
+ * one-liner (CLI) and the copy-the-source steps (Manual). Koala ships source in-repo, so
+ * Manual is the source of truth; the CLI tab mirrors it. Drop it inside a
+ * `<DocSection title="Installation">`.
  */
 
 const stepClass =

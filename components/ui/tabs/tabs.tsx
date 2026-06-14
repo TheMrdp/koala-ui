@@ -13,7 +13,7 @@ import { tv, type VariantProps } from "@/lib/tv"
  * shared variants flowing to every part through React Context. See docs/ARCHITECTURE.md §2.
  *
  * The active state is drawn by a single **sliding indicator** measured in JS and moved
- * with `transform` — the one detail that makes tabs feel alive (make-interfaces-feel-better:
+ * with `transform` — the one detail that makes tabs feel alive (polish:
  * interruptible transitions, skip-animation-on-load).
  */
 export const tabsVariants = tv({
@@ -26,12 +26,12 @@ export const tabsVariants = tv({
       "font-medium text-muted-foreground",
       // Specific transition (never `transition: all`); `transition` covers colors + scale.
       "transition duration-fast ease-out",
-      // make-interfaces-feel-better #12: tactile scale-on-press. Disable via the `static` prop.
+      // polish: tactile scale-on-press. Disable via the `static` prop.
       "active:scale-[0.96]",
       "outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background",
       "disabled:pointer-events-none disabled:opacity-50",
       "data-[state=active]:text-foreground",
-      // make-interfaces-feel-better #16: ≥40px hit area without growing the visual.
+      // polish: ≥40px hit area without growing the visual.
       // Vertical-only, so it never overlaps a horizontally-adjacent trigger.
       "before:absolute before:inset-x-0 before:top-1/2 before:h-10 before:-translate-y-1/2 before:content-['']",
       "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
@@ -49,7 +49,7 @@ export const tabsVariants = tv({
       },
       underline: {
         list: "gap-1 border-b border-border",
-        // make-interfaces-feel-better #3: a soft-capped bar reads cleaner than a hard rule.
+        // polish: a soft-capped bar reads cleaner than a hard rule.
         indicator: "rounded-full bg-primary",
       },
       // Active trigger shows a pill background (CSS fade) + a sliding bar on the bottom rule.
@@ -73,7 +73,7 @@ export const tabsVariants = tv({
     },
   },
   compoundVariants: [
-    // make-interfaces-feel-better #1: concentric radius — inner = outer − padding.
+    // polish: concentric radius — inner = outer − padding.
     // pill·comfortable: list rounded-xl(16) + p-1(4) → trigger/indicator rounded-lg(11).
     { variant: "pill", density: "comfortable", className: { list: "rounded-xl p-1", trigger: "rounded-lg", indicator: "rounded-lg" } },
     // pill·compact: list rounded-lg(11) + p-0.5(2) → trigger/indicator rounded-md(9).
@@ -104,7 +104,7 @@ const [TabsProvider, useTabsContext] = createContext<{
  * on selection change (data-state mutation), on resize, and on font/layout shifts — never
  * polls. `ready` gates visibility so the indicator never paints at the origin; `animate`
  * turns the transition on one frame *after* the first placement, so it snaps into position
- * on load and only slides on later selection changes (make-interfaces-feel-better #13).
+ * on load and only slides on later selection changes (polish).
  */
 function useActiveIndicator(
   listRef: React.RefObject<HTMLDivElement | null>,

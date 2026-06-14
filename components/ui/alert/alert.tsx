@@ -10,7 +10,7 @@ import { tv, type VariantProps } from "@/lib/tv"
  * Alert — inline status banner. Use for page-level messages, validation
  * summaries, or contextual feedback. For ephemeral toasts, prefer Toast.
  *
- * make-interfaces-feel-better applied:
+ * polish applied:
  *   #12 – close button uses active:scale-[0.96]
  *   #14 – transition specifies exact properties, never "all"
  *   Concentric radius: rounded-lg root > rounded-md close button.

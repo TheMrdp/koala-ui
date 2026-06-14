@@ -40,7 +40,7 @@ const SIBLINGS = [
 ]
 
 // Shared ellipsis trigger: glyph-width visual, 40px tap target via a centered pseudo-element
-// (make-interfaces-feel-better #16), with hover + open-state color feedback.
+// (polish), with hover + open-state color feedback.
 const ellipsisTriggerClass = cn(
   "relative flex items-center justify-center rounded-sm text-muted-foreground",
   "transition-colors duration-fast ease-out hover:text-foreground data-[state=open]:text-foreground",

@@ -17,7 +17,7 @@ import { Tooltip, type TooltipProps } from "@/components/ui/tooltip/tooltip"
  * `"use client"` because Button reads the density context (lib/density.tsx) so a compact
  * app shell tightens its buttons with no per-instance props.
  */
-// make-interfaces-feel-better #16: where a size's visual height drops below the 40px hit
+// polish: where a size's visual height drops below the 40px hit
 // target, a transparent pseudo-element extends the click area without changing the visual
 // or overlapping a horizontally-adjacent control. `hitX` extends vertically only (text
 // buttons keep their full width); `hitBox` extends a square icon-only button on both axes.
@@ -31,7 +31,7 @@ export const buttonVariants = tv({
     "inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium",
     // Specific transition (never `transition: all`, #14); `transition` covers colors + scale.
     "transition duration-fast ease-out",
-    // make-interfaces-feel-better #12: tactile scale-on-press. Disable via the `static` prop.
+    // polish: tactile scale-on-press. Disable via the `static` prop.
     "active:scale-[0.96]",
     "outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     "disabled:pointer-events-none disabled:opacity-50",
@@ -54,11 +54,11 @@ export const buttonVariants = tv({
         "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/40",
       link: "text-primary underline-offset-4 hover:underline",
     },
-    // Three sizes (shadcn-aligned) — sm 32px, md 36px, lg 40px; label stays text-sm across
-    // the scale. make-interfaces-feel-better #2 (optical over geometric): an icon reads
+    // Three sizes — sm 32px, md 36px, lg 40px; label stays text-sm across
+    // the scale. Polish (optical over geometric): an icon reads
     // lighter than a text edge, so a button carrying a direct `<svg>` trims its horizontal
-    // padding one step (`has-[>svg]:px-*`) to stay optically balanced. Exact values copied
-    // from shadcn: px-3/2.5 (sm), px-4/3 (md), px-6/4 (lg).
+    // padding one step (`has-[>svg]:px-*`) to stay optically balanced.
+    // Padding scale: px-3/2.5 (sm), px-4/3 (md), px-6/4 (lg).
     size: {
       sm: "h-8 gap-1.5 px-3 has-[>svg]:px-2.5",
       md: "h-9 px-4 py-2 has-[>svg]:px-3",
@@ -90,7 +90,7 @@ export const buttonVariants = tv({
 
     // — Compact, text — one tier tighter than the same-named comfortable size, keeping the
     //   icon-padding step. Every row lands under 40px, so each adds a vertical-only hit
-    //   extender (make-interfaces-feel-better #16).
+    //   extender (polish).
     { size: "sm", iconOnly: false, density: "compact", className: `h-7 px-2.5 text-xs has-[>svg]:px-2 ${hitX}` },
     { size: "md", iconOnly: false, density: "compact", className: `h-8 px-3 has-[>svg]:px-2.5 ${hitX}` },
     { size: "lg", iconOnly: false, density: "compact", className: `h-9 px-4 has-[>svg]:px-3 ${hitX}` },

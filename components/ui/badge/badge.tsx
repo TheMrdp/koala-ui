@@ -111,7 +111,7 @@ export function Badge({
           type="button"
           onClick={onRemove}
           aria-label={removeLabel}
-          // make-interfaces-feel-better: the visual is small, but `before` extends the
+          // polish: the visual is small, but `before` extends the
           // hit area beyond the glyph without enlarging the badge.
           className={cn(
             "relative -mr-0.5 grid size-3.5 shrink-0 place-items-center rounded-full",

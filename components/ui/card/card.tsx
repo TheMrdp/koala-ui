@@ -26,7 +26,7 @@ export const cardVariants = tv({
   },
   variants: {
     variant: {
-      // make-interfaces-feel-better #3: prefer shadow for depth over hard borders.
+      // polish: prefer shadow for depth over hard borders.
       default: { root: "border-border shadow-xs" },
       outline: { root: "border-border shadow-none" },
       elevated: { root: "border-transparent shadow-lg" },

@@ -34,7 +34,7 @@ import { Tooltip } from "@/components/ui/tooltip/tooltip"
 export const videoPlayerVariants = tv({
   slots: {
     // `group/player` drives the controls' show/hide; `isolate` keeps the z-stack local.
-    // make-interfaces-feel-better #6: concentric radius — rounded-xl outer; drops to square
+    // polish: concentric radius — rounded-xl outer; drops to square
     // in real fullscreen.
     root: [
       "group/player relative isolate flex overflow-hidden rounded-xl bg-black select-none",

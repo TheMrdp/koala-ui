@@ -21,7 +21,7 @@ export const emptyStateVariants = tv({
   slots: {
     root: "flex flex-col items-center justify-center text-center",
     // Standalone tinted surface holding the icon. Border always present (soft variants
-    // swap its color); shadow over hard border for depth (make-interfaces-feel-better #3).
+    // swap its color); shadow over hard border for depth (polish).
     media:
       "flex shrink-0 items-center justify-center border shadow-xs [&_svg]:shrink-0",
     // Rendered as a div, so the base layer's heading `text-wrap: balance` won't reach it.

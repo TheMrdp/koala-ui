@@ -42,7 +42,7 @@ export const layoutVariants = tv({
     // The indent: an elevated card surface inset from the canvas. `lg:ml-0` drops the
     // left inset so the panel sits flush against the sidebar's own padding. `min-h-0`
     // lets it become a scroll container when the root is given a fixed height.
-    // make-interfaces-feel-better #3: shadow over a hard border for depth (ring is the
+    // polish: shadow over a hard border for depth (ring is the
     // hairline that keeps it crisp where colors tie, e.g. white-on-white in light).
     //
     // `--surface` is the DS contract for "what surface am I sitting on" (same one Dialog

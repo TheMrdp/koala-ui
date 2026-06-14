@@ -353,7 +353,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* make-interfaces-feel-better #8: crisper text on macOS. */
+    /* polish: crisper text on macOS. */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -383,7 +383,7 @@
       display: none;
     }
   }
-  /* make-interfaces-feel-better #10: balanced headings, no orphans in body copy. */
+  /* polish: balanced headings, no orphans in body copy. */
   h1, h2, h3, h4, h5, h6 {
     text-wrap: balance;
   }

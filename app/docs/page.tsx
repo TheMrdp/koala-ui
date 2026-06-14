@@ -12,15 +12,24 @@ export default function DocsIntroPage() {
     <>
       <DocHeader
         title="Koala UI"
-        description="A custom React component library and design system, built on Next.js, Tailwind v4, Radix, and tailwind-variants."
+        description="The React implementation of Koala UI, built on Next.js, Tailwind v4, Radix, and tailwind-variants."
       />
 
       <p className="text-pretty text-muted-foreground">
-        Koala UI is built to scale. Components are owned source in your repo -
-        styled with a single <code className="font-mono text-sm">tv</code> recipe,
-        accessible by way of Radix primitives, and themed entirely through semantic
-        design tokens. Four themes ship out of the box: light, dark, cream, and
-        moonlight.
+        This is the React side of{" "}
+        <a
+          href="https://koalaui.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-foreground underline underline-offset-2"
+        >
+          koalaui.com
+        </a>
+        : the same design system, as production-ready React components. Components are owned
+        source in your repo, styled with a single{" "}
+        <code className="font-mono text-sm">tv</code> recipe, accessible by way of Radix
+        primitives, and themed entirely through semantic design tokens. Four themes ship out
+        of the box: light, dark, cream, and moonlight.
       </p>
 
       <div className="mt-8 flex flex-wrap gap-3">

@@ -34,7 +34,7 @@ export const carouselVariants = tv({
       "transition-[width,background-color] duration-base ease-out",
       "hover:bg-muted-foreground/40",
       "outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-      // make-interfaces-feel-better #16: a 40px-tall transparent hit target. Extends vertically
+      // polish: a 40px-tall transparent hit target. Extends vertically
       // into free space; horizontally it fills only to the gap midpoint (half of gap-1.5 = 3px
       // each side) so the whole row is clickable with no dead zones and adjacent dots never overlap.
       "relative before:absolute before:-inset-x-[3px] before:top-1/2 before:h-10 before:-translate-y-1/2 before:content-['']",

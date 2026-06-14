@@ -46,7 +46,7 @@ export const sliderVariants = tv({
       // (Switch/Checkbox do the same).
       "outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background",
       "data-[disabled]:cursor-not-allowed",
-      // make-interfaces-feel-better #16: a centered 40×40 pseudo-element lifts the small
+      // polish: a centered 40×40 pseudo-element lifts the small
       // thumb to a comfortable hit/drag target without growing the visual.
       "before:absolute before:left-1/2 before:top-1/2 before:size-10 before:-translate-x-1/2 before:-translate-y-1/2 before:content-['']",
     ],

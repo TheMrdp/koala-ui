@@ -55,7 +55,7 @@ export const accordionVariants = tv({
   },
   variants: {
     variant: {
-      // Borderless rows divided by a hairline — the AlignUI-style minimal FAQ list.
+      // Borderless rows divided by a hairline — the minimal FAQ list.
       minimal: { item: "border-b border-border last:border-b-0" },
       // One bordered surface; items share dividers. Shadow over border for depth (#3).
       card: {

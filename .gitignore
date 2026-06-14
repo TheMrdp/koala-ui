@@ -48,3 +48,4 @@ next-env.d.ts
 /.mcp.json
 /skills-lock.json
 /.agents/
+/CLAUDE.md

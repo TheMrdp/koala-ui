@@ -35,7 +35,7 @@ const TOKEN_CLASS: Record<TokenType, string> = {
 // Ordered grammars — earlier patterns win at a given position (e.g. keyword before
 // function, so `return(` highlights as a keyword, not a call). No capturing groups
 // inside the patterns: each is wrapped in one group so its index maps to its type.
-const GRAMMARS: Record<"tsx" | "bash", [TokenType, RegExp][]> = {
+const GRAMMARS: Record<"tsx" | "bash" | "css", [TokenType, RegExp][]> = {
   tsx: [
     ["comment", /\/\/[^\n]*|\/\*[\s\S]*?\*\//],
     ["string", /`(?:\\[\s\S]|[^\\`])*`|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'/],
@@ -51,6 +51,15 @@ const GRAMMARS: Record<"tsx" | "bash", [TokenType, RegExp][]> = {
     ["comment", /#[^\n]*/],
     ["string", /"(?:\\.|[^"\\])*"|'[^']*'/],
     ["flag", /(?<=\s)--?[A-Za-z][\w-]*/],
+  ],
+  // Scoped to the kind of CSS the docs actually show — token blocks and at-rules. Functions
+  // (oklch(), var(), color-mix()) read as calls; lengths, percentages and hex read as numbers.
+  css: [
+    ["comment", /\/\*[\s\S]*?\*\//],
+    ["string", /"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'/],
+    ["keyword", /@[\w-]+|:root\b|::?[\w-]+/],
+    ["function", /[A-Za-z][\w-]*(?=\()/],
+    ["number", /#[0-9a-fA-F]{3,8}\b|-?\b\d+(?:\.\d+)?(?:rem|px|em|%|deg|m?s|fr|vh|vw)?\b/],
   ],
 }
 

@@ -14,7 +14,7 @@ import { tv } from "@/lib/tv"
  * `"use client"` because Radix Switch is interactive (state + context). It renders only the
  * control — pair it with a `<label htmlFor>` for an accessible name and a larger hit target.
  */
-// make-interfaces-feel-better #16: the 20px-tall track sits under the 40px hit target on the
+// polish: the 20px-tall track sits under the 40px hit target on the
 // short axis, so a transparent pseudo-element extends the vertical click area without changing
 // the visual.
 const hitX =

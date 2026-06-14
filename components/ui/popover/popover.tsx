@@ -24,7 +24,7 @@ export const popoverVariants = tv({
       // Nested controls read this so they paint the panel surface, not a --background block.
       "[--surface:var(--popover)]",
       // Enter: fade + zoom + directional slide. Exit: fade + zoom only, and snappier — softer
-      // than the enter (make-interfaces-feel-better #6).
+      // than the enter (polish).
       "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
       "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
       "data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2",

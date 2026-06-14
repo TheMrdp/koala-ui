@@ -125,7 +125,7 @@ export function ButtonGroupItem({
   const ctx = useButtonGroupContext("ButtonGroupItem")
   const Comp = asChild ? Slot.Root : "button"
 
-  // make-interfaces-feel-better #16: dev warning for icon-only without accessible name.
+  // polish: dev warning for icon-only without accessible name.
   const ariaLabel = props["aria-label"]
   const ariaLabelledby = props["aria-labelledby"]
   React.useEffect(() => {

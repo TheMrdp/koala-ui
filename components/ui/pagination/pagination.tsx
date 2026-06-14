@@ -33,7 +33,7 @@ export const paginationVariants = tv({
     // Generic horizontal group (a label + its control, or prev/next).
     cluster: "flex items-center gap-2",
     label: "text-muted-foreground whitespace-nowrap select-none",
-    // make-interfaces-feel-better #13: tabular-nums so the counter never reflows as digits change.
+    // polish: tabular-nums so the counter never reflows as digits change.
     info: "text-muted-foreground tabular-nums whitespace-nowrap select-none",
     current: "font-medium text-foreground",
     // The go-to field is a fixed, centered numeric box. Hide the native number spinners —

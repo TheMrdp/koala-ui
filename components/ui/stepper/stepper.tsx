@@ -34,7 +34,7 @@ export const stepperVariants = tv({
     // the connector, which is absolutely positioned (centre-to-centre between circles).
     item: "group/step relative flex",
     // `group/trigger` lets the indicator react to the button's focus (the ring hugs the
-    // circle, not the whole row). make-interfaces-feel-better #12: tactile scale-on-press,
+    // circle, not the whole row). polish: tactile scale-on-press,
     // matching Tabs — disable via the `static` prop. Layout (stacked vs. inline) is per-orientation.
     trigger: [
       "group/trigger inline-flex outline-none cursor-pointer",
@@ -53,7 +53,7 @@ export const stepperVariants = tv({
       "group-data-[state=active]/step:border-primary group-data-[state=active]/step:text-primary group-data-[state=active]/step:ring-4 group-data-[state=active]/step:ring-primary/10",
       "group-data-[state=completed]/step:border-primary group-data-[state=completed]/step:bg-primary group-data-[state=completed]/step:text-primary-foreground",
       "group-data-[disabled]/step:opacity-50",
-      // make-interfaces-feel-better #16: a 40px hit halo so the trigger stays tappable even
+      // polish: a 40px hit halo so the trigger stays tappable even
       // when compact density shrinks the visible circle to 32px. Centered, so neighbours never overlap.
       "before:absolute before:left-1/2 before:top-1/2 before:size-10 before:-translate-x-1/2 before:-translate-y-1/2 before:content-['']",
       "[&_svg]:shrink-0",

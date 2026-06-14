@@ -222,7 +222,7 @@ export function TableHead({ className, align, sticky, ...props }: TableHeadProps
 export interface TableCellProps extends React.ComponentProps<"td"> {
   /** Text alignment. @default "left" */
   align?: Align
-  /** `tabular-nums` so columns of dynamic figures don't jitter (make-interfaces-feel-better #13). */
+  /** `tabular-nums` so columns of dynamic figures don't jitter (polish). */
   numeric?: boolean
   /** Pin the column to the left or right edge while the rest scrolls horizontally. */
   sticky?: "left" | "right"

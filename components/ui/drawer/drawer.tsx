@@ -51,7 +51,7 @@ export const drawerVariants = tv({
     ],
     // The grab handle on bottom/top sheets — the universal "drag me" affordance. The bar
     // stays a slim 6px, but a transparent pseudo-element widens its drag/touch target well
-    // past 40px (make-interfaces-feel-better #16) so it's easy to grab with a thumb.
+    // past 40px (polish) so it's easy to grab with a thumb.
     handle: [
       "mx-auto h-1.5 w-12 shrink-0 cursor-grab rounded-full bg-border transition-colors duration-fast ease-out active:cursor-grabbing hover:bg-muted-foreground/40",
       "relative before:absolute before:-inset-x-6 before:-inset-y-2.5 before:content-['']",

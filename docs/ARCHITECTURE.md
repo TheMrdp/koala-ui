@@ -1,32 +1,27 @@
-﻿# Koala UI - Architecture & Component Guidelines
+# Koala UI - Architecture & Component Guidelines
 
-The house style for building Koala UI components. Distilled from the patterns
-**Tailwind CSS**, **Untitled UI React**, and **AlignUI** use - taking what scales,
-dropping what's clever-but-fragile.
-
-> **Why these three?** Tailwind is the styling substrate. Untitled UI and AlignUI are
-> the two best-organized React DS references in the same space (AlignUI is direct
-> competition). We mine their structure; we don't copy it.
+The house style for building Koala UI components. A pragmatic distillation of modern
+React design-system patterns - taking what scales, dropping what's clever-but-fragile.
 
 ---
 
 ## TL;DR - the Koala stack
 
-| Concern | Choice | Borrowed from |
-| --- | --- | --- |
-| Styling / variants | **`tailwind-variants` (`tv`)** with `slots` | AlignUI |
-| Class conflict merge | `tailwind-merge`, extended for our tokens | Tailwind / shadcn |
-| Behavior & a11y | **Radix UI** primitives | AlignUI |
-| Polymorphism (`asChild`) | **Radix `Slot`** | AlignUI / Radix |
-| Cross-part state | **React Context** (typed helper) | Radix / React Aria - **not** AlignUI's `recursiveCloneChildren` |
-| Theming | CSS variables + semantic tokens + class strategy | Untitled UI / Tailwind |
-| Distribution model | source in-repo, per-component folders | Untitled UI / AlignUI |
+| Concern | Choice |
+| --- | --- |
+| Styling / variants | **`tailwind-variants` (`tv`)** with `slots` |
+| Class conflict merge | `tailwind-merge`, extended for our tokens |
+| Behavior & a11y | **Radix UI** primitives |
+| Polymorphism (`asChild`) | **Radix `Slot`** |
+| Cross-part state | **React Context** (typed helper), never child cloning |
+| Theming | CSS variables + semantic tokens + class strategy |
+| Distribution model | source in-repo, per-component folders |
 
 ---
 
-## 1. Best practices extracted
+## 1. Best practices
 
-### From Tailwind (the styling substrate)
+### Styling (Tailwind substrate)
 1. **Components > loops > custom CSS.** Reuse comes from React components, not `@apply`.
    Reserve custom CSS in `@layer` for genuinely single-element cases.
 2. **Never ship conflicting utilities.** Expose explicit `variant`/`size` props instead of
@@ -38,31 +33,23 @@ dropping what's clever-but-fragile.
 5. **Semantic design tokens** (`bg-background`, `text-muted-foreground`) over raw palette
    values, so theming is centralized. → see [`app/globals.css`](../app/globals.css).
 
-### From Untitled UI React
+### System structure
 1. **Theming = CSS variables + semantic tokens + a class toggle**, never hardcoded in
-   components. We already do this (`.dark`, `.cream`, `.moonlight`).
-2. **Behavior/a11y belongs in a primitive layer**, not bespoke per component. (They use
-   React Aria; we use Radix - same principle, different vendor.)
-3. **Variant maps are plain, typed, sorted objects** - readable and tree-shakeable. `tv`
-   gives us this with conflict-merging on top.
-4. **Ship source, not a black-box dependency.** Components live in the repo and are owned.
-
-### From AlignUI
-1. **`tailwind-variants` (`tv`) with `slots`** is the right variant engine for a DS, because a
-   DS is *mostly multi-part components* - one recipe styles every part. (cva needs one call
-   per part.) Wrap `tv` with our own `cn` merge config so custom tokens resolve.
-2. **Radix + `Slot`** for behavior and `asChild` composition.
-3. **Compound-component API surface** - `<Card.Root>`, `<Card.Header>`, `<Card.Body>`. Good
-   mental model; we keep it.
-4. **Polymorphic `as` for icon-like leaves** is fine where it avoids a clone, but prefer
-   `asChild` for the general case.
+   components (`.dark`, `.cream`, `.moonlight`).
+2. **Behavior/a11y belongs in a primitive layer**, not bespoke per component. We use Radix.
+3. **`tailwind-variants` (`tv`) with `slots`** is the right variant engine for a DS, because a
+   DS is *mostly multi-part components* - one recipe styles every part. Wrap `tv` with our own
+   `cn` merge config so custom tokens resolve.
+4. **Variant maps are plain, typed, sorted objects** - readable and tree-shakeable.
+5. **Ship source, not a black-box dependency.** Components live in the repo and are owned.
+6. **Radix + `Slot`** for behavior and `asChild` composition.
 
 ### What we deliberately reject
-- **`recursiveCloneChildren` (AlignUI's prop distribution).** Matching children by
-  `displayName` to inject props is elegant in a demo and a liability at scale: it breaks under
-  minification unless every part hard-codes `displayName`, breaks the moment a part is wrapped
-  in a consumer's own component, and clones the whole subtree each render. **Use React Context
-  for cross-part state** - what Radix, React Aria, Ark, MUI, and Chakra all do internally.
+- **`recursiveCloneChildren`-style prop distribution.** Matching children by `displayName` to
+  inject props is elegant in a demo and a liability at scale: it breaks under minification
+  unless every part hard-codes `displayName`, breaks the moment a part is wrapped in a
+  consumer's own component, and clones the whole subtree each render. **Use React Context for
+  cross-part state** - what Radix, React Aria, Ark, MUI, and Chakra all do internally.
 
 ---
 
@@ -78,7 +65,7 @@ Per-component **folders** (not flat files) so multi-part components, their conte
 co-located helpers have a home as they grow.
 
 ### Single-element component (e.g. Button)
-- One `tv()` recipe, no slots needed - don't add machinery you don't use (Tailwind rule #1).
+- One `tv()` recipe, no slots needed - don't add machinery you don't use.
 - `asChild` via Radix `Slot`.
 - React 19: no `forwardRef`; `ref` is a regular prop.
 
@@ -91,8 +78,7 @@ co-located helpers have a home as they grow.
   compound component that needs Context is a `"use client"` module, and namespaced
   statics hung off an export (via `Object.assign`) **do not survive the RSC
   server→client boundary** - a server component reading `Card.Header` gets `undefined`.
-  Only named exports are proxied across that boundary. (This is why shadcn uses named
-  exports too.)
+  Only named exports are proxied across that boundary.
 
 ```tsx
 // shape only - see Button for a real single-part example
@@ -115,7 +101,8 @@ const [CardProvider, useCardContext] = createContext<{ slots: CardSlots }>("Card
   The lone exception is **Tooltip**, which wraps **Tippy.js** (headless mode) for positioning
   and hover-intent - but still owns its markup as a `tv` recipe with our tokens. Prefer Radix
   for anything new; only reach outside it with a reason this clear.
-- **No `cva`.** We standardized on `tv`. (`class-variance-authority` is intentionally not a dep.)
+- **One variant engine: `tv`.** We standardized on `tailwind-variants`; don't introduce a
+  second variants library.
 - **Buttons are text-first; icons are the exception.** Default to a label-only `Button` - the
   text is the affordance. Icons are allowed but should be rare and intentional (e.g. a leading
   glyph that genuinely clarifies the action), not a default decoration. If most buttons in a
@@ -125,10 +112,10 @@ const [CardProvider, useCardContext] = createContext<{ slots: CardSlots }>("Card
 
 ## 4. Density - the cross-cutting spacing axis
 
-Koala serves **both marketing and application UI**, the way Tailwind does. The difference is
-spacing, not color: a marketing page wants generous padding; an app dashboard wants tight,
-information-dense surfaces. **`density`** ([`lib/density.tsx`](../lib/density.tsx)) is the one
-knob that expresses this - `comfortable` (the default) and `compact`.
+Koala serves **both marketing and application UI**. The difference is spacing, not color: a
+marketing page wants generous padding; an app dashboard wants tight, information-dense
+surfaces. **`density`** ([`lib/density.tsx`](../lib/density.tsx)) is the one knob that
+expresses this - `comfortable` (the default) and `compact`.
 
 - **It's a `tv` variant like any other.** Components that honor density (Button, Card, Dialog,
   Tabs) add a `density: { comfortable, compact }` variant and resolve it before styling.
@@ -142,7 +129,7 @@ knob that expresses this - `comfortable` (the default) and `compact`.
   per-instance props; the context carries a safe default, so a component with no provider and
   no prop behaves exactly as before density existed.
 - **Reading density makes a component a client component.** Card, Dialog and Tabs already are.
-  **Button is now `"use client"`** specifically so it can participate in provider-driven
+  **Button is `"use client"`** specifically so it can participate in provider-driven
   density - the alternative (server-only Button) would defeat the "set density once" pattern.
 - **Not every component takes density.** Avatar and Badge own explicit pixel `size` scales; a
   spacing axis would be redundant, so they skip it. Add density only where padding/gap/height
@@ -152,11 +139,10 @@ knob that expresses this - `comfortable` (the default) and `compact`.
 
 ---
 
-## 5. Interaction & polish - *make-interfaces-feel-better*
+## 5. Interaction & polish
 
-The DS is built on the [`make-interfaces-feel-better`](../.claude/skills/make-interfaces-feel-better/SKILL.md)
-skill (installed in `.claude/skills/`). These are **standing rules** - apply them by
-default when building or reviewing any component, and run the skill on substantive UI work.
+Polish is a standing rule of the DS - apply these by default when building or reviewing any
+component.
 
 **Always-on (already wired into the foundation):**
 - **Font smoothing** - `antialiased` on root + base layer ([globals.css](../app/globals.css)).
@@ -178,6 +164,3 @@ default when building or reviewing any component, and run the skill on substanti
 - **Interruptible animations** - CSS transitions for interactive state; keyframes only for
   one-shot staged sequences. Stagger enters (~100ms), keep exits subtle.
 - **`will-change` sparingly** - only `transform`/`opacity`/`filter`, only on observed stutter.
-
-See the skill's `SKILL.md` for the full checklist, exact values, and the before/after
-review format.

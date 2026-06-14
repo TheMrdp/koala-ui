@@ -18,7 +18,7 @@ export default function ArchitecturePage() {
     <>
       <DocHeader
         title="Architecture"
-        description="The house style for building Koala UI - taking what scales from Tailwind, Untitled UI, and AlignUI, dropping what's clever-but-fragile."
+        description="The house style for building Koala UI - a pragmatic distillation of modern React design-system patterns, taking what scales and dropping what's clever-but-fragile."
       />
 
       <DocSection title="The stack">
@@ -43,9 +43,10 @@ export default function ArchitecturePage() {
 
       <DocSection title="What we reject">
         <p className="mt-4 text-pretty text-muted-foreground">
-          AlignUI&rsquo;s <code className="font-mono text-sm">recursiveCloneChildren</code>{" "}
-          (matching children by <code className="font-mono text-sm">displayName</code>{" "}
-          to inject props) is elegant in a demo and a liability at scale: it breaks
+          <code className="font-mono text-sm">recursiveCloneChildren</code>-style prop
+          distribution (matching children by{" "}
+          <code className="font-mono text-sm">displayName</code> to inject props) is
+          elegant in a demo and a liability at scale: it breaks
           under minification, breaks when a part is wrapped, and clones the subtree
           each render. We use <strong className="text-foreground">React Context</strong>{" "}
           for cross-part state - what Radix, React Aria, Ark, MUI, and Chakra all do

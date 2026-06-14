@@ -12,7 +12,7 @@ export interface StaggerProps extends React.ComponentProps<"div"> {
 /**
  * Stagger — plays a small rise+fade entrance across its direct children, each delayed one `step`
  * further than the last, so a list or grid cascades in rather than appearing as one block
- * (make-interfaces-feel-better #5). The DS's motion foundation made reusable: the animation itself
+ * (polish). The DS's motion foundation made reusable: the animation itself
  * lives in the token layer (`--animate-stagger-in` in globals.css, `animate-stagger-in` utility),
  * so consumers never hand-roll per-item `transitionDelay`.
  *

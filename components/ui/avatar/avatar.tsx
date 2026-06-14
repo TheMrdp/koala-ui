@@ -21,7 +21,7 @@ export const avatarVariants = tv({
     root: [
       "relative inline-flex shrink-0 select-none items-center justify-center align-middle",
       "bg-muted",
-      // make-interfaces-feel-better: image outline — a hairline over the image edge so it
+      // polish: image outline — a hairline over the image edge so it
       // doesn't float against light surfaces.
       "after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit]",
       "after:border after:border-foreground/10 after:content-['']",

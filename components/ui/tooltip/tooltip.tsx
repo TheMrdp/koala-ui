@@ -15,7 +15,7 @@ import { tv } from "@/lib/tv"
  * built from our tokens, not Tippy's default theme (no `tippy.js/dist/tippy.css` needed).
  * This is the one place Koala uses a non-Radix behavior primitive. See docs/ARCHITECTURE.md.
  *
- * Enter/exit is an interruptible CSS transition (make-interfaces-feel-better #4) driven by a
+ * Enter/exit is an interruptible CSS transition (polish) driven by a
  * `data-state` flip. In headless mode Tippy won't auto-unmount with `animation`, so we wait
  * for the exit `transitionend` before calling `instance.unmount()`, and cancel that wait if
  * a re-hover interrupts the exit.

@@ -4,6 +4,8 @@
 
 Production-ready components built on Tailwind CSS v4, Radix UI and `tailwind-variants`, with four themes (light, dark, cream, moonlight), a density system and a strict house style. Every component ships feeling finished.
 
+This is the **React implementation** of [Koala UI](https://koalaui.com). It's the code side of the design system you can explore at [koalaui.com](https://koalaui.com).
+
 This **public** repo holds the **free tier** (all components, lib helpers and tokens), the **docs site** (the storefront) and the **`koalaui` CLI**. The **paid tier** (marketing sections, page examples, templates) lives in the private companion repo [`koala-ui-pro`](https://github.com/TheMrdp/koala-ui-pro).
 
 ## Two tiers

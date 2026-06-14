@@ -496,7 +496,7 @@ export function DataTable<TData, TValue>({
   ) : (
     // The cards cascade in on mount via <Stagger> — on the skeleton→data hand-off, a fresh page,
     // or a switch from the rows layout. Stable row ids mean a re-sort reuses the DOM and doesn't
-    // replay (make-interfaces-feel-better #5).
+    // replay (polish).
     <Stagger data-slot="data-table-cards" className={cardGridClass}>
       {rows.map((row) =>
         renderCard ? renderCard(row) : <DataTableCard key={row.id} row={row} />,

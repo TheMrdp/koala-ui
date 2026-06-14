@@ -64,7 +64,7 @@ export const sidebarVariants = tv({
       "flex items-center font-medium uppercase tracking-wider text-muted-foreground",
     // A nav row. `group/item` lets the icon track the row's hover/active state. The active
     // row reads as a filled accent chip; inactive rows are muted and lift to foreground on
-    // hover. make-interfaces-feel-better: specific transition (#14).
+    // hover. polish: specific transition (#14).
     item: [
       "group/item relative flex w-full cursor-pointer select-none items-center gap-3",
       "rounded-md text-sm font-medium text-muted-foreground",

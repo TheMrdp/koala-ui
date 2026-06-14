@@ -90,7 +90,7 @@ export const emojiPickerVariants = tv({
       "hover:bg-accent hover:text-foreground active:scale-[0.96]",
       "outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1 focus-visible:ring-offset-popover",
       "data-[active=true]:bg-accent data-[active=true]:text-brand",
-      // make-interfaces-feel-better #16: a ≥40px-tall hit target on a dense toolbar without
+      // polish: a ≥40px-tall hit target on a dense toolbar without
       // growing the visual. Vertical-only (inset-x-0), so it never overlaps a neighbor.
       "before:absolute before:inset-x-0 before:top-1/2 before:h-10 before:-translate-y-1/2 before:content-['']",
       "[&_svg]:shrink-0",
@@ -112,7 +112,7 @@ export const emojiPickerVariants = tv({
     emojiButton: [
       "flex aspect-square items-center justify-center rounded-md leading-none select-none cursor-pointer",
       "transition-[background-color,transform] duration-fast ease-out",
-      // make-interfaces-feel-better #12: tactile press (exactly 0.96).
+      // polish: tactile press (exactly 0.96).
       "hover:bg-accent active:scale-[0.96]",
       "outline-none focus-visible:bg-accent focus-visible:ring-2 focus-visible:ring-brand",
     ],
