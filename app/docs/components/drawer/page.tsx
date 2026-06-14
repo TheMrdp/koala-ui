@@ -353,53 +353,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">DrawerContent</code> adds{" "}
-          <code className="font-mono text-sm">side</code>,{" "}
-          <code className="font-mono text-sm">size</code>,{" "}
-          <code className="font-mono text-sm">density</code>,{" "}
-          <code className="font-mono text-sm">showClose</code>,{" "}
-          <code className="font-mono text-sm">showHandle</code> and{" "}
-          <code className="font-mono text-sm">swipeToClose</code> on top of the{" "}
-          <a
-            href="https://www.radix-ui.com/primitives/docs/components/dialog"
-            className="underline underline-offset-4"
-          >
-            Radix Dialog
-          </a>{" "}
-          primitives — <code className="font-mono text-sm">Drawer</code>,{" "}
-          <code className="font-mono text-sm">DrawerTrigger</code> and{" "}
-          <code className="font-mono text-sm">DrawerClose</code> are the Radix{" "}
-          <code className="font-mono text-sm">Root</code> /{" "}
-          <code className="font-mono text-sm">Trigger</code> /{" "}
-          <code className="font-mono text-sm">Close</code> verbatim, so{" "}
-          <code className="font-mono text-sm">open</code> /{" "}
-          <code className="font-mono text-sm">onOpenChange</code>,{" "}
-          <code className="font-mono text-sm">asChild</code>, and the{" "}
-          <code className="font-mono text-sm">onOpenAutoFocus</code> /{" "}
-          <code className="font-mono text-sm">onInteractOutside</code> escape hatches all work
-          as documented there. <code className="font-mono text-sm">DrawerHeader</code>,{" "}
-          <code className="font-mono text-sm">DrawerBody</code>,{" "}
-          <code className="font-mono text-sm">DrawerFooter</code>,{" "}
-          <code className="font-mono text-sm">DrawerTitle</code> and{" "}
-          <code className="font-mono text-sm">DrawerDescription</code> are the layout parts;
-          the header doubles as a swipe-to-dismiss drag region. For in-sheet navigation,{" "}
-          <code className="font-mono text-sm">DrawerNav</code> (takes{" "}
-          <code className="font-mono text-sm">defaultView</code> and{" "}
-          <code className="font-mono text-sm">onViewChange</code>) wraps{" "}
-          <code className="font-mono text-sm">DrawerView</code> pages;{" "}
-          <code className="font-mono text-sm">DrawerNavTrigger</code> (
-          <code className="font-mono text-sm">view</code>, <code className="font-mono text-sm">asChild</code>)
-          pushes and <code className="font-mono text-sm">DrawerNavBack</code> pops. Drive the
-          stack imperatively with the{" "}
-          <code className="font-mono text-sm">useDrawerNav()</code> hook (
-          <code className="font-mono text-sm">navigate</code>,{" "}
-          <code className="font-mono text-sm">back</code>,{" "}
-          <code className="font-mono text-sm">canGoBack</code>,{" "}
-          <code className="font-mono text-sm">activeView</code>).
-        </p>
-      </DocSection>
     </>
   )
 }

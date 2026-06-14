@@ -205,27 +205,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Layout</code> takes{" "}
-          <code className="font-mono text-sm">density</code>, which flows through Context
-          to every part. By default the shell is{" "}
-          <code className="font-mono text-sm">min-h-svh</code> and grows with the page;
-          give the root{" "}
-          <code className="font-mono text-sm">className=&quot;h-svh overflow-hidden&quot;</code>{" "}
-          to pin the sidebar and let{" "}
-          <code className="font-mono text-sm">LayoutContent</code> scroll on its own.{" "}
-          <code className="font-mono text-sm">LayoutSidebar</code> renders an{" "}
-          <code className="font-mono text-sm">{`<aside>`}</code> (hidden below{" "}
-          <code className="font-mono text-sm">lg</code>);{" "}
-          <code className="font-mono text-sm">LayoutContent</code> renders a{" "}
-          <code className="font-mono text-sm">{`<main>`}</code> landmark.{" "}
-          <code className="font-mono text-sm">LayoutContainer</code> adds a{" "}
-          <code className="font-mono text-sm">width</code> prop. Every part forwards its
-          native props and merges{" "}
-          <code className="font-mono text-sm">className</code> last.
-        </p>
-      </DocSection>
     </>
   )
 }

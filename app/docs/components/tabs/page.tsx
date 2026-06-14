@@ -247,27 +247,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Tabs</code> adds{" "}
-          <code className="font-mono text-sm">variant</code>,{" "}
-          <code className="font-mono text-sm">size</code>, and{" "}
-          <code className="font-mono text-sm">density</code> on top of{" "}
-          <a
-            href="https://www.radix-ui.com/primitives/docs/components/tabs"
-            className="underline underline-offset-4"
-          >
-            Radix Tabs
-          </a>
-          , so <code className="font-mono text-sm">value</code> /{" "}
-          <code className="font-mono text-sm">defaultValue</code>,{" "}
-          <code className="font-mono text-sm">onValueChange</code>, and{" "}
-          <code className="font-mono text-sm">orientation</code> behave as documented there.{" "}
-          <code className="font-mono text-sm">TabsList</code>,{" "}
-          <code className="font-mono text-sm">TabsTrigger</code>, and{" "}
-          <code className="font-mono text-sm">TabsContent</code> forward their Radix props.
-        </p>
-      </DocSection>
     </>
   )
 }

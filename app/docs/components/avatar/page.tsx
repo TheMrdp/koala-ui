@@ -334,28 +334,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Avatar</code> takes{" "}
-          <code className="font-mono text-sm">size</code> and{" "}
-          <code className="font-mono text-sm">shape</code>, which flow to{" "}
-          <code className="font-mono text-sm">AvatarImage</code>,{" "}
-          <code className="font-mono text-sm">AvatarFallback</code>, and{" "}
-          <code className="font-mono text-sm">AvatarStatus</code> through Context.{" "}
-          <code className="font-mono text-sm">AvatarStatus</code> accepts{" "}
-          <code className="font-mono text-sm">variant</code> (online/away/busy/offline) and{" "}
-          <code className="font-mono text-sm">position</code>{" "}
-          (bottom-right/top-right/bottom-left/top-left, default bottom-right). Image load
-          state and the fallback delay are handled by{" "}
-          <a
-            href="https://www.radix-ui.com/primitives/docs/components/avatar"
-            className="underline underline-offset-4"
-          >
-            Radix Avatar
-          </a>
-          , whose props each part forwards.
-        </p>
-      </DocSection>
     </>
   )
 }

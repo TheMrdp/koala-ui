@@ -235,41 +235,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          Compose from named parts (not <code>EmptyState.Media</code> dot-notation) so they
-          survive the RSC server→client boundary.
-        </p>
-        <ul className="mt-4 flex flex-col gap-2 text-pretty text-muted-foreground">
-          <li>
-            <code>EmptyState</code> — root. Forwards every native{" "}
-            <code>{`<div>`}</code> prop, plus <code>variant</code> (
-            <code>default</code>, <code>primary</code>, <code>success</code>,{" "}
-            <code>warning</code>, <code>info</code>, <code>destructive</code>),{" "}
-            <code>density</code> (<code>comfortable</code> / <code>compact</code>, also read
-            from a <code>DensityProvider</code>), and <code>asChild</code>.
-          </li>
-          <li>
-            <code>EmptyStateMedia</code> — the tinted icon surface. Marked{" "}
-            <code>aria-hidden</code> (decorative); supports <code>asChild</code>.
-          </li>
-          <li>
-            <code>EmptyStateTitle</code> — the headline (balanced wrapping).
-          </li>
-          <li>
-            <code>EmptyStateDescription</code> — supporting copy, constrained to a readable
-            measure.
-          </li>
-          <li>
-            <code>EmptyStateActions</code> — optional row for one or more{" "}
-            <code>Button</code>s. Author them secondary-first so the primary action lands on
-            the right, matching dialog footers (DOM order is also the tab order).
-          </li>
-        </ul>
-        <p className="mt-4 text-pretty text-muted-foreground">
-          Every part accepts <code>className</code>, merged last via the recipe.
-        </p>
-      </DocSection>
     </>
   )
 }

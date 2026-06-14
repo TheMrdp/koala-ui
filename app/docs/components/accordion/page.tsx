@@ -227,32 +227,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Accordion</code> forwards every Radix{" "}
-          <a
-            href="https://www.radix-ui.com/primitives/docs/components/accordion"
-            className="underline underline-offset-4"
-          >
-            Accordion Root
-          </a>{" "}
-          prop — <code className="font-mono text-sm">type</code> (
-          <code className="font-mono text-sm">&quot;single&quot;</code> /{" "}
-          <code className="font-mono text-sm">&quot;multiple&quot;</code>),{" "}
-          <code className="font-mono text-sm">collapsible</code>,{" "}
-          <code className="font-mono text-sm">value</code> /{" "}
-          <code className="font-mono text-sm">defaultValue</code>,{" "}
-          <code className="font-mono text-sm">onValueChange</code> — plus{" "}
-          <code className="font-mono text-sm">variant</code> (
-          <code className="font-mono text-sm">minimal</code> /{" "}
-          <code className="font-mono text-sm">card</code> /{" "}
-          <code className="font-mono text-sm">separated</code>) and{" "}
-          <code className="font-mono text-sm">density</code>.{" "}
-          <code className="font-mono text-sm">AccordionItem</code> needs a unique{" "}
-          <code className="font-mono text-sm">value</code>. Each part forwards its native
-          props and merges <code className="font-mono text-sm">className</code> last.
-        </p>
-      </DocSection>
     </>
   )
 }

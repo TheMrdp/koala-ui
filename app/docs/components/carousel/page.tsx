@@ -104,38 +104,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Carousel</code> holds the active index and the
-          slide count, sharing them with its parts through context.
-        </p>
-        <ul className="mt-4 flex flex-col gap-1.5 text-sm text-muted-foreground">
-          <li>
-            <code className="font-mono text-foreground">Carousel</code> — root region.{" "}
-            <code className="font-mono">index</code> / <code className="font-mono">defaultIndex</code>{" "}
-            / <code className="font-mono">onIndexChange</code> / <code className="font-mono">label</code>.
-          </li>
-          <li>
-            <code className="font-mono text-foreground">CarouselContent</code> — clips and
-            translates the track; wraps the slides.
-          </li>
-          <li>
-            <code className="font-mono text-foreground">CarouselSlide</code> — one full-width
-            slide.
-          </li>
-          <li>
-            <code className="font-mono text-foreground">CarouselPrevious</code> /{" "}
-            <code className="font-mono text-foreground">CarouselNext</code> — overlay nav arrows;
-            reveal on hover/focus, auto-hide at the first/last slide.
-          </li>
-          <li>
-            <code className="font-mono text-foreground">CarouselIndicators</code> — the dots.
-            Hidden when there is one slide or fewer; <code className="font-mono">overlay</code>{" "}
-            floats them bottom-right over the image, and{" "}
-            <code className="font-mono">dotLabel</code> customizes each dot&apos;s accessible name.
-          </li>
-        </ul>
-      </DocSection>
     </>
   )
 }

@@ -180,21 +180,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Card</code> takes{" "}
-          <code className="font-mono text-sm">variant</code> and{" "}
-          <code className="font-mono text-sm">density</code>, which flow through Context to{" "}
-          <code className="font-mono text-sm">CardHeader</code>,{" "}
-          <code className="font-mono text-sm">CardTitle</code>,{" "}
-          <code className="font-mono text-sm">CardDescription</code>,{" "}
-          <code className="font-mono text-sm">CardAction</code>,{" "}
-          <code className="font-mono text-sm">CardContent</code>, and{" "}
-          <code className="font-mono text-sm">CardFooter</code>. Every part is a{" "}
-          <code className="font-mono text-sm">{`<div>`}</code> that forwards its native props
-          and merges <code className="font-mono text-sm">className</code> last.
-        </p>
-      </DocSection>
     </>
   )
 }

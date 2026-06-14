@@ -312,28 +312,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Alert</code> forwards all native{" "}
-          <code className="font-mono text-sm">{`<div>`}</code> props and adds{" "}
-          <code className="font-mono text-sm">variant</code> (
-          <code className="font-mono text-sm">
-            default | success | warning | destructive | info
-          </code>
-          ), <code className="font-mono text-sm">size</code> (
-          <code className="font-mono text-sm">sm | md</code>),{" "}
-          <code className="font-mono text-sm">onDismiss</code>, and{" "}
-          <code className="font-mono text-sm">dismissLabel</code>. The root renders
-          with <code className="font-mono text-sm">role=&quot;alert&quot;</code> for
-          screen-reader announcements. Compose content with{" "}
-          <code className="font-mono text-sm">AlertIcon</code>,{" "}
-          <code className="font-mono text-sm">AlertContent</code>,{" "}
-          <code className="font-mono text-sm">AlertTitle</code>,{" "}
-          <code className="font-mono text-sm">AlertDescription</code>, and{" "}
-          <code className="font-mono text-sm">AlertActions</code> - all accept{" "}
-          <code className="font-mono text-sm">className</code> for overrides.
-        </p>
-      </DocSection>
     </>
   )
 }

@@ -139,42 +139,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          A compound component - each part is a named export so it works across
-          Server Component boundaries (no dot-notation). The root scores the
-          value once and shares the result with its parts through context.
-        </p>
-        <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-          <div>
-            <code className="text-foreground">PasswordStrength</code> - root{" "}
-            <code>div</code> that scores <code>value</code> against{" "}
-            <code>rules</code> (defaults to <code>defaultPasswordRules</code>) and
-            provides the context. Sets <code>data-level</code> (0-4) for styling
-            hooks.
-          </div>
-          <div>
-            <code className="text-foreground">PasswordStrengthMeter</code> - the
-            four-segment bar. Renders as an ARIA <code>meter</code> with{" "}
-            <code>aria-valuenow</code> / <code>aria-valuetext</code>.
-          </div>
-          <div>
-            <code className="text-foreground">PasswordStrengthLabel</code> - the
-            one-word verdict (Weak / Fair / Good / Strong) in the matching tone,
-            announced via a polite live region. Takes a <code>placeholder</code>{" "}
-            for the empty state.
-          </div>
-          <div>
-            <code className="text-foreground">PasswordStrengthList</code> - the
-            requirements checklist; renders one row per rule with a check that
-            animates in when met.
-          </div>
-          <div>
-            <code className="text-foreground">getPasswordStrength(value, rules?)</code>{" "}
-            - the pure scoring helper, for headless use outside the components.
-          </div>
-        </div>
-      </DocSection>
     </>
   )
 }

@@ -363,103 +363,10 @@ export default function DataTableDocsPage() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <h3 className="mt-6 text-base font-semibold">DataTable</h3>
-        <div className="mt-3 overflow-hidden rounded-lg border border-border">
-          <table className="w-full border-collapse text-sm">
-            <thead className="bg-muted/50 text-left">
-              <tr className="[&>th]:px-4 [&>th]:py-2.5 [&>th]:font-medium">
-                <th>Prop</th>
-                <th>Type</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody className="[&>tr]:border-t [&>tr]:border-border [&>tr>td]:px-4 [&>tr>td]:py-2.5 [&_code]:font-mono [&_code]:text-xs">
-              {DATA_TABLE_PROPS.map((row) => (
-                <tr key={row.prop} className="align-top">
-                  <td><code>{row.prop}</code></td>
-                  <td className="text-muted-foreground"><code>{row.type}</code></td>
-                  <td className="text-pretty text-muted-foreground">{row.desc}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <h3 className="mt-8 text-base font-semibold">Column meta</h3>
-        <p className="mt-3 text-pretty text-muted-foreground">
-          Per-column display hints on each <code className="font-mono text-sm">ColumnDef</code>
-          &rsquo;s <code className="font-mono text-sm">meta</code>:{" "}
-          <code className="font-mono text-sm">align</code> (
-          <code className="font-mono text-sm">&quot;left&quot; | &quot;center&quot; | &quot;right&quot;</code>),{" "}
-          <code className="font-mono text-sm">numeric</code> (right-align +{" "}
-          <code className="font-mono text-sm">tabular-nums</code>),{" "}
-          <code className="font-mono text-sm">sticky</code> (
-          <code className="font-mono text-sm">&quot;left&quot; | &quot;right&quot;</code>),{" "}
-          <code className="font-mono text-sm">label</code> (the column&rsquo;s name in the
-          view-options menu and as a card-layout field label), and{" "}
-          <code className="font-mono text-sm">className</code> for per-column tweaks (tighten
-          padding, pin a width).
-        </p>
-
-        <h3 className="mt-8 text-base font-semibold">Primitives</h3>
-        <p className="mt-3 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Table</code> takes{" "}
-          <code className="font-mono text-sm">variant</code>,{" "}
-          <code className="font-mono text-sm">density</code>,{" "}
-          <code className="font-mono text-sm">striped</code>,{" "}
-          <code className="font-mono text-sm">hoverable</code>, and{" "}
-          <code className="font-mono text-sm">stickyHeader</code>, flowing through Context to
-          every part. <code className="font-mono text-sm">TableHead</code> and{" "}
-          <code className="font-mono text-sm">TableCell</code> take{" "}
-          <code className="font-mono text-sm">align</code> and{" "}
-          <code className="font-mono text-sm">sticky</code>;{" "}
-          <code className="font-mono text-sm">TableCell</code> also takes{" "}
-          <code className="font-mono text-sm">numeric</code>.{" "}
-          <code className="font-mono text-sm">TableRow</code> takes{" "}
-          <code className="font-mono text-sm">selected</code>.
-        </p>
-      </DocSection>
     </>
   )
 }
 
-const DATA_TABLE_PROPS = [
-  { prop: "columns", type: "ColumnDef<TData>[]", desc: "TanStack column definitions." },
-  { prop: "data", type: "TData[]", desc: "Row data." },
-  { prop: "getRowId", type: "(row, i) => string", desc: "Stable row id — keeps selection and grouping correct across re-sorts." },
-  { prop: "enableSorting", type: "boolean", desc: "Click-to-sort headers. Default false." },
-  { prop: "initialSorting", type: "SortingState", desc: "Initial sort order." },
-  { prop: "enableRowSelection", type: "boolean", desc: "Prepend a checkbox column with select-all. Default false." },
-  { prop: "onRowSelectionChange", type: "(s) => void", desc: "Called with the row-selection map on change." },
-  { prop: "enableGrouping", type: "boolean", desc: "Expandable groups. Default false." },
-  { prop: "initialGrouping", type: "GroupingState", desc: "Column id(s) to group by." },
-  { prop: "enablePagination", type: "boolean", desc: "Page rows client-side with a Pagination toolbar below. Default false." },
-  { prop: "pageSize", type: "number", desc: "Initial rows per page. Default 8." },
-  { prop: "pageSizeOptions", type: "number[]", desc: "Rows-per-page choices. Default [8, 16, 24, 50, 100]." },
-  { prop: "searchable", type: "boolean", desc: "Add a toolbar search box that filters every column. Default false." },
-  { prop: "searchPlaceholder", type: "string", desc: 'Search box placeholder. Default "Search for anything".' },
-  { prop: "toolbarActions", type: "ReactNode", desc: "Right-side toolbar slot for app buttons (filter, export, primary action)." },
-  { prop: "toolbar", type: "boolean", desc: "Force the toolbar rail on. Auto-on when searchable or toolbarActions is set." },
-  { prop: "viewOptions", type: "boolean", desc: "Add a View options dropdown to show/hide columns. Default false." },
-  { prop: "enableCardLayout", type: "boolean", desc: "Add a Rows/Cards layout switch and render cards when chosen (implies viewOptions). Default false." },
-  { prop: "defaultLayout", type: '"rows" | "cards"', desc: 'Initial layout when enableCardLayout is on. Default "rows".' },
-  { prop: "renderCard", type: "(row) => ReactNode", desc: "Custom card renderer for the cards layout. Defaults to a generated card." },
-  { prop: "loading", type: "boolean", desc: "Swap rows for skeleton placeholders while data loads. Default false." },
-  { prop: "loadingRows", type: "number", desc: "How many skeleton rows to show while loading. Default 5." },
-  { prop: "onLoadMore", type: "() => void", desc: "Enables infinite scroll: called near the end of the scroll to load the next batch (replaces pagination)." },
-  { prop: "hasMore", type: "boolean", desc: "Whether more rows can be loaded. The load-more sentinel stops when false." },
-  { prop: "loadingMore", type: "boolean", desc: "Whether a load-more fetch is in flight — shows a loading row and blocks duplicate calls." },
-  { prop: "persistKey", type: "string", desc: "Persist visible columns, sort, layout, and page size to localStorage under this key (SSR-safe)." },
-  { prop: "variant", type: '"minimal" | "container"', desc: 'Surface treatment. "minimal" (default) is chromeless and flush; "container" wraps it in the bordered card.' },
-  { prop: "density", type: '"compact" | "comfortable"', desc: "Condensed-rows axis. Resolves via DensityProvider when omitted." },
-  { prop: "striped", type: "boolean", desc: "Zebra-stripe even rows." },
-  { prop: "hoverable", type: "boolean", desc: "Highlight rows on hover. Default true." },
-  { prop: "stickyHeader", type: "boolean", desc: "Pin the header to the top of the scroll container." },
-  { prop: "emptyState", type: "ReactNode", desc: "Shown when there are no rows. Defaults to <DataTableEmpty />." },
-  { prop: "className", type: "string", desc: "Classes for the <table> element." },
-  { prop: "containerClassName", type: "string", desc: "Classes for the scroll container (e.g. a max-height)." },
-]
 
 /* ------------------------------------------------------------ code blocks --- */
 

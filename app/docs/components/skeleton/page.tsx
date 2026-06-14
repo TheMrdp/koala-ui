@@ -141,25 +141,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Skeleton</code> forwards every native{" "}
-          <code className="font-mono text-sm">{`<div>`}</code> prop, plus{" "}
-          <code className="font-mono text-sm">variant</code> (
-          <code className="font-mono text-sm">rectangle</code> ·{" "}
-          <code className="font-mono text-sm">circle</code> ·{" "}
-          <code className="font-mono text-sm">text</code>),{" "}
-          <code className="font-mono text-sm">animation</code> (
-          <code className="font-mono text-sm">pulse</code> ·{" "}
-          <code className="font-mono text-sm">shimmer</code> ·{" "}
-          <code className="font-mono text-sm">none</code>), and{" "}
-          <code className="font-mono text-sm">lines</code> (multi-line text blocks). Size every
-          skeleton with <code className="font-mono text-sm">className</code>, which is merged
-          last. Each rendered element is <code className="font-mono text-sm">aria-hidden</code> —
-          announce loading once on the surrounding region with{" "}
-          <code className="font-mono text-sm">aria-busy</code>.
-        </p>
-      </DocSection>
     </>
   )
 }

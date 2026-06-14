@@ -292,27 +292,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Badge</code> forwards every native{" "}
-          <code className="font-mono text-sm">{`<span>`}</code> prop, plus{" "}
-          <code className="font-mono text-sm">variant</code>,{" "}
-          <code className="font-mono text-sm">size</code>,{" "}
-          <code className="font-mono text-sm">pill</code>,{" "}
-          <code className="font-mono text-sm">dot</code>, and{" "}
-          <code className="font-mono text-sm">onRemove</code> /{" "}
-          <code className="font-mono text-sm">removeLabel</code> for the dismiss button. Use{" "}
-          <code className="font-mono text-sm">asChild</code> to render the styles on another
-          element via{" "}
-          <a
-            href="https://www.radix-ui.com/primitives/docs/utilities/slot"
-            className="underline underline-offset-4"
-          >
-            Radix Slot
-          </a>
-          .
-        </p>
-      </DocSection>
     </>
   )
 }

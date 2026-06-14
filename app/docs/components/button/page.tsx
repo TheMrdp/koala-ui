@@ -206,26 +206,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Button</code> forwards every native{" "}
-          <code className="font-mono text-sm">{`<button>`}</code> prop, plus{" "}
-          <code className="font-mono text-sm">variant</code>,{" "}
-          <code className="font-mono text-sm">size</code>,{" "}
-          <code className="font-mono text-sm">iconOnly</code>,{" "}
-          <code className="font-mono text-sm">density</code>,{" "}
-          <code className="font-mono text-sm">static</code> (disable the press scale), and{" "}
-          <code className="font-mono text-sm">loading</code> (spinner + busy state). Pass{" "}
-          <code className="font-mono text-sm">asChild</code> to render a different element via{" "}
-          <a
-            href="https://www.radix-ui.com/primitives/docs/utilities/slot"
-            className="underline underline-offset-4"
-          >
-            Radix Slot
-          </a>
-          .
-        </p>
-      </DocSection>
     </>
   )
 }

@@ -348,50 +348,6 @@ export function Example() {
         />
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          All parts forward their native HTML props and merge{" "}
-          <code className="font-mono text-sm">className</code> last.
-        </p>
-        <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-          <li>
-            <code className="font-mono text-foreground">Breadcrumb</code> -{" "}
-            <code className="font-mono">{`<nav aria-label="breadcrumb">`}</code> root.
-          </li>
-          <li>
-            <code className="font-mono text-foreground">BreadcrumbList</code> -{" "}
-            <code className="font-mono">{`<ol>`}</code> flex container for items and
-            separators.
-          </li>
-          <li>
-            <code className="font-mono text-foreground">BreadcrumbItem</code> -{" "}
-            <code className="font-mono">{`<li>`}</code> wrapper around a link, page, or
-            ellipsis.
-          </li>
-          <li>
-            <code className="font-mono text-foreground">BreadcrumbLink</code> -{" "}
-            <code className="font-mono">{`<a>`}</code> with hover color transition and
-            extended hit area. Accepts <code className="font-mono">asChild</code> for
-            composing with a router link.
-          </li>
-          <li>
-            <code className="font-mono text-foreground">BreadcrumbPage</code> -{" "}
-            <code className="font-mono">{`<span aria-current="page">`}</code> for the
-            active, non-navigable segment.
-          </li>
-          <li>
-            <code className="font-mono text-foreground">BreadcrumbSeparator</code> -{" "}
-            <code className="font-mono">{`<li aria-hidden>`}</code> decorative divider.
-            Renders a <code className="font-mono">CaretRight</code> by default; pass{" "}
-            <code className="font-mono">children</code> to use any icon or text.
-          </li>
-          <li>
-            <code className="font-mono text-foreground">BreadcrumbEllipsis</code> -{" "}
-            <code className="font-mono">{`<span aria-label="More pages">`}</code> collapsed
-            state indicator.
-          </li>
-        </ul>
-      </DocSection>
     </>
   )
 }

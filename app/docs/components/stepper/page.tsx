@@ -363,28 +363,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Stepper</code> is the root: it tracks the active step
-          (<code className="font-mono text-sm">value</code> /{" "}
-          <code className="font-mono text-sm">defaultValue</code> /{" "}
-          <code className="font-mono text-sm">onValueChange</code>, all 1-based) and takes{" "}
-          <code className="font-mono text-sm">orientation</code> and{" "}
-          <code className="font-mono text-sm">density</code>.{" "}
-          <code className="font-mono text-sm">StepperItem</code> carries the 1-based{" "}
-          <code className="font-mono text-sm">step</code> and derives its state, with{" "}
-          <code className="font-mono text-sm">completed</code>,{" "}
-          <code className="font-mono text-sm">loading</code>, and{" "}
-          <code className="font-mono text-sm">disabled</code> overrides.{" "}
-          <code className="font-mono text-sm">StepperTrigger</code> (the selectable button,{" "}
-          <code className="font-mono text-sm">asChild</code>-capable),{" "}
-          <code className="font-mono text-sm">StepperIndicator</code>,{" "}
-          <code className="font-mono text-sm">StepperTitle</code>,{" "}
-          <code className="font-mono text-sm">StepperDescription</code>, and{" "}
-          <code className="font-mono text-sm">StepperSeparator</code> compose inside it. Every part
-          forwards its native props and merges <code className="font-mono text-sm">className</code> last.
-        </p>
-      </DocSection>
     </>
   )
 }

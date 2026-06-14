@@ -148,42 +148,6 @@ toast({ title: "Preview ready", variant: "info" })`}
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          The imperative <code>toast()</code> function and the <code>useToast()</code>{" "}
-          hook share the same external store - toasts fired from either appear in the same
-          stack. <code>{"<Toaster />"}</code> subscribes to the store and manages the
-          stacking, enter/exit animations, and the hover-to-expand interaction.
-        </p>
-        <CodeSnippet
-          filename="api.ts"
-          className="mt-4"
-          code={`// toast(title: string)
-toast("Message")
-
-// toast(data: ToastData)
-toast({
-  title: string            // heading text (ReactNode)
-  description?: ReactNode  // secondary text
-  variant?: "default" | "success" | "warning" | "destructive" | "info"
-  duration?: number        // ms before auto-dismiss. Default: 5000. Infinity = persistent
-  action?: {
-    label: string
-    onClick: () => void
-  }
-})
-
-// Convenience shorthands
-toast.success(title, opts?)
-toast.warning(title, opts?)
-toast.error(title, opts?)   // maps to destructive variant
-toast.info(title, opts?)
-
-// Hook
-const { toast, dismiss } = useToast()
-dismiss(id)  // programmatically dismiss by id (returned by toast())`}
-        />
-      </DocSection>
     </>
   )
 }

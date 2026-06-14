@@ -132,35 +132,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <div className="mt-4 space-y-4 text-pretty text-muted-foreground">
-          <div>
-            <code className="font-mono text-sm">Popover</code>,{" "}
-            <code className="font-mono text-sm">PopoverTrigger</code>,{" "}
-            <code className="font-mono text-sm">PopoverAnchor</code>, and{" "}
-            <code className="font-mono text-sm">PopoverClose</code> are the Radix primitives
-            re-exported unchanged — <code className="font-mono text-sm">PopoverTrigger</code>{" "}
-            takes <code className="font-mono text-sm">asChild</code> to use your own button.
-          </div>
-          <div>
-            <code className="font-mono text-sm">PopoverContent</code> forwards every Radix
-            Content prop (<code className="font-mono text-sm">side</code>,{" "}
-            <code className="font-mono text-sm">align</code>,{" "}
-            <code className="font-mono text-sm">sideOffset</code>,{" "}
-            <code className="font-mono text-sm">collisionPadding</code>,{" "}
-            <code className="font-mono text-sm">onOpenAutoFocus</code>, …) plus{" "}
-            <code className="font-mono text-sm">showArrow</code> and{" "}
-            <code className="font-mono text-sm">density</code>. It portals and is positioned by
-            Radix; <code className="font-mono text-sm">className</code> merges last.
-          </div>
-          <div>
-            <code className="font-mono text-sm">PopoverTitle</code>,{" "}
-            <code className="font-mono text-sm">PopoverDescription</code>, and{" "}
-            <code className="font-mono text-sm">PopoverCloseButton</code> are styled helpers for
-            structured panels.
-          </div>
-        </div>
-      </DocSection>
     </>
   )
 }

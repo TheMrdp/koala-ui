@@ -222,35 +222,6 @@ export function AppSidebar() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Sidebar</code> renders an{" "}
-          <code className="font-mono text-sm">{`<aside>`}</code> landmark and takes{" "}
-          <code className="font-mono text-sm">density</code>, which flows through Context to
-          every part. It defaults to <code className="font-mono text-sm">w-64</code> with a
-          right border on a <code className="font-mono text-sm">bg-card</code> surface —
-          override with <code className="font-mono text-sm">className</code> (e.g. drop the
-          border and surface to nest it inside a{" "}
-          <a href="/docs/components/layout" className="underline underline-offset-4">
-            Layout
-          </a>{" "}
-          gutter).{" "}
-          <code className="font-mono text-sm">SidebarGroup</code> renders a{" "}
-          <code className="font-mono text-sm">{`<nav>`}</code>;{" "}
-          <code className="font-mono text-sm">SidebarItem</code> takes{" "}
-          <code className="font-mono text-sm">active</code> and{" "}
-          <code className="font-mono text-sm">asChild</code>.{" "}
-          <code className="font-mono text-sm">SidebarSwitcher</code> takes{" "}
-          <code className="font-mono text-sm">leading</code>,{" "}
-          <code className="font-mono text-sm">title</code>,{" "}
-          <code className="font-mono text-sm">subtitle</code>,{" "}
-          <code className="font-mono text-sm">caret</code>, and{" "}
-          <code className="font-mono text-sm">variant</code> (
-          <code className="font-mono text-sm">default</code> ·{" "}
-          <code className="font-mono text-sm">minimal</code>). Every part forwards its native
-          props and merges <code className="font-mono text-sm">className</code> last.
-        </p>
-      </DocSection>
     </>
   )
 }

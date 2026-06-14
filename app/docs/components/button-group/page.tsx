@@ -348,31 +348,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">ButtonGroup</code> forwards every native{" "}
-          <code className="font-mono text-sm">{`<div>`}</code> prop (including{" "}
-          <code className="font-mono text-sm">aria-label</code> - recommended when the group{" "}
-          purpose isn&apos;t obvious from context), plus{" "}
-          <code className="font-mono text-sm">variant</code>,{" "}
-          <code className="font-mono text-sm">size</code>,{" "}
-          <code className="font-mono text-sm">density</code>, and{" "}
-          <code className="font-mono text-sm">attached</code>. It renders a{" "}
-          <code className="font-mono text-sm">div</code> with{" "}
-          <code className="font-mono text-sm">role="group"</code>.
-        </p>
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">ButtonGroupItem</code> forwards every native{" "}
-          <code className="font-mono text-sm">{`<button>`}</code> prop, plus{" "}
-          <code className="font-mono text-sm">variant</code>,{" "}
-          <code className="font-mono text-sm">size</code>,{" "}
-          <code className="font-mono text-sm">density</code>,{" "}
-          <code className="font-mono text-sm">iconOnly</code>,{" "}
-          <code className="font-mono text-sm">asChild</code>, and{" "}
-          <code className="font-mono text-sm">static</code> (disable press scale). Props on the
-          item take precedence over the group context.
-        </p>
-      </DocSection>
     </>
   )
 }

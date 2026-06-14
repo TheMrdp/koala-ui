@@ -550,32 +550,6 @@ function attemptClose() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">DialogContent</code> adds{" "}
-          <code className="font-mono text-sm">size</code>,{" "}
-          <code className="font-mono text-sm">density</code>, and{" "}
-          <code className="font-mono text-sm">showClose</code> on top of the{" "}
-          <a
-            href="https://www.radix-ui.com/primitives/docs/components/dialog"
-            className="underline underline-offset-4"
-          >
-            Radix Dialog
-          </a>{" "}
-          primitives - <code className="font-mono text-sm">Dialog</code>,{" "}
-          <code className="font-mono text-sm">DialogTrigger</code>,{" "}
-          <code className="font-mono text-sm">DialogClose</code>, and the content parts all
-          forward their Radix props, so <code className="font-mono text-sm">open</code> /{" "}
-          <code className="font-mono text-sm">onOpenChange</code> and{" "}
-          <code className="font-mono text-sm">asChild</code> work as documented there.{" "}
-          <code className="font-mono text-sm">DialogStepper</code> wraps a{" "}
-          <a href="/docs/components/stepper" className="underline underline-offset-4">Stepper</a>{" "}
-          for wizard dialogs — it forwards every Stepper prop (<code className="font-mono text-sm">value</code>,{" "}
-          <code className="font-mono text-sm">onValueChange</code>,{" "}
-          <code className="font-mono text-sm">orientation</code>) and adds{" "}
-          <code className="font-mono text-sm">bordered</code> for the divider beneath.
-        </p>
-      </DocSection>
     </>
   )
 }

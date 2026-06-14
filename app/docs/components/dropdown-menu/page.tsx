@@ -237,26 +237,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          All parts accept a <code className="font-mono text-sm">density</code> prop (
-          <code className="font-mono text-sm">comfortable · compact</code>) that tightens padding
-          and item height for application UI. Drive density from a parent{" "}
-          <code className="font-mono text-sm">DensityProvider</code> to keep the whole menu in
-          sync without prop-drilling. Everything else passes through to the underlying{" "}
-          <a
-            href="https://www.radix-ui.com/primitives/docs/components/dropdown-menu"
-            className="underline underline-offset-4"
-          >
-            Radix DropdownMenu
-          </a>{" "}
-          primitives -{" "}
-          <code className="font-mono text-sm">DropdownMenu</code>,{" "}
-          <code className="font-mono text-sm">DropdownMenuTrigger</code>,{" "}
-          <code className="font-mono text-sm">DropdownMenuGroup</code>, and{" "}
-          <code className="font-mono text-sm">DropdownMenuRadioGroup</code> are direct re-exports.
-        </p>
-      </DocSection>
     </>
   )
 }

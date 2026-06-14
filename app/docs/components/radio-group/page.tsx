@@ -94,33 +94,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">RadioGroup</code> forwards every{" "}
-          <a
-            href="https://www.radix-ui.com/primitives/docs/components/radio-group"
-            className="underline underline-offset-4"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Radix RadioGroup
-          </a>{" "}
-          root prop — <code className="font-mono text-sm">value</code>,{" "}
-          <code className="font-mono text-sm">defaultValue</code>,{" "}
-          <code className="font-mono text-sm">onValueChange</code>,{" "}
-          <code className="font-mono text-sm">disabled</code>,{" "}
-          <code className="font-mono text-sm">name</code>,{" "}
-          <code className="font-mono text-sm">orientation</code>,{" "}
-          <code className="font-mono text-sm">loop</code> — plus a shared{" "}
-          <code className="font-mono text-sm">size</code> variant (
-          <code className="font-mono text-sm">&quot;sm&quot; | &quot;md&quot;</code>, default{" "}
-          <code className="font-mono text-sm">md</code>).{" "}
-          <code className="font-mono text-sm">RadioGroupItem</code> forwards the Radix Item props (
-          <code className="font-mono text-sm">value</code>,{" "}
-          <code className="font-mono text-sm">disabled</code>) and reads the group&apos;s size from
-          context. Both parts merge <code className="font-mono text-sm">className</code> last.
-        </p>
-      </DocSection>
     </>
   )
 }

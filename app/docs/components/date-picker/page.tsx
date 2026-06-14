@@ -186,60 +186,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          Three exports compose the surface — pick the altitude you need:
-        </p>
-        <div className="mt-4 space-y-4 text-pretty text-muted-foreground">
-          <div>
-            <code className="font-mono text-sm">DatePicker</code> — single date. Props:{" "}
-            <code className="font-mono text-sm">value</code> /{" "}
-            <code className="font-mono text-sm">defaultValue</code> /{" "}
-            <code className="font-mono text-sm">onChange</code>,{" "}
-            <code className="font-mono text-sm">placeholder</code>,{" "}
-            <code className="font-mono text-sm">size</code> (sm · md · lg),{" "}
-            <code className="font-mono text-sm">block</code>,{" "}
-            <code className="font-mono text-sm">disabled</code>,{" "}
-            <code className="font-mono text-sm">hasError</code>,{" "}
-            <code className="font-mono text-sm">clearable</code>,{" "}
-            <code className="font-mono text-sm">presets</code>,{" "}
-            <code className="font-mono text-sm">format</code>,{" "}
-            <code className="font-mono text-sm">min</code> /{" "}
-            <code className="font-mono text-sm">max</code>,{" "}
-            <code className="font-mono text-sm">isDateDisabled</code>,{" "}
-            <code className="font-mono text-sm">weekStartsOn</code>,{" "}
-            <code className="font-mono text-sm">locale</code>,{" "}
-            <code className="font-mono text-sm">numberOfMonths</code>,{" "}
-            <code className="font-mono text-sm">density</code>,{" "}
-            <code className="font-mono text-sm">align</code>.
-          </div>
-          <div>
-            <code className="font-mono text-sm">DateRangePicker</code> — same surface for a{" "}
-            <code className="font-mono text-sm">{`{ from, to }`}</code> range (defaults to{" "}
-            <code className="font-mono text-sm">numberOfMonths={`{2}`}</code> and the range
-            preset set).
-          </div>
-          <div>
-            <code className="font-mono text-sm">Calendar</code> — the standalone grid:{" "}
-            <code className="font-mono text-sm">mode</code> (single · range),{" "}
-            <code className="font-mono text-sm">selected</code> /{" "}
-            <code className="font-mono text-sm">onSelect</code>,{" "}
-            <code className="font-mono text-sm">month</code> /{" "}
-            <code className="font-mono text-sm">onMonthChange</code>, plus the shared{" "}
-            <code className="font-mono text-sm">min</code> /{" "}
-            <code className="font-mono text-sm">max</code> /{" "}
-            <code className="font-mono text-sm">isDateDisabled</code> /{" "}
-            <code className="font-mono text-sm">weekStartsOn</code> /{" "}
-            <code className="font-mono text-sm">numberOfMonths</code> /{" "}
-            <code className="font-mono text-sm">density</code> props.
-          </div>
-          <div>
-            Helpers <code className="font-mono text-sm">getDatePresets()</code> and{" "}
-            <code className="font-mono text-sm">getDateRangePresets()</code> return ready-made
-            preset arrays you can slice or extend.
-          </div>
-        </div>
-      </DocSection>
     </>
   )
 }

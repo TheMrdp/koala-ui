@@ -230,46 +230,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <div className="mt-4 space-y-4 text-pretty text-muted-foreground">
-          <p>
-            <code className="font-mono text-sm">RichTextEditor</code> is the root: it creates
-            the Tiptap instance and shares it with every part through context. Props:{" "}
-            <code className="font-mono text-sm">defaultValue</code> (initial HTML, uncontrolled),{" "}
-            <code className="font-mono text-sm">onChange(html)</code>,{" "}
-            <code className="font-mono text-sm">placeholder</code>,{" "}
-            <code className="font-mono text-sm">editable</code>, and{" "}
-            <code className="font-mono text-sm">density</code>. Forwards every other{" "}
-            <code className="font-mono text-sm">{`<div>`}</code> prop.
-          </p>
-          <p>
-            <code className="font-mono text-sm">RichTextEditorToolbar</code> wraps Radix
-            Toolbar (roving focus, arrow-key navigation). With no children it renders the
-            essential controls; otherwise it renders the children you pass.
-          </p>
-          <p>
-            <code className="font-mono text-sm">RichTextEditorButton</code> is an icon-only
-            toolbar control — takes <code className="font-mono text-sm">pressed</code>,{" "}
-            <code className="font-mono text-sm">tooltip</code> (required label), and{" "}
-            <code className="font-mono text-sm">static</code>, plus native button props.{" "}
-            <code className="font-mono text-sm">RichTextEditorSeparator</code> groups them.
-          </p>
-          <p>
-            <code className="font-mono text-sm">RichTextEditorBubbleMenu</code> renders a
-            floating toolbar over the active text selection (Tiptap BubbleMenu + Floating UI).
-            With no children it shows inline marks + an inline link editor; pass{" "}
-            <code className="font-mono text-sm">RichTextEditorButton</code>s for a custom set,
-            or <code className="font-mono text-sm">options</code> to tune placement/offset.
-          </p>
-          <p>
-            <code className="font-mono text-sm">RichTextEditorContent</code> is the editable
-            writing area. <code className="font-mono text-sm">useRichTextEditor()</code>{" "}
-            returns the live Tiptap <code className="font-mono text-sm">Editor</code> (or{" "}
-            <code className="font-mono text-sm">null</code> before mount) for building custom
-            chrome.
-          </p>
-        </div>
-      </DocSection>
     </>
   )
 }

@@ -170,33 +170,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Pagination</code> is a controlled component. It
-          takes <code className="font-mono text-sm">page</code> (1-based) and{" "}
-          <code className="font-mono text-sm">pageCount</code>, emitting the next clamped page
-          through <code className="font-mono text-sm">onPageChange</code>. For the rows-per-page
-          addon, pass <code className="font-mono text-sm">rowsPerPage</code>,{" "}
-          <code className="font-mono text-sm">onRowsPerPageChange</code>, and optionally{" "}
-          <code className="font-mono text-sm">rowsPerPageOptions</code>. Toggle each addon with{" "}
-          <code className="font-mono text-sm">showInfo</code>,{" "}
-          <code className="font-mono text-sm">showControls</code>,{" "}
-          <code className="font-mono text-sm">showGoTo</code>, and{" "}
-          <code className="font-mono text-sm">showRowsPerPage</code>;{" "}
-          <code className="font-mono text-sm">disabled</code> turns off every control at once,
-          and <code className="font-mono text-sm">density</code> retunes the spacing.
-        </p>
-        <p className="mt-4 text-pretty text-muted-foreground">
-          Need a custom layout? Use <code className="font-mono text-sm">PaginationRoot</code>{" "}
-          (same props, minus the <code className="font-mono text-sm">show*</code> toggles) and
-          compose the named parts — <code className="font-mono text-sm">PaginationInfo</code>,{" "}
-          <code className="font-mono text-sm">PaginationControls</code> (or{" "}
-          <code className="font-mono text-sm">PaginationPrevButton</code> /{" "}
-          <code className="font-mono text-sm">PaginationNextButton</code> individually),{" "}
-          <code className="font-mono text-sm">PaginationGoTo</code>, and{" "}
-          <code className="font-mono text-sm">PaginationRowsPerPage</code>.
-        </p>
-      </DocSection>
     </>
   )
 }

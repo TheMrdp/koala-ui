@@ -149,34 +149,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Divider</code> forwards every native{" "}
-          <code className="font-mono text-sm">{`<div>`}</code> prop, plus{" "}
-          <code className="font-mono text-sm">orientation</code> (
-          <code className="font-mono text-sm">horizontal</code> /{" "}
-          <code className="font-mono text-sm">vertical</code>),{" "}
-          <code className="font-mono text-sm">variant</code> (
-          <code className="font-mono text-sm">solid</code> /{" "}
-          <code className="font-mono text-sm">dashed</code> /{" "}
-          <code className="font-mono text-sm">dotted</code> /{" "}
-          <code className="font-mono text-sm">gradient</code>),{" "}
-          <code className="font-mono text-sm">labelPosition</code> (
-          <code className="font-mono text-sm">start</code> /{" "}
-          <code className="font-mono text-sm">center</code> /{" "}
-          <code className="font-mono text-sm">end</code>), and{" "}
-          <code className="font-mono text-sm">decorative</code> to drop the separator role
-          from the a11y tree. Pass children to render a label (horizontal only). Behavior
-          and ARIA come from{" "}
-          <a
-            href="https://www.radix-ui.com/primitives/docs/components/separator"
-            className="underline underline-offset-4"
-          >
-            Radix Separator
-          </a>
-          .
-        </p>
-      </DocSection>
     </>
   )
 }

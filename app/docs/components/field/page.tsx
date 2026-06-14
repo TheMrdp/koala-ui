@@ -407,45 +407,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          Field is a compound component - each part is a named export so they work
-          across Server Component boundaries (no dot-notation). The wiring flows
-          through an optional context: controls read it when present and behave
-          exactly as before when they are used standalone.
-        </p>
-        <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-          <div>
-            <code className="text-foreground">Field</code> - wrapper{" "}
-            <code>div</code> that generates the ids and provides context. Props:{" "}
-            <code>hasError</code> (cascades to the control + hint),{" "}
-            <code>disabled</code>, <code>required</code>.
-          </div>
-          <div>
-            <code className="text-foreground">FieldLabel</code> - the{" "}
-            <code>label</code>. Its <code>htmlFor</code> targets the control
-            automatically; renders the destructive asterisk when the field is{" "}
-            <code>required</code>.
-          </div>
-          <div>
-            <code className="text-foreground">FieldHint</code> - helper{" "}
-            <code>p</code> below the control. Wired as the control's{" "}
-            <code>aria-describedby</code>; turns destructive when the field has{" "}
-            <code>hasError</code>.
-          </div>
-          <div>
-            <code className="text-foreground">FieldRow</code> - layout-only grid
-            that lays sibling fields out two-per-row on <code>sm</code> and up,
-            stacked below.
-          </div>
-        </div>
-        <p className="mt-4 text-pretty text-muted-foreground">
-          Any control that forwards native props participates - Input, Select, and
-          PasswordInput already do. A control&apos;s own <code>id</code> /{" "}
-          <code>aria-describedby</code> / <code>disabled</code> always override the
-          field defaults.
-        </p>
-      </DocSection>
     </>
   )
 }

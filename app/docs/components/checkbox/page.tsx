@@ -93,31 +93,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Checkbox</code> forwards every{" "}
-          <a
-            href="https://www.radix-ui.com/primitives/docs/components/checkbox"
-            className="underline underline-offset-4"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Radix Checkbox
-          </a>{" "}
-          prop — <code className="font-mono text-sm">checked</code> (
-          <code className="font-mono text-sm">boolean | &quot;indeterminate&quot;</code>),{" "}
-          <code className="font-mono text-sm">defaultChecked</code>,{" "}
-          <code className="font-mono text-sm">onCheckedChange</code>,{" "}
-          <code className="font-mono text-sm">disabled</code>,{" "}
-          <code className="font-mono text-sm">required</code>,{" "}
-          <code className="font-mono text-sm">name</code>,{" "}
-          <code className="font-mono text-sm">value</code> — plus a{" "}
-          <code className="font-mono text-sm">size</code> variant (
-          <code className="font-mono text-sm">&quot;sm&quot; | &quot;md&quot;</code>, default{" "}
-          <code className="font-mono text-sm">md</code>) and{" "}
-          <code className="font-mono text-sm">className</code>, merged last.
-        </p>
-      </DocSection>
     </>
   )
 }

@@ -300,54 +300,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          Textarea is a compound component — each part is a named export so they
-          work across Server Component boundaries (no dot-notation).
-        </p>
-        <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-          <div>
-            <code className="text-foreground">TextareaRoot</code> — wrapper{" "}
-            <code>div</code>. Props: <code>size</code> (<code>sm</code> /{" "}
-            <code>md</code> / <code>lg</code>), <code>resize</code> (
-            <code>none</code> / <code>vertical</code> / <code>horizontal</code> /{" "}
-            <code>both</code>), <code>hasError</code>, <code>disabled</code>.
-            Provides context to all child parts.
-          </div>
-          <div>
-            <code className="text-foreground">TextareaField</code> — the native{" "}
-            <code>textarea</code>. Forwards all <code>{"<textarea>"}</code>{" "}
-            props; reads <code>disabled</code> / <code>hasError</code> /{" "}
-            <code>resize</code> from context if not set locally. Extra prop:{" "}
-            <code>autoResize</code> — grow to fit content (pins resize to{" "}
-            <code>none</code>).
-          </div>
-          <div>
-            <code className="text-foreground">TextareaFooter</code> — a{" "}
-            <code>div</code> slot inside the field border. Lay out a helper note
-            and a <code>TextareaCount</code> with{" "}
-            <code>justify-between</code> (the default).
-          </div>
-          <div>
-            <code className="text-foreground">TextareaCount</code> — a{" "}
-            <code>span</code> showing <code>current</code> and an optional{" "}
-            <code>max</code>. Renders <code>tabular-nums</code> and turns
-            destructive once <code>current</code> exceeds <code>max</code>.
-          </div>
-          <div>
-            <code className="text-foreground">TextareaLabel</code> — a{" "}
-            <code>label</code> rendered above the control. Wire it with{" "}
-            <code>htmlFor</code> = the field’s <code>id</code>. Props:{" "}
-            <code>required</code> (appends a destructive asterisk).
-          </div>
-          <div>
-            <code className="text-foreground">TextareaHint</code> — helper{" "}
-            <code>p</code> below the control. Set <code>hasError</code> to match{" "}
-            <code>TextareaRoot</code> for the destructive tone; wire its{" "}
-            <code>id</code> to the field’s <code>aria-describedby</code>.
-          </div>
-        </div>
-      </DocSection>
     </>
   )
 }

@@ -155,38 +155,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Slider</code> forwards every{" "}
-          <a
-            href="https://www.radix-ui.com/primitives/docs/components/slider"
-            className="underline underline-offset-4"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Radix Slider
-          </a>{" "}
-          prop — <code className="font-mono text-sm">value</code>,{" "}
-          <code className="font-mono text-sm">defaultValue</code>,{" "}
-          <code className="font-mono text-sm">onValueChange</code>,{" "}
-          <code className="font-mono text-sm">min</code>,{" "}
-          <code className="font-mono text-sm">max</code>,{" "}
-          <code className="font-mono text-sm">step</code>,{" "}
-          <code className="font-mono text-sm">orientation</code>,{" "}
-          <code className="font-mono text-sm">disabled</code>,{" "}
-          <code className="font-mono text-sm">name</code> — plus Koala additions:{" "}
-          <code className="font-mono text-sm">size</code> (
-          <code className="font-mono text-sm">sm | md | lg</code>),{" "}
-          <code className="font-mono text-sm">variant</code> (
-          <code className="font-mono text-sm">default | brand | success | warning | destructive</code>),{" "}
-          <code className="font-mono text-sm">shape</code> (
-          <code className="font-mono text-sm">round | square</code>),{" "}
-          <code className="font-mono text-sm">tooltip</code> to show a live value bubble,{" "}
-          <code className="font-mono text-sm">formatValue</code> to format it,{" "}
-          <code className="font-mono text-sm">static</code> to disable the press scale, and{" "}
-          <code className="font-mono text-sm">className</code>, merged last.
-        </p>
-      </DocSection>
     </>
   )
 }

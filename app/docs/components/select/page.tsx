@@ -224,28 +224,6 @@ function CircleFlag({ flag: Flag }) {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">SelectTrigger</code> and{" "}
-          <code className="font-mono text-sm">SelectContent</code> add a{" "}
-          <code className="font-mono text-sm">density</code> prop on top of the{" "}
-          <a
-            href="https://www.radix-ui.com/primitives/docs/components/select"
-            className="underline underline-offset-4"
-          >
-            Radix Select
-          </a>{" "}
-          primitives. All Radix props - including{" "}
-          <code className="font-mono text-sm">value</code>,{" "}
-          <code className="font-mono text-sm">onValueChange</code>,{" "}
-          <code className="font-mono text-sm">defaultValue</code>, and{" "}
-          <code className="font-mono text-sm">disabled</code> - pass through unchanged.{" "}
-          <code className="font-mono text-sm">Select</code>,{" "}
-          <code className="font-mono text-sm">SelectGroup</code>, and{" "}
-          <code className="font-mono text-sm">SelectValue</code> are direct re-exports of the
-          Radix primitives.
-        </p>
-      </DocSection>
     </>
   )
 }

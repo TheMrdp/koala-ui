@@ -137,28 +137,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Label</code> forwards every native{" "}
-          <code className="font-mono text-sm">{`<label>`}</code> prop, plus{" "}
-          <code className="font-mono text-sm">required</code> (appends the asterisk) and{" "}
-          <code className="font-mono text-sm">disabled</code> (dims it). When omitted,{" "}
-          <code className="font-mono text-sm">htmlFor</code>,{" "}
-          <code className="font-mono text-sm">required</code>, and{" "}
-          <code className="font-mono text-sm">disabled</code> are inferred from a surrounding{" "}
-          <code className="font-mono text-sm">Field</code>; an explicit prop always wins.
-        </p>
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">Hint</code> forwards every native{" "}
-          <code className="font-mono text-sm">{`<p>`}</code> prop, plus{" "}
-          <code className="font-mono text-sm">hasError</code> for the destructive tone. Inside a{" "}
-          <code className="font-mono text-sm">Field</code> it adopts the field&apos;s hint{" "}
-          <code className="font-mono text-sm">id</code> and{" "}
-          <code className="font-mono text-sm">hasError</code> automatically. Both parts merge a{" "}
-          <code className="font-mono text-sm">className</code> last via the shared{" "}
-          <code className="font-mono text-sm">tv</code> recipe.
-        </p>
-      </DocSection>
     </>
   )
 }

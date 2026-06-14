@@ -166,58 +166,6 @@ export function Example() {
         </div>
       </DocSection>
 
-      <DocSection title="API reference">
-        <p className="mt-4 text-pretty text-muted-foreground">
-          <code className="font-mono text-sm">VideoPlayer</code> is the root: it owns the{" "}
-          <code className="font-mono text-sm">{`<video>`}</code> ref, broadcasts playback
-          state to every part through context, runs the auto-hide timer, and forwards every
-          native <code className="font-mono text-sm">{`<div>`}</code> prop plus{" "}
-          <code className="font-mono text-sm">hideDelay</code> (idle ms before the controls
-          hide during playback — default <code className="font-mono text-sm">2600</code>).
-        </p>
-        <ul className="mt-4 flex flex-col gap-2 text-pretty text-muted-foreground">
-          <li>
-            <code className="font-mono text-sm">Video</code> — the media element. Forwards
-            every native <code className="font-mono text-sm">{`<video>`}</code> prop
-            (<code className="font-mono text-sm">src</code>,{" "}
-            <code className="font-mono text-sm">poster</code>,{" "}
-            <code className="font-mono text-sm">preload</code>, …); click toggles playback.
-          </li>
-          <li>
-            <code className="font-mono text-sm">VideoControls</code> /{" "}
-            <code className="font-mono text-sm">VideoBar</code> — the auto-hiding scrim and a
-            control row inside it.
-          </li>
-          <li>
-            <code className="font-mono text-sm">VideoPlayButton</code>,{" "}
-            <code className="font-mono text-sm">VideoVolume</code>,{" "}
-            <code className="font-mono text-sm">VideoFullscreen</code> — toggle controls that
-            read and drive the shared state.
-          </li>
-          <li>
-            <code className="font-mono text-sm">VideoSeek</code> /{" "}
-            <code className="font-mono text-sm">VideoVolume</code> wrap{" "}
-            <a
-              href="https://www.radix-ui.com/primitives/docs/components/slider"
-              className="underline underline-offset-4"
-            >
-              Radix Slider
-            </a>{" "}
-            and forward its props; <code className="font-mono text-sm">VideoSeek</code> also
-            paints a buffered-ahead indicator and a hover scrub preview.
-          </li>
-          <li>
-            <code className="font-mono text-sm">VideoTime</code> — elapsed / total timecode in{" "}
-            <code className="font-mono text-sm">tabular-nums</code>.{" "}
-            <code className="font-mono text-sm">VideoSpinner</code> renders only while the
-            media is buffering.
-          </li>
-        </ul>
-        <p className="mt-4 text-pretty text-muted-foreground">
-          Every part accepts <code className="font-mono text-sm">className</code>, merged last
-          through the recipe.
-        </p>
-      </DocSection>
     </>
   )
 }
