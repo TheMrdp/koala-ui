@@ -1,19 +1,19 @@
 #!/usr/bin/env node
 // @ts-check
 /**
- * koalaui — the Koala UI CLI (two-tier).
+ * koalaui - the Koala UI CLI (two-tier).
  *
  *   koalaui init                 set up tokens, core lib helpers and base deps
  *   koalaui add <item...>        copy components/sections (and their deps) into your project
  *   koalaui list                 list available items (free + pro)
  *
  * Tiers:
- *   FREE  components/ui + lib + tokens — fetched from the PUBLIC repo, no auth.
- *   PRO   sections / pages / templates — fetched from the PRIVATE repo; requires a
+ *   FREE  components/ui + lib + tokens - fetched from the PUBLIC repo, no auth.
+ *   PRO   sections / pages / templates - fetched from the PRIVATE repo; requires a
  *         GitHub token with read access (the paywall). PRO items can depend on FREE
  *         ones; those still come from the public repo automatically.
  *
- * PRO auth — a GitHub token with read access to the pro repo, resolved in order:
+ * PRO auth - a GitHub token with read access to the pro repo, resolved in order:
  *   1. $KOALAUI_TOKEN   2. $GH_TOKEN   3. $GITHUB_TOKEN   4. `gh auth token`
  *
  * Flags:
@@ -94,7 +94,7 @@ function requireToken(opts, itemName) {
   const token = resolveToken(opts.token)
   if (!token)
     fail(
-      `"${itemName}" is a ${c.bold("PRO")} item — installing it requires repo access.\n` +
+      `"${itemName}" is a ${c.bold("PRO")} item - installing it requires repo access.\n` +
         `  No GitHub token found. Authenticate with one of:\n` +
         `    ${c.cyan("gh auth login")}   or   ${c.cyan("export KOALAUI_TOKEN=<token>")}\n` +
         `  Don't have access yet? → ${CONTACT}`
@@ -163,7 +163,7 @@ function makeRegistry(opts) {
   return {
     label: `${DEFAULT_PUBLIC_REPO}@${branch}`,
     async meta() {
-      // the catalog lives in the public repo — no token required to browse
+      // the catalog lives in the public repo - no token required to browse
       return JSON.parse(await rawPublic(DEFAULT_PUBLIC_REPO, "registry.json"))
     },
     async freeFile(path) {
@@ -229,7 +229,7 @@ async function cmdList(reg) {
 
 async function cmdInit(reg, opts) {
   const root = opts.cwd
-  log(c.bold(`\nKoala UI — init ${c.dim(`(${reg.label})`)}\n`))
+  log(c.bold(`\nKoala UI - init ${c.dim(`(${reg.label})`)}\n`))
   const m = await reg.meta()
   const spec = m.init
   const w = makeWriter(root, opts.overwrite)
@@ -242,7 +242,7 @@ async function cmdInit(reg, opts) {
   for (const t of w.skipped) warn(`exists, skipped ${c.dim(t)} ${c.dim("(use --overwrite)")}`)
 
   if (opts.install) installDeps(root, spec.dependencies)
-  else info(`skipped install — deps: ${Object.keys(spec.dependencies).join(" ")}`)
+  else info(`skipped install - deps: ${Object.keys(spec.dependencies).join(" ")}`)
 
   log()
   ok("init complete")
@@ -279,8 +279,8 @@ async function cmdAdd(reg, opts) {
     fail(`unknown item(s): ${missing.join(", ")}\n  Run ${c.cyan("koalaui list")} to see what's available.`)
 
   const involvesPro = [...resolved.values()].some((i) => i.tier === "pro")
-  log(c.bold(`\nKoala UI — adding ${names.join(", ")} ${c.dim(`(${reg.label})`)}\n`))
-  if (involvesPro) info(`includes ${c.bold("PRO")} content 🔒 — using your repo access`)
+  log(c.bold(`\nKoala UI - adding ${names.join(", ")} ${c.dim(`(${reg.label})`)}\n`))
+  if (involvesPro) info(`includes ${c.bold("PRO")} content 🔒 - using your repo access`)
   const extra = [...resolved.keys()].filter((n) => !names.includes(n))
   if (extra.length) info(`pulling dependencies: ${c.dim(extra.join(", "))}`)
 
@@ -299,17 +299,17 @@ async function cmdAdd(reg, opts) {
   for (const t of w.skipped) warn(`exists, skipped ${c.dim(t)} ${c.dim("(use --overwrite)")}`)
 
   if (opts.install) installDeps(root, deps)
-  else if (Object.keys(deps).length) info(`skipped install — deps: ${Object.keys(deps).join(" ")}`)
+  else if (Object.keys(deps).length) info(`skipped install - deps: ${Object.keys(deps).join(" ")}`)
 
   log()
   ok(`added ${names.join(", ")}`)
-  if (w.useSrc) info("detected a src/ layout — files were written under src/")
+  if (w.useSrc) info("detected a src/ layout - files were written under src/")
   log()
 }
 
 function help() {
   log(`
-${c.bold("koalaui")} — add Koala UI components & sections to your project
+${c.bold("koalaui")} - add Koala UI components & sections to your project
 
 ${c.bold("Usage")}
   koalaui init                 set up tokens, core lib helpers and base deps

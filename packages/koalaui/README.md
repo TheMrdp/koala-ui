@@ -4,8 +4,8 @@ The CLI for [Koala UI](https://github.com/TheMrdp/koala-ui). It copies component
 
 ## Two tiers
 
-- **Free** — all components (`components/ui/*`), lib helpers and tokens. Fetched from the public repo, **no auth**.
-- **PRO** 🔒 — marketing sections, full page examples, templates. Fetched from the private `koala-ui-pro` repo; **requires repo access** (a GitHub token). PRO items can depend on free components — those still come from the public repo automatically.
+- **Free** - all components (`components/ui/*`), lib helpers and tokens. Fetched from the public repo, **no auth**.
+- **PRO** 🔒 - marketing sections, full page examples, templates. Fetched from the private `koala-ui-pro` repo; **requires repo access** (a GitHub token). PRO items can depend on free components - those still come from the public repo automatically.
 
 ## Usage
 
@@ -13,10 +13,10 @@ The CLI for [Koala UI](https://github.com/TheMrdp/koala-ui). It copies component
 # One-time: tokens, core lib helpers (cn, tv) and base dependencies
 npx koalaui init
 
-# Add free components — no auth needed
+# Add free components - no auth needed
 npx koalaui add button card data-table
 
-# Add PRO items — authenticate first
+# Add PRO items - authenticate first
 gh auth login        # or: export KOALAUI_TOKEN=<read token for koala-ui-pro>
 npx koalaui add marketing-hero
 

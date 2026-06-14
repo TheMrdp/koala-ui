@@ -1,6 +1,6 @@
 // @ts-check
 /**
- * build-registry.mjs — generates `registry.json`, the catalog the `koalaui` CLI reads.
+ * build-registry.mjs - generates `registry.json`, the catalog the `koalaui` CLI reads.
  *
  * Two tiers:
  *   - FREE  → components/ui/* + lib/*  (this PUBLIC repo). Installable WITHOUT a token.
@@ -9,7 +9,7 @@
  * The manifest is METADATA ONLY (no source contents) and lists BOTH tiers, tagging each
  * item with its `tier` and source `repo`. The CLI fetches free files from the public repo
  * over raw (no auth) and pro files from the private repo over the API (with the caller's
- * token). Source lives in exactly one place per item — never duplicated.
+ * token). Source lives in exactly one place per item - never duplicated.
  *
  * PRO source is read from a local checkout of koala-ui-pro (../koala-ui-pro by default,
  * override with $KOALA_PRO_DIR). If it isn't present, only the free tier is emitted.
@@ -79,7 +79,7 @@ function analyze(files, self) {
         const name = spec.slice("@/components/ui/".length).split("/")[0]
         if (name !== self) components.add(name)
       } else if (spec.startsWith("@/")) {
-        // other internal import — not part of the distributed surface
+        // other internal import - not part of the distributed surface
       } else {
         const name = pkgName(spec)
         if (!IGNORE_PKGS.has(name)) npm.add(name)
@@ -169,7 +169,7 @@ if (existsSync(PRO_DIR)) {
     }
   }
 } else {
-  console.warn(`! koala-ui-pro not found at ${PRO_DIR} — emitting FREE tier only`)
+  console.warn(`! koala-ui-pro not found at ${PRO_DIR} - emitting FREE tier only`)
 }
 
 items.sort((a, b) => a.name.localeCompare(b.name))
