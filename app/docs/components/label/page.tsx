@@ -1,0 +1,164 @@
+import { Label, Hint } from "@/components/ui/label"
+import { InputRoot, InputField } from "@/components/ui/input"
+import { Field, FieldLabel, FieldHint } from "@/components/ui/field"
+import { ComponentPreview } from "@/components/docs/component-preview"
+import { CodeSnippet } from "@/components/docs/code-snippet"
+import { Installation } from "@/components/docs/installation"
+import { DocHeader, DocSection } from "@/components/docs/doc-page"
+
+export const metadata = {
+  title: "Label",
+}
+
+export default function LabelDocsPage() {
+  return (
+    <>
+      <DocHeader
+        title="Label"
+        description="The one label + helper-text recipe behind every form control in Koala. Input, Field, and OTP Input all compose Label and Hint, so a field reads identically everywhere — and inside a Field they auto-wire their own ids, htmlFor, and aria-describedby."
+      />
+
+      <ComponentPreview
+        code={`<div className="flex w-full max-w-sm flex-col gap-1.5">
+  <Label htmlFor="email" required>Email</Label>
+  <InputRoot>
+    <InputField id="email" type="email" placeholder="you@company.com" />
+  </InputRoot>
+  <Hint>We'll only use this to send receipts.</Hint>
+</div>`}
+      >
+        <div className="flex w-full max-w-sm flex-col gap-1.5">
+          <Label htmlFor="email" required>
+            Email
+          </Label>
+          <InputRoot>
+            <InputField id="email" type="email" placeholder="you@company.com" />
+          </InputRoot>
+          <Hint>We&apos;ll only use this to send receipts.</Hint>
+        </div>
+      </ComponentPreview>
+
+      <DocSection title="Installation">
+        <Installation component="label" />
+      </DocSection>
+
+      <DocSection title="Usage">
+        <CodeSnippet
+          filename="usage.tsx"
+          className="mt-4"
+          code={`import { Label, Hint } from "@/components/ui/label"
+
+export function Example() {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <Label htmlFor="name">Name</Label>
+      <input id="name" />
+      <Hint>As it appears on your ID.</Hint>
+    </div>
+  )
+}`}
+        />
+      </DocSection>
+
+      <DocSection title="Required">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          Set <code className="font-mono text-sm">required</code> to append a destructive
+          asterisk. It carries a visually-hidden <code className="font-mono text-sm">(required)</code>{" "}
+          so screen readers announce it — the glyph itself is{" "}
+          <code className="font-mono text-sm">aria-hidden</code>.
+        </p>
+        <ComponentPreview
+          code={`<Label>Workspace name</Label>
+<Label required>Workspace name</Label>`}
+        >
+          <div className="flex flex-col gap-4">
+            <Label>Workspace name</Label>
+            <Label required>Workspace name</Label>
+          </div>
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Hint & error">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          <code className="font-mono text-sm">Hint</code> is the helper text below a control.
+          The same element doubles as the error message: set{" "}
+          <code className="font-mono text-sm">hasError</code> and it switches to the destructive
+          tone (the color transitions, so it fades in rather than snaps).
+        </p>
+        <ComponentPreview
+          code={`<Hint>Use 8 or more characters.</Hint>
+<Hint hasError>Password is too short.</Hint>`}
+        >
+          <div className="flex flex-col gap-3">
+            <Hint>Use 8 or more characters.</Hint>
+            <Hint hasError>Password is too short.</Hint>
+          </div>
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Disabled">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          <code className="font-mono text-sm">disabled</code> dims the label to match a
+          disabled control. Inside a <code className="font-mono text-sm">Field</code> it&apos;s
+          inferred from <code className="font-mono text-sm">{`<Field disabled>`}</code>.
+        </p>
+        <ComponentPreview code={`<Label disabled>Billing email</Label>`}>
+          <Label disabled>Billing email</Label>
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Inside a Field">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          Wrapped in a <code className="font-mono text-sm">Field</code>, the label and hint need
+          no ids: the label adopts the control&apos;s{" "}
+          <code className="font-mono text-sm">htmlFor</code> and{" "}
+          <code className="font-mono text-sm">required</code>, and the hint registers itself so
+          the control points <code className="font-mono text-sm">aria-describedby</code> at it.{" "}
+          <code className="font-mono text-sm">FieldLabel</code> /{" "}
+          <code className="font-mono text-sm">FieldHint</code> are these same two primitives,
+          re-exported.
+        </p>
+        <ComponentPreview
+          code={`<Field required className="max-w-sm">
+  <FieldLabel>Email</FieldLabel>
+  <InputRoot>
+    <InputField type="email" placeholder="you@company.com" />
+  </InputRoot>
+  <FieldHint>We'll send a confirmation here.</FieldHint>
+</Field>`}
+        >
+          <Field required className="max-w-sm">
+            <FieldLabel>Email</FieldLabel>
+            <InputRoot>
+              <InputField type="email" placeholder="you@company.com" />
+            </InputRoot>
+            <FieldHint>We&apos;ll send a confirmation here.</FieldHint>
+          </Field>
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="API reference">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          <code className="font-mono text-sm">Label</code> forwards every native{" "}
+          <code className="font-mono text-sm">{`<label>`}</code> prop, plus{" "}
+          <code className="font-mono text-sm">required</code> (appends the asterisk) and{" "}
+          <code className="font-mono text-sm">disabled</code> (dims it). When omitted,{" "}
+          <code className="font-mono text-sm">htmlFor</code>,{" "}
+          <code className="font-mono text-sm">required</code>, and{" "}
+          <code className="font-mono text-sm">disabled</code> are inferred from a surrounding{" "}
+          <code className="font-mono text-sm">Field</code>; an explicit prop always wins.
+        </p>
+        <p className="mt-4 text-pretty text-muted-foreground">
+          <code className="font-mono text-sm">Hint</code> forwards every native{" "}
+          <code className="font-mono text-sm">{`<p>`}</code> prop, plus{" "}
+          <code className="font-mono text-sm">hasError</code> for the destructive tone. Inside a{" "}
+          <code className="font-mono text-sm">Field</code> it adopts the field&apos;s hint{" "}
+          <code className="font-mono text-sm">id</code> and{" "}
+          <code className="font-mono text-sm">hasError</code> automatically. Both parts merge a{" "}
+          <code className="font-mono text-sm">className</code> last via the shared{" "}
+          <code className="font-mono text-sm">tv</code> recipe.
+        </p>
+      </DocSection>
+    </>
+  )
+}

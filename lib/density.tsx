@@ -1,0 +1,50 @@
+"use client"
+
+import * as React from "react"
+
+/**
+ * Density — Koala's cross-cutting spacing axis. Koala serves both application UI (tight,
+ * information-dense) and marketing (generous), the way Tailwind serves both. `density`
+ * is the knob that retunes padding, gaps, and control heights without touching color or
+ * radius. `compact` is the Koala default (16px padding/gaps, smaller titles, shorter
+ * controls); `comfortable` is the spacious marketing alternative.
+ *
+ * Unlike `lib/create-context.tsx` (which throws outside its provider), density has a
+ * legitimate value with no provider, so the context carries a safe default.
+ */
+export type Density = "comfortable" | "compact"
+
+const DensityContext = React.createContext<Density>("compact")
+DensityContext.displayName = "DensityContext"
+
+/**
+ * Set the density for a subtree — e.g. wrap an app shell in `density="compact"` and every
+ * nested Koala component tightens up, with no per-instance props. A `data-density`
+ * attribute is stamped on the wrapper as a CSS/debug escape hatch. The wrapper is
+ * `display: contents`, so it never introduces a box into the layout.
+ */
+export function DensityProvider({
+  density,
+  children,
+}: {
+  density: Density
+  children: React.ReactNode
+}) {
+  return (
+    <DensityContext.Provider value={density}>
+      <div data-density={density} className="contents">
+        {children}
+      </div>
+    </DensityContext.Provider>
+  )
+}
+
+/**
+ * Resolve the effective density. Precedence: explicit prop > nearest provider >
+ * `"compact"`. Components call `useDensity(props.density)` and feed the result into
+ * their `tv` recipe.
+ */
+export function useDensity(density?: Density): Density {
+  const context = React.useContext(DensityContext)
+  return density ?? context
+}

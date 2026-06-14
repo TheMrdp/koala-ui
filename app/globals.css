@@ -1,0 +1,415 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Moonlight is a dark context too, so `dark:` utilities apply under it as well. */
+@custom-variant dark (&:is(.dark *, .moonlight *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  /* Status roles — soft badges derive their tint via opacity (bg-success/10 + text-success). */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  /* Categorical hues — for labels, tags, and category badges. */
+  --color-purple: var(--purple);
+  --color-pink: var(--pink);
+  --color-teal: var(--teal);
+  --color-orange: var(--orange);
+  --color-border: var(--border);
+  /* Soft border — a subtler stroke for large surfaces (dialogs, sheets) where the
+   * standard --border reads too heavy. Derived per theme from each theme's own --border
+   * (see the theme blocks below), so it tracks every palette automatically. */
+  --color-border-soft: var(--border-soft);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-brand: var(--brand);
+
+  /* Syntax tokens — consumed by CodeSnippet's highlighter, themed per theme below. */
+  --color-syntax-keyword: var(--syntax-keyword);
+  --color-syntax-string: var(--syntax-string);
+  --color-syntax-comment: var(--syntax-comment);
+  --color-syntax-function: var(--syntax-function);
+  --color-syntax-number: var(--syntax-number);
+  --color-syntax-tag: var(--syntax-tag);
+
+  --font-sans: var(--font-sans);
+  /* Inter is Koala's only bundled font; code/labels fall back to the platform monospace. */
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --font-heading: var(--font-sans);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.9);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Shadow tokens — per-theme values, so dark surfaces stay legible. */
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+
+  /*
+   * Motion tokens — expose easing/durations as Tailwind utilities (ease-out, duration-base, …).
+   * NOTE: Tailwind v4's namespaces are `--ease-*` and `--transition-duration-*` (NOT `--duration-*`,
+   * which generates no utilities). The raw values live in `:root` below and in lib/motion.ts.
+   */
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+  --ease-drawer: var(--ease-drawer);
+  --transition-duration-fast: var(--duration-fast);
+  --transition-duration-base: var(--duration-base);
+  --transition-duration-slow: var(--duration-slow);
+
+  /*
+   * Check-draw — the Checkbox indicator's stroked glyph draws itself on check. The path is
+   * normalized to length 1 (`pathLength={1}`) with `stroke-dasharray: 1`, so sweeping the dash
+   * offset 1→0 reveals the stroke end-to-end. One-shot enter on mount, so a keyframe (#4), not a
+   * transition. Backed by the motion tokens — no raw duration/easing in the component.
+   */
+  --animate-check-draw: check-draw var(--duration-base) var(--ease-out);
+
+  /*
+   * Shimmer — the Skeleton's optional sweeping highlight. A translucent gradient overlay
+   * is swept across the placeholder via a one-axis transform. Unlike the fast/base/slow
+   * scale (built for one-shot UI transitions), an ambient infinite loop wants a longer,
+   * calmer cadence — hence 1.6s, defined here in the token layer rather than a component.
+   */
+  --animate-shimmer: shimmer 1.6s var(--ease-in-out) infinite;
+
+  /*
+   * Stagger-in — the entrance each item plays inside a <Stagger> list/grid (lib/stagger.tsx). A
+   * small rise + fade; the cascade comes from the per-item `animation-delay` (index × step), not
+   * the keyframe. `both` fill holds a not-yet-started item at the `from` state so nothing flashes
+   * in before its turn. One-shot on mount, so a keyframe (#4), not a transition.
+   */
+  --animate-stagger-in: stagger-in var(--duration-base) var(--ease-out) both;
+}
+
+@keyframes check-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes shimmer {
+  /* Start (0%) is the element's own value — the overlay sits at -100% (off the left edge);
+   * sweep it fully across to +100% (off the right edge). */
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes stagger-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+ * Motion tokens — single source of truth for animation. Mirror these in lib/motion.ts
+ * for JS-driven animation. Never inline raw cubic-bezier()/durations in components.
+ */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration-fast: 160ms;
+  --duration-base: 300ms;
+  --duration-slow: 450ms;
+}
+
+/* ─── Light (default) ──────────────────────────────────────────────────────── */
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --success: oklch(0.52 0.15 150);
+  --warning: oklch(0.55 0.13 70);
+  --info: oklch(0.52 0.2 255);
+  --purple: oklch(0.52 0.22 310);
+  --pink: oklch(0.54 0.21 350);
+  --teal: oklch(0.5 0.15 192);
+  --orange: oklch(0.56 0.18 45);
+  --syntax-keyword: oklch(0.5 0.2 295);
+  --syntax-string: oklch(0.52 0.13 150);
+  --syntax-comment: oklch(0.62 0.02 260);
+  --syntax-function: oklch(0.5 0.18 255);
+  --syntax-number: oklch(0.55 0.15 50);
+  --syntax-tag: oklch(0.55 0.18 25);
+  --border: oklch(0.922 0 0);
+  /* Half-strength stroke for large surfaces — softens toward the surface beneath. */
+  --border-soft: color-mix(in oklch, var(--border) 50%, transparent);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  /*
+   * Accent — the single knob. This is the DEFAULT accent (#F84416, "orange"); switch the
+   * whole accent palette by setting `data-accent="…"` on <html> (see "Accent presets" below).
+   * Themes (dark/cream/moonlight) deliberately DON'T redefine --brand, so accent and theme
+   * are orthogonal axes: any accent works under any of the four themes.
+   */
+  --brand: oklch(0.648 0.222 34.2);
+  /* Focus ring derives from the accent — same hue at 10% opacity. Set --brand, get this free. */
+  --ring-brand: color-mix(in oklch, var(--brand) 10%, transparent);
+  /* Roundy by brand: base tuned so the xl step (radius × 1.4) lands cards at exactly 16px. */
+  --radius: 0.7143rem;
+  --shadow-xs: 0 1px 2px oklch(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px oklch(0 0 0 / 0.1), 0 1px 2px -1px oklch(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.1), 0 2px 4px -2px oklch(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.1), 0 4px 6px -4px oklch(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px oklch(0 0 0 / 0.1), 0 8px 10px -6px oklch(0 0 0 / 0.1);
+}
+
+/* ─── Dark ─────────────────────────────────────────────────────────────────── */
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --success: oklch(0.8 0.17 155);
+  --warning: oklch(0.84 0.15 85);
+  --info: oklch(0.78 0.14 245);
+  --purple: oklch(0.78 0.16 310);
+  --pink: oklch(0.8 0.17 350);
+  --teal: oklch(0.78 0.13 192);
+  --orange: oklch(0.83 0.15 50);
+  --syntax-keyword: oklch(0.78 0.13 300);
+  --syntax-string: oklch(0.8 0.13 150);
+  --syntax-comment: oklch(0.6 0.025 260);
+  --syntax-function: oklch(0.78 0.12 250);
+  --syntax-number: oklch(0.8 0.12 60);
+  --syntax-tag: oklch(0.78 0.13 20);
+  --border: oklch(1 0 0 / 10%);
+  --border-soft: color-mix(in oklch, var(--border) 50%, transparent);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  /* --brand / --ring-brand are accent tokens (theme-agnostic) — see :root and "Accent presets". */
+  --shadow-xs: 0 1px 2px oklch(0 0 0 / 0.25);
+  --shadow-sm: 0 1px 3px oklch(0 0 0 / 0.35), 0 1px 2px -1px oklch(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.4), 0 2px 4px -2px oklch(0 0 0 / 0.3);
+  --shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.4), 0 4px 6px -4px oklch(0 0 0 / 0.3);
+  --shadow-xl: 0 20px 25px -5px oklch(0 0 0 / 0.45), 0 8px 10px -6px oklch(0 0 0 / 0.3);
+}
+
+/*
+ * Cream — Koala's warm light theme. PLACEHOLDER values approximating the public site;
+ * replace with exact Figma "Cream" variable export. Hue ≈ 85 (warm), low chroma.
+ */
+.cream {
+  --background: oklch(0.971 0.012 85);
+  --foreground: oklch(0.255 0.022 64);
+  --card: oklch(0.985 0.009 85);
+  --card-foreground: oklch(0.255 0.022 64);
+  --popover: oklch(0.985 0.009 85);
+  --popover-foreground: oklch(0.255 0.022 64);
+  --primary: oklch(0.305 0.03 62);
+  --primary-foreground: oklch(0.975 0.012 85);
+  --secondary: oklch(0.931 0.018 85);
+  --secondary-foreground: oklch(0.305 0.03 62);
+  --muted: oklch(0.931 0.018 85);
+  --muted-foreground: oklch(0.522 0.025 66);
+  --accent: oklch(0.918 0.024 80);
+  --accent-foreground: oklch(0.305 0.03 62);
+  --destructive: oklch(0.577 0.245 27.325);
+  --success: oklch(0.5 0.14 148);
+  --warning: oklch(0.53 0.13 68);
+  --info: oklch(0.5 0.18 252);
+  --purple: oklch(0.5 0.2 308);
+  --pink: oklch(0.52 0.19 348);
+  --teal: oklch(0.48 0.14 190);
+  --orange: oklch(0.54 0.16 43);
+  --syntax-keyword: oklch(0.48 0.19 295);
+  --syntax-string: oklch(0.5 0.12 148);
+  --syntax-comment: oklch(0.6 0.025 64);
+  --syntax-function: oklch(0.48 0.17 255);
+  --syntax-number: oklch(0.53 0.14 50);
+  --syntax-tag: oklch(0.54 0.17 25);
+  --border: oklch(0.892 0.02 80);
+  --border-soft: color-mix(in oklch, var(--border) 50%, transparent);
+  --input: oklch(0.892 0.02 80);
+  --ring: oklch(0.702 0.03 75);
+  /* --brand / --ring-brand are accent tokens (theme-agnostic) — see :root and "Accent presets". */
+  --shadow-xs: 0 1px 2px oklch(0.15 0.02 64 / 0.06);
+  --shadow-sm: 0 1px 3px oklch(0.15 0.02 64 / 0.1), 0 1px 2px -1px oklch(0.15 0.02 64 / 0.08);
+  --shadow-md: 0 4px 6px -1px oklch(0.15 0.02 64 / 0.1), 0 2px 4px -2px oklch(0.15 0.02 64 / 0.08);
+  --shadow-lg: 0 10px 15px -3px oklch(0.15 0.02 64 / 0.1), 0 4px 6px -4px oklch(0.15 0.02 64 / 0.08);
+  --shadow-xl: 0 20px 25px -5px oklch(0.15 0.02 64 / 0.12), 0 8px 10px -6px oklch(0.15 0.02 64 / 0.08);
+}
+
+/*
+ * Moonlight — Koala's blue-tinted dark theme. PLACEHOLDER values approximating the public
+ * site; replace with exact Figma "Moonlight" variable export. Hue ≈ 265 (blue).
+ */
+.moonlight {
+  --background: oklch(0.211 0.04 265);
+  --foreground: oklch(0.962 0.01 265);
+  --card: oklch(0.262 0.045 265);
+  --card-foreground: oklch(0.962 0.01 265);
+  --popover: oklch(0.262 0.045 265);
+  --popover-foreground: oklch(0.962 0.01 265);
+  --primary: oklch(0.704 0.14 264);
+  --primary-foreground: oklch(0.211 0.04 265);
+  --secondary: oklch(0.321 0.045 265);
+  --secondary-foreground: oklch(0.962 0.01 265);
+  --muted: oklch(0.321 0.045 265);
+  --muted-foreground: oklch(0.722 0.03 265);
+  --accent: oklch(0.339 0.05 265);
+  --accent-foreground: oklch(0.962 0.01 265);
+  --destructive: oklch(0.704 0.191 22.216);
+  --success: oklch(0.8 0.16 158);
+  --warning: oklch(0.84 0.14 88);
+  --info: oklch(0.8 0.15 248);
+  --purple: oklch(0.78 0.17 308);
+  --pink: oklch(0.8 0.18 348);
+  --teal: oklch(0.78 0.14 190);
+  --orange: oklch(0.83 0.16 50);
+  --syntax-keyword: oklch(0.8 0.13 300);
+  --syntax-string: oklch(0.82 0.13 158);
+  --syntax-comment: oklch(0.62 0.04 265);
+  --syntax-function: oklch(0.8 0.12 255);
+  --syntax-number: oklch(0.82 0.12 65);
+  --syntax-tag: oklch(0.8 0.13 20);
+  --border: oklch(0.85 0.05 265 / 12%);
+  --border-soft: color-mix(in oklch, var(--border) 50%, transparent);
+  --input: oklch(0.85 0.05 265 / 16%);
+  --ring: oklch(0.6 0.1 264);
+  /* --brand / --ring-brand are accent tokens (theme-agnostic) — see :root and "Accent presets". */
+  --shadow-xs: 0 1px 2px oklch(0.1 0.04 265 / 0.35);
+  --shadow-sm: 0 1px 3px oklch(0.1 0.04 265 / 0.45), 0 1px 2px -1px oklch(0.1 0.04 265 / 0.35);
+  --shadow-md: 0 4px 6px -1px oklch(0.1 0.04 265 / 0.5), 0 2px 4px -2px oklch(0.1 0.04 265 / 0.4);
+  --shadow-lg: 0 10px 15px -3px oklch(0.1 0.04 265 / 0.5), 0 4px 6px -4px oklch(0.1 0.04 265 / 0.4);
+  --shadow-xl: 0 20px 25px -5px oklch(0.1 0.04 265 / 0.55), 0 8px 10px -6px oklch(0.1 0.04 265 / 0.35);
+}
+
+/* ─── Accent presets ("color modes") ─────────────────────────────────────────
+ * The accent is a single knob: every preset sets ONLY --brand. --ring-brand
+ * derives from it (see :root), and every component reads the accent through
+ * `bg-brand` / `border-brand` / `ring-brand` / `--ring-brand`, so one variable
+ * recolors the whole system. Apply by setting `data-accent="<name>"` on <html>
+ * (the AccentProvider does this and persists the choice). Tuned to one vivid,
+ * accessible lightness (~L 0.6) so each reads well on light AND dark surfaces.
+ * To add an accent: append a preset here and a name to ACCENTS in lib/accent.tsx.
+ * ──────────────────────────────────────────────────────────────────────────── */
+[data-accent="orange"] { --brand: oklch(0.648 0.222 34.2); } /* #F84416 — default */
+[data-accent="red"]    { --brand: oklch(0.585 0.222 27); }
+[data-accent="amber"]  { --brand: oklch(0.705 0.165 70); }
+[data-accent="green"]  { --brand: oklch(0.62 0.17 150); }
+[data-accent="teal"]   { --brand: oklch(0.6 0.13 192); }
+[data-accent="blue"]   { --brand: oklch(0.55 0.2 255); }
+[data-accent="violet"] { --brand: oklch(0.52 0.23 285); }
+[data-accent="pink"]   { --brand: oklch(0.59 0.23 354); }
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* make-interfaces-feel-better #8: crisper text on macOS. */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  html {
+    @apply font-sans;
+  }
+  /* Smooth anchor jumps for the docs TOC; respects reduced-motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  /* The check draw is decorative — honor reduced-motion by showing the full stroke instantly. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-slot="checkbox-indicator"] path {
+      animation: none;
+    }
+  }
+  /* Skeleton animation is purely decorative — hold a static placeholder under reduced-motion
+   * (neither the pulse nor the shimmer overlay should run). */
+  @media (prefers-reduced-motion: reduce) {
+    [data-slot="skeleton"],
+    [data-slot="skeleton"]::after {
+      animation: none;
+    }
+    [data-slot="skeleton"]::after {
+      display: none;
+    }
+  }
+  /* make-interfaces-feel-better #10: balanced headings, no orphans in body copy. */
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  /*
+   * Inline code mentions (`data-mounted`, `text-sm`, …) get a subtle chip so they read as
+   * code, not prose — one canonical treatment for the whole docs. Scoped to
+   * `:not(pre) > code` so fenced blocks keep the highlighter's bare styling. `text-foreground`
+   * lifts the mention out of muted body copy; `text-sm` is the single inline-code size, so
+   * call sites don't set their own (any that still do just match this).
+   */
+  :not(pre) > code {
+    @apply rounded-sm bg-muted px-1.5 py-0.5 font-mono text-sm text-foreground;
+  }
+  /*
+   * Hidden scrollbars site-wide — surfaces stay clean (sidebar, TOC, the page itself, and
+   * any overflow region) while everything is still scrollable by wheel, trackpad, drag, or
+   * keyboard. `scrollbar-width` covers Firefox; the `::-webkit-scrollbar` rule covers
+   * Chrome/Safari/Edge.
+   */
+  * {
+    scrollbar-width: none;
+  }
+  *::-webkit-scrollbar {
+    display: none;
+  }
+}

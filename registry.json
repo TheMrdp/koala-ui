@@ -1,0 +1,993 @@
+{
+  "name": "koala-ui",
+  "version": "0.1.0",
+  "publicRepo": "TheMrdp/koala-ui",
+  "proRepo": "TheMrdp/koala-ui-pro",
+  "branch": "main",
+  "init": {
+    "dependencies": {
+      "clsx": "^2.1.1",
+      "tailwind-merge": "^3.6.0",
+      "tailwind-variants": "^3.2.2",
+      "tw-animate-css": "^1.4.0"
+    },
+    "cssFrom": "app/globals.css",
+    "cssTarget": "app/koala.css",
+    "lib": [
+      "lib/utils.ts",
+      "lib/tv.ts"
+    ]
+  },
+  "items": [
+    {
+      "name": "accordion",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Accordion",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/accordion/accordion.tsx",
+        "components/ui/accordion/index.ts"
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Alert",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "tv"
+      ],
+      "files": [
+        "components/ui/alert/alert.tsx",
+        "components/ui/alert/index.ts"
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Avatar",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/avatar/avatar.tsx",
+        "components/ui/avatar/index.ts"
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Badge",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/badge/badge.tsx",
+        "components/ui/badge/index.ts"
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Breadcrumb",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "utils"
+      ],
+      "files": [
+        "components/ui/breadcrumb/breadcrumb.tsx",
+        "components/ui/breadcrumb/index.ts"
+      ]
+    },
+    {
+      "name": "button",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Button",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "tooltip"
+      ],
+      "libDependencies": [
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/button/button.tsx",
+        "components/ui/button/index.ts"
+      ]
+    },
+    {
+      "name": "button-group",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Button Group",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "button"
+      ],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/button-group/button-group.tsx",
+        "components/ui/button-group/index.ts"
+      ]
+    },
+    {
+      "name": "card",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Card",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/card/card.tsx",
+        "components/ui/card/index.ts"
+      ]
+    },
+    {
+      "name": "carousel",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Carousel",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "button"
+      ],
+      "libDependencies": [
+        "create-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/carousel/carousel.tsx",
+        "components/ui/carousel/index.ts"
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Checkbox",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "tv"
+      ],
+      "files": [
+        "components/ui/checkbox/checkbox.tsx",
+        "components/ui/checkbox/index.ts"
+      ]
+    },
+    {
+      "name": "create-context",
+      "type": "lib",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "create-context",
+      "dependencies": {},
+      "registryDependencies": [],
+      "libDependencies": [],
+      "files": [
+        "lib/create-context.tsx"
+      ]
+    },
+    {
+      "name": "data-table",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Data Table",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "@tanstack/react-table": "^8.21.3"
+      },
+      "registryDependencies": [
+        "button",
+        "card",
+        "checkbox",
+        "dropdown-menu",
+        "empty-state",
+        "input",
+        "kbd",
+        "pagination",
+        "skeleton"
+      ],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "stagger",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/data-table/data-table-empty.tsx",
+        "components/ui/data-table/data-table-toolbar.tsx",
+        "components/ui/data-table/data-table-view-options.tsx",
+        "components/ui/data-table/data-table.tsx",
+        "components/ui/data-table/index.ts",
+        "components/ui/data-table/table.tsx"
+      ]
+    },
+    {
+      "name": "date-picker",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Date Picker",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "density",
+        "field-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/date-picker/date-picker.tsx",
+        "components/ui/date-picker/index.ts"
+      ]
+    },
+    {
+      "name": "density",
+      "type": "lib",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "density",
+      "dependencies": {},
+      "registryDependencies": [],
+      "libDependencies": [],
+      "files": [
+        "lib/density.tsx"
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Dialog",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "stepper"
+      ],
+      "libDependencies": [
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/dialog/dialog.tsx",
+        "components/ui/dialog/index.ts"
+      ]
+    },
+    {
+      "name": "divider",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Divider",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "tv"
+      ],
+      "files": [
+        "components/ui/divider/divider.tsx",
+        "components/ui/divider/index.ts"
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Drawer",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/drawer/drawer.tsx",
+        "components/ui/drawer/index.ts"
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Dropdown Menu",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "kbd"
+      ],
+      "libDependencies": [
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/dropdown-menu/dropdown-menu.tsx",
+        "components/ui/dropdown-menu/index.ts"
+      ]
+    },
+    {
+      "name": "emoji-picker",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Emoji Picker",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "input"
+      ],
+      "libDependencies": [
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/emoji-picker/data.ts",
+        "components/ui/emoji-picker/emoji-picker.tsx",
+        "components/ui/emoji-picker/index.ts"
+      ]
+    },
+    {
+      "name": "empty-state",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Empty State",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/empty-state/empty-state.tsx",
+        "components/ui/empty-state/index.ts"
+      ]
+    },
+    {
+      "name": "field",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Field",
+      "dependencies": {},
+      "registryDependencies": [
+        "label"
+      ],
+      "libDependencies": [
+        "field-context",
+        "tv"
+      ],
+      "files": [
+        "components/ui/field/field.tsx",
+        "components/ui/field/index.ts"
+      ]
+    },
+    {
+      "name": "field-context",
+      "type": "lib",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "field-context",
+      "dependencies": {},
+      "registryDependencies": [],
+      "libDependencies": [],
+      "files": [
+        "lib/field-context.tsx"
+      ]
+    },
+    {
+      "name": "input",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Input",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "country-flag-icons": "^1.6.17",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "label"
+      ],
+      "libDependencies": [
+        "create-context",
+        "field-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/input/countries.ts",
+        "components/ui/input/index.ts",
+        "components/ui/input/input.tsx",
+        "components/ui/input/number-input.tsx",
+        "components/ui/input/phone-input.tsx"
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Kbd",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "tv"
+      ],
+      "files": [
+        "components/ui/kbd/index.ts",
+        "components/ui/kbd/kbd.tsx"
+      ]
+    },
+    {
+      "name": "label",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Label",
+      "dependencies": {},
+      "registryDependencies": [],
+      "libDependencies": [
+        "field-context",
+        "tv"
+      ],
+      "files": [
+        "components/ui/label/index.ts",
+        "components/ui/label/label.tsx"
+      ]
+    },
+    {
+      "name": "layout",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Layout",
+      "dependencies": {},
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/layout/index.ts",
+        "components/ui/layout/layout.tsx"
+      ]
+    },
+    {
+      "name": "marketing-hero",
+      "type": "section",
+      "tier": "pro",
+      "repo": "TheMrdp/koala-ui-pro",
+      "title": "Marketing Hero",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "button"
+      ],
+      "libDependencies": [
+        "tv"
+      ],
+      "files": [
+        "components/sections/marketing-hero/hero.tsx",
+        "components/sections/marketing-hero/index.ts"
+      ]
+    },
+    {
+      "name": "motion",
+      "type": "lib",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "motion",
+      "dependencies": {},
+      "registryDependencies": [],
+      "libDependencies": [],
+      "files": [
+        "lib/motion.ts"
+      ]
+    },
+    {
+      "name": "otp-input",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "OTP Input",
+      "dependencies": {},
+      "registryDependencies": [
+        "label"
+      ],
+      "libDependencies": [
+        "tv"
+      ],
+      "files": [
+        "components/ui/otp-input/index.ts",
+        "components/ui/otp-input/otp-input.tsx"
+      ]
+    },
+    {
+      "name": "pagination",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Pagination",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "button",
+        "input",
+        "select"
+      ],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/pagination/index.ts",
+        "components/ui/pagination/pagination.tsx"
+      ]
+    },
+    {
+      "name": "password-strength",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Password Strength",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "tv"
+      ],
+      "files": [
+        "components/ui/password-strength/index.ts",
+        "components/ui/password-strength/password-strength.tsx"
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Popover",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/popover/index.ts",
+        "components/ui/popover/popover.tsx"
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Radio Group",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "tv"
+      ],
+      "files": [
+        "components/ui/radio-group/index.ts",
+        "components/ui/radio-group/radio-group.tsx"
+      ]
+    },
+    {
+      "name": "rich-text-editor",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Rich Text Editor",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "@tiptap/extensions": "^3.26.1",
+        "@tiptap/pm": "^3.26.1",
+        "@tiptap/react": "^3.26.1",
+        "@tiptap/starter-kit": "^3.26.1",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "button",
+        "input",
+        "kbd",
+        "popover",
+        "tooltip"
+      ],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/rich-text-editor/index.ts",
+        "components/ui/rich-text-editor/rich-text-editor.tsx"
+      ]
+    },
+    {
+      "name": "select",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Select",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "density",
+        "field-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/select/index.ts",
+        "components/ui/select/select.tsx"
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Sidebar",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/sidebar/index.ts",
+        "components/ui/sidebar/sidebar.tsx"
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Skeleton",
+      "dependencies": {},
+      "registryDependencies": [],
+      "libDependencies": [
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/skeleton/index.ts",
+        "components/ui/skeleton/skeleton.tsx"
+      ]
+    },
+    {
+      "name": "slider",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Slider",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/slider/index.ts",
+        "components/ui/slider/slider.tsx"
+      ]
+    },
+    {
+      "name": "stagger",
+      "type": "lib",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "stagger",
+      "dependencies": {},
+      "registryDependencies": [],
+      "libDependencies": [
+        "utils"
+      ],
+      "files": [
+        "lib/stagger.tsx"
+      ]
+    },
+    {
+      "name": "stepper",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Stepper",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/stepper/index.ts",
+        "components/ui/stepper/stepper.tsx"
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Switch",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/switch/index.ts",
+        "components/ui/switch/switch.tsx"
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Tabs",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/tabs/index.ts",
+        "components/ui/tabs/tabs.tsx"
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Textarea",
+      "dependencies": {},
+      "registryDependencies": [
+        "label"
+      ],
+      "libDependencies": [
+        "create-context",
+        "field-context",
+        "tv"
+      ],
+      "files": [
+        "components/ui/textarea/index.ts",
+        "components/ui/textarea/textarea.tsx"
+      ]
+    },
+    {
+      "name": "toast",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Toast",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/toast/index.ts",
+        "components/ui/toast/toast.tsx",
+        "components/ui/toast/toaster.tsx",
+        "components/ui/toast/use-toast.ts"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Tooltip",
+      "dependencies": {
+        "@tippyjs/react": "^4.2.6",
+        "tippy.js": "latest"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "tv"
+      ],
+      "files": [
+        "components/ui/tooltip/index.ts",
+        "components/ui/tooltip/tooltip.tsx"
+      ]
+    },
+    {
+      "name": "tv",
+      "type": "lib",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "tv",
+      "dependencies": {
+        "tailwind-variants": "^3.2.2"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "utils"
+      ],
+      "files": [
+        "lib/tv.ts"
+      ]
+    },
+    {
+      "name": "utils",
+      "type": "lib",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "utils",
+      "dependencies": {
+        "clsx": "^2.1.1",
+        "tailwind-merge": "^3.6.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [],
+      "files": [
+        "lib/utils.ts"
+      ]
+    },
+    {
+      "name": "video-player",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Video Player",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "tooltip"
+      ],
+      "libDependencies": [
+        "create-context",
+        "tv"
+      ],
+      "files": [
+        "components/ui/video-player/index.ts",
+        "components/ui/video-player/video-player.tsx"
+      ]
+    }
+  ]
+}

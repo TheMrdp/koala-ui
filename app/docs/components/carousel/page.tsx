@@ -1,0 +1,141 @@
+import { ComponentPreview } from "@/components/docs/component-preview"
+import { CodeSnippet } from "@/components/docs/code-snippet"
+import { Installation } from "@/components/docs/installation"
+import { DocHeader, DocSection } from "@/components/docs/doc-page"
+
+import { BasicDemo, ImageCardDemo, ControlledDemo } from "./demos"
+
+export const metadata = {
+  title: "Carousel",
+}
+
+export default function CarouselDocsPage() {
+  return (
+    <>
+      <DocHeader
+        title="Carousel"
+        description="A horizontal slide viewer with clickable indicator dots. The track translates between full-width slides; dots morph to a pill on the active slide, and ←/→ step it while focused. Controlled or uncontrolled. Distinct from Pagination, which is the data-table page toolbar."
+      />
+
+      <ComponentPreview
+        code={`<Carousel label="Product highlights">
+  <CarouselContent>
+    <CarouselSlide>{/* slide one */}</CarouselSlide>
+    <CarouselSlide>{/* slide two */}</CarouselSlide>
+    <CarouselSlide>{/* slide three */}</CarouselSlide>
+  </CarouselContent>
+  <CarouselIndicators />
+</Carousel>`}
+      >
+        <BasicDemo />
+      </ComponentPreview>
+
+      <DocSection title="Installation">
+        <Installation component="carousel" />
+      </DocSection>
+
+      <DocSection title="Usage">
+        <CodeSnippet
+          filename="usage.tsx"
+          className="mt-4"
+          code={`import {
+  Carousel, CarouselContent, CarouselSlide, CarouselIndicators,
+} from "@/components/ui/carousel"
+
+export function Example() {
+  return (
+    <Carousel label="Product highlights">
+      <CarouselContent>
+        <CarouselSlide>{/* … */}</CarouselSlide>
+        <CarouselSlide>{/* … */}</CarouselSlide>
+      </CarouselContent>
+      <CarouselIndicators />
+    </Carousel>
+  )
+}`}
+        />
+      </DocSection>
+
+      <DocSection title="On images / cards">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          For photo galleries, add{" "}
+          <code className="font-mono text-sm">CarouselPrevious</code> /{" "}
+          <code className="font-mono text-sm">CarouselNext</code> — overlay arrows that reveal
+          on hover (and on keyboard focus), and stay hidden at the first/last slide. Pass{" "}
+          <code className="font-mono text-sm">overlay</code> to{" "}
+          <code className="font-mono text-sm">CarouselIndicators</code> to float the dots over
+          the bottom-right of the image; over photos they switch to fixed white so they stay
+          legible on any background.
+        </p>
+        <ComponentPreview
+          code={`<Carousel label="Photo gallery">
+  <CarouselContent>
+    <CarouselSlide><img … /></CarouselSlide>
+    <CarouselSlide><img … /></CarouselSlide>
+  </CarouselContent>
+  <CarouselPrevious />
+  <CarouselNext />
+  <CarouselIndicators overlay />
+</Carousel>`}
+        >
+          <ImageCardDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Controlled">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          Pass <code className="font-mono text-sm">index</code> and{" "}
+          <code className="font-mono text-sm">onIndexChange</code> to drive the active slide
+          from your own state — e.g. to pair the dots with external prev/next buttons or a
+          step counter. Omit them for uncontrolled use with{" "}
+          <code className="font-mono text-sm">defaultIndex</code>.
+        </p>
+        <ComponentPreview
+          code={`const [index, setIndex] = useState(0)
+
+<Carousel index={index} onIndexChange={setIndex}>
+  <CarouselContent>{/* slides */}</CarouselContent>
+  <CarouselIndicators />
+</Carousel>
+<Button onClick={() => setIndex((i) => i - 1)}>Previous</Button>
+<Button onClick={() => setIndex((i) => i + 1)}>Next</Button>`}
+        >
+          <ControlledDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="API reference">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          <code className="font-mono text-sm">Carousel</code> holds the active index and the
+          slide count, sharing them with its parts through context.
+        </p>
+        <ul className="mt-4 flex flex-col gap-1.5 text-sm text-muted-foreground">
+          <li>
+            <code className="font-mono text-foreground">Carousel</code> — root region.{" "}
+            <code className="font-mono">index</code> / <code className="font-mono">defaultIndex</code>{" "}
+            / <code className="font-mono">onIndexChange</code> / <code className="font-mono">label</code>.
+          </li>
+          <li>
+            <code className="font-mono text-foreground">CarouselContent</code> — clips and
+            translates the track; wraps the slides.
+          </li>
+          <li>
+            <code className="font-mono text-foreground">CarouselSlide</code> — one full-width
+            slide.
+          </li>
+          <li>
+            <code className="font-mono text-foreground">CarouselPrevious</code> /{" "}
+            <code className="font-mono text-foreground">CarouselNext</code> — overlay nav arrows;
+            reveal on hover/focus, auto-hide at the first/last slide.
+          </li>
+          <li>
+            <code className="font-mono text-foreground">CarouselIndicators</code> — the dots.
+            Hidden when there is one slide or fewer; <code className="font-mono">overlay</code>{" "}
+            floats them bottom-right over the image, and{" "}
+            <code className="font-mono">dotLabel</code> customizes each dot&apos;s accessible name.
+          </li>
+        </ul>
+      </DocSection>
+    </>
+  )
+}
