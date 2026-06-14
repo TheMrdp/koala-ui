@@ -1,6 +1,8 @@
 # Koala UI
 
-A polished, production-ready **React component library** built with Next.js (App Router), Tailwind CSS v4, Radix UI and `tailwind-variants`. Four themes (light, dark, cream, moonlight), a density system, and a strict house style — every component ships feeling finished.
+> **Never start from 0.** A polished React design system for AI-powered products — ship beautiful MVPs fast.
+
+Production-ready components built on Tailwind CSS v4, Radix UI and `tailwind-variants`, with four themes (light, dark, cream, moonlight), a density system and a strict house style — every component ships feeling finished.
 
 This **public** repo holds the **free tier** (all components, lib helpers and tokens), the **docs site** (the storefront) and the **`koalaui` CLI**. The **paid tier** (marketing sections, page examples, templates) lives in the private companion repo [`koala-ui-pro`](https://github.com/TheMrdp/koala-ui-pro).
 
