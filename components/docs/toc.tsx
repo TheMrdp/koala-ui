@@ -28,6 +28,7 @@ export function TableOfContents() {
 
   React.useEffect(() => {
     let observer: IntersectionObserver | undefined
+    let onScroll: (() => void) | undefined
 
     // Defer to a frame so the new route's headings are painted, and so we don't call
     // setState synchronously inside the effect body.
@@ -44,8 +45,20 @@ export function TableOfContents() {
 
       if (headings.length === 0) return
 
+      const lastId = headings[headings.length - 1].id
+      // The last sections can't reach the activation band before the page runs out of
+      // scroll, so once we hit the bottom the final heading should win.
+      const isAtBottom = () =>
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2
+
       observer = new IntersectionObserver(
         (entries) => {
+          // At the bottom the scroll handler owns the active id; don't let a still-
+          // intersecting earlier heading override it.
+          if (isAtBottom()) {
+            setActiveId(lastId)
+            return
+          }
           const visible = entries
             .filter((e) => e.isIntersecting)
             .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
@@ -55,11 +68,20 @@ export function TableOfContents() {
         { rootMargin: "-80px 0px -70% 0px" },
       )
       headings.forEach((h) => observer!.observe(h))
+
+      // The observer goes quiet when no heading crosses the band (e.g. parked at the
+      // very bottom), so a scroll listener pins the last heading there.
+      onScroll = () => {
+        if (isAtBottom()) setActiveId(lastId)
+      }
+      window.addEventListener("scroll", onScroll, { passive: true })
+      onScroll()
     })
 
     return () => {
       cancelAnimationFrame(raf)
       observer?.disconnect()
+      if (onScroll) window.removeEventListener("scroll", onScroll)
     }
   }, [pathname])
 
