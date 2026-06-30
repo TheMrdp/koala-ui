@@ -33,7 +33,7 @@ const ALL_DEPS = { ...pkg.dependencies, ...pkg.devDependencies }
 
 const IGNORE_PKGS = new Set(["react", "react-dom", "next"])
 const EXTRA_DEPS = { "rich-text-editor": ["@tiptap/pm"] }
-const TITLES = { "otp-input": "OTP Input", kbd: "Kbd", "rich-text-editor": "Rich Text Editor" }
+const TITLES = { "otp-input": "OTP Input", kbd: "Kbd", "rich-text-editor": "Rich Text Editor", "ai-panel": "AI Panel" }
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 function pkgName(spec) {

@@ -16,7 +16,7 @@ import {
 
 // The stepper rail is NumberInput's own concern, so it gets its own recipe (one per
 // component). It mirrors InputSuffixButton's per-size widths and negative margins so the
-// controls sit flush against the right border — the root's overflow-hidden clips them at
+// controls sit flush against the right border: the root's overflow-hidden clips them at
 // the rounded corner.
 const numberStepperVariants = tv({
   slots: {
@@ -137,8 +137,8 @@ export function NumberInput({
     displayed === "" || displayed === "-" || displayed === "." ? null : Number(displayed)
 
   // Mirror of `numeric` (falling back to the floor) kept in a ref so hold-to-repeat reads the
-  // freshest figure even before a controlled parent re-renders. Synced in an effect — never
-  // written during render — and updated optimistically inside `stepBy` for repeat ticks.
+  // freshest figure even before a controlled parent re-renders. Synced in an effect (never
+  // written during render) and updated optimistically inside `stepBy` for repeat ticks.
   const numericRef = React.useRef<number>(numeric ?? min ?? 0)
   React.useEffect(() => {
     numericRef.current = numeric ?? min ?? 0

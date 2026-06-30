@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CodeSnippet } from "./code-snippet"
 
 /**
- * Installation — the "CLI or manually" block every component page carries: a registry
+ * Installation: the "CLI or manually" block every component page carries. A registry
  * one-liner (CLI) and the copy-the-source steps (Manual). Koala ships source in-repo, so
  * Manual is the source of truth; the CLI tab mirrors it. Drop it inside a
  * `<DocSection title="Installation">`.
@@ -14,7 +14,7 @@ const stepClass =
   "flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold tabular-nums text-muted-foreground"
 
 interface InstallationProps {
-  /** Component slug — the folder under `components/ui/` and the CLI `add` target. */
+  /** Component slug: the folder under `components/ui/` and the CLI `add` target. */
   component: string
   /** Dependency install command shown in the Manual tab. */
   dependencies?: string
@@ -63,8 +63,8 @@ export function Installation({
                 <code className="font-mono text-sm">cn</code> from{" "}
                 <code className="font-mono text-sm">lib/utils</code>, the{" "}
                 <code className="font-mono text-sm">tv</code> wrapper from{" "}
-                <code className="font-mono text-sm">lib/tv</code>, and — for multi-part
-                components — <code className="font-mono text-sm">createContext</code> from{" "}
+                <code className="font-mono text-sm">lib/tv</code>, and (for multi-part
+                components) <code className="font-mono text-sm">createContext</code> from{" "}
                 <code className="font-mono text-sm">lib/create-context</code>.
               </p>
             </div>

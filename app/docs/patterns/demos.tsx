@@ -6,7 +6,6 @@ import {
   BellSimple,
   Gear,
   PencilSimple,
-  Play,
   SignOut,
   Trash,
   UserCircle,
@@ -82,7 +81,7 @@ export function DropdownActionsDemo() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-destructive focus:text-destructive">
+        <DropdownMenuItem variant="destructive">
           <SignOut /> Log out
           <DropdownMenuShortcut>⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

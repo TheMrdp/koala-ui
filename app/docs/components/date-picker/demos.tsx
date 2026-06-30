@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/date-picker"
 import { Field, FieldLabel, FieldHint } from "@/components/ui/field"
 
-// Hero — a single date picker with the built-in preset rail.
+// Hero: a single date picker with the built-in preset rail.
 export function DatePickerHeroDemo() {
   const [date, setDate] = React.useState<Date | undefined>(undefined)
   return <DatePicker value={date} onChange={setDate} presets clearable />

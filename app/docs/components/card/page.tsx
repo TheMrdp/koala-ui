@@ -12,6 +12,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 
 export const metadata = { title: "Card" }
 
@@ -178,6 +179,19 @@ export function Example() {
             </Card>
           ))}
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "Why are the parts named exports instead of Card.Header?", a: "Namespaced statics like Card.Header do not survive the React Server Components server to client boundary, so Koala exports each part by name. Import and compose them as `<Card><CardHeader>` and so on." },
+            { q: "How do I put an action in the top-right of the header?", a: "Wrap it in CardAction inside CardHeader. The header is a grid that switches to two columns when it detects a card-action, so the action sits top-right and the title and description stay optically aligned." },
+            { q: "When should I use variant=\"elevated\" over the default?", a: "Use elevated when the card should float above the page: it drops the border and leans on a larger shadow for depth, following the shadows-over-borders rule. Use outline for a flat bordered surface with no shadow." },
+            { q: "Why does my Card render tighter than I expected?", a: "Card defaults to density=\"compact\" (16px padding and gaps, 1rem title), unlike most marketing surfaces. Pass density=\"comfortable\" on the card, or wrap a subtree in DensityProvider, for the more spacious layout." },
+            { q: "How does density reach every part?", a: "The root computes the tv slots once from the resolved density and shares them through React Context, so CardHeader, CardContent, and CardFooter all read the same padding and the title scales with it. There is no prop drilling or child cloning." },
+            { q: "Can I render the card as a different element, like a link?", a: "Yes. Pass asChild on Card to render its styles onto your own element via Radix Slot, with no extra wrapper." },
+          ]}
+        />
       </DocSection>
 
     </>

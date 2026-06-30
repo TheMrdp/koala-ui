@@ -4,7 +4,7 @@ import * as React from "react"
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-/** Hero — a single choice from a small, visible set, each item paired with a label. */
+/** Hero: a single choice from a small, visible set, each item paired with a label. */
 const PLANS = ["Starter", "Pro", "Enterprise"] as const
 
 export function RadioGroupDemo() {
@@ -24,7 +24,7 @@ export function RadioGroupDemo() {
   )
 }
 
-/** Two sizes — sm (matches a dense table's checkbox) and md (the default for forms). */
+/** Two sizes: sm (matches a dense table's checkbox) and md (the default for forms). */
 export function SizesDemo() {
   return (
     <div className="flex items-start gap-12">
@@ -41,7 +41,7 @@ export function SizesDemo() {
   )
 }
 
-/** States — a disabled item is skipped by keyboard navigation; the whole group can be disabled. */
+/** States: a disabled item is skipped by keyboard navigation; the whole group can be disabled. */
 export function StatesDemo() {
   return (
     <div className="flex items-start gap-12">
@@ -73,7 +73,7 @@ export function StatesDemo() {
   )
 }
 
-/** Each option carries supporting text — the dot optically aligns to the first line of the label. */
+/** Each option carries supporting text: the dot optically aligns to the first line of the label. */
 const SHIPPING = [
   { value: "standard", title: "Standard", hint: "4–6 business days. Free." },
   { value: "express", title: "Express", hint: "2–3 business days. $9." },
@@ -87,7 +87,7 @@ export function WithDescriptionDemo() {
         <label
           key={value}
           htmlFor={`ship-${value}`}
-          className="flex cursor-pointer items-start gap-3 rounded-lg border border-border p-3.5 transition-colors duration-fast ease-out has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-accent"
+          className="flex cursor-pointer items-start gap-3 rounded-lg border border-border p-3.5 transition-colors duration-fast ease-out has-[[data-state=checked]]:border-brand has-[[data-state=checked]]:bg-accent"
         >
           <RadioGroupItem id={`ship-${value}`} value={value} className="mt-0.5" />
           <span className="flex flex-col gap-0.5">

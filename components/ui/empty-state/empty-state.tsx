@@ -8,14 +8,14 @@ import { useDensity } from "@/lib/density"
 import { tv, type VariantProps } from "@/lib/tv"
 
 /**
- * EmptyState — the zero-data / no-results placeholder. Multi-part like Card: one `tv`
+ * EmptyState: the zero-data / no-results placeholder. Multi-part like Card: one `tv`
  * recipe with `slots`, shared variant + density flowing to every part through React
  * Context (never prop-drilled or cloned). Compose as
  * `<EmptyState><EmptyStateMedia><Icon /></EmptyStateMedia><EmptyStateTitle>…`.
  *
  * `variant` tints the media surface from a single semantic token via opacity (the same
  * soft pattern as Badge), so an error/search/success empty state re-themes across all
- * four themes. `density` retunes spacing and the media/title scale only — never color.
+ * three themes. `density` retunes spacing and the media/title scale only, never color.
  */
 export const emptyStateVariants = tv({
   slots: {
@@ -29,12 +29,12 @@ export const emptyStateVariants = tv({
     // max-width keeps the supporting copy to a readable measure instead of one long line.
     description: "text-sm text-pretty text-muted-foreground",
     // Author actions secondary-first so the primary lands on the right (DS convention,
-    // matching dialog footers). DOM order = visual = tab order — no CSS reversal, which
+    // matching dialog footers). DOM order = visual = tab order, no CSS reversal, which
     // would focus the primary last out of sequence.
     actions: "flex flex-wrap items-center justify-center",
   },
   variants: {
-    // Media tint — soft variants derive a background + icon color from one status token
+    // Media tint: soft variants derive a background + icon color from one status token
     // via opacity, mirroring Badge so they stay legible in every theme.
     variant: {
       default: { media: "border-border bg-muted text-muted-foreground" },
@@ -86,7 +86,7 @@ export interface EmptyStateProps
 
 /**
  * Parts are exported individually (not as `EmptyState.Media` dot-notation) because
- * namespaced statics don't survive the RSC server→client boundary — only named exports
+ * namespaced statics don't survive the RSC server→client boundary; only named exports
  * do. See docs/ARCHITECTURE.md §2.
  */
 export function EmptyState({

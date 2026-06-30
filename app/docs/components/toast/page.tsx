@@ -2,6 +2,7 @@
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 import {
   ToastDemo,
   ToastVariantsDemo,
@@ -146,6 +147,19 @@ toast({ title: "Preview ready", variant: "info" })`}
         >
           <ToastPersistDemo />
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "Should I call toast(...) or use the useToast() hook?", a: "Both share the same API. The imperative `toast(...)` works anywhere, including Server Actions, event handlers, and code outside React, while `useToast()` returns the same `toast` plus a `dismiss` function for use inside components. Reach for the hook only when you want the matching `dismiss` helper at hand." },
+            { q: "Why do my toasts never appear?", a: "You almost certainly forgot to render `<Toaster />` once in your root layout. It draws the fixed viewport that every toast portals into, so without it the calls succeed silently but nothing shows." },
+            { q: "How do I make a toast persist until dismissed?", a: "Pass `duration={Infinity}` in the options object. The default is 5000 ms; Infinity keeps the toast up until the user clicks its Close button or your code calls `dismiss(id)` with the id returned from `toast(...)`." },
+            { q: "What is the difference between toast.error and a destructive variant?", a: "They are the same thing. `toast.error(...)` is a shortcut that sets `variant: \"destructive\"`, which is the role name used across the design system for danger styling. The shorthands `toast.success`, `toast.warning`, and `toast.info` map to their matching variants." },
+            { q: "How do I add an Undo button to a toast?", a: "Pass an `action` object with a `label` and an `onClick`. It renders below the description as a Radix Toast Action with the label as its `altText`, so screen readers announce it as an actionable control." },
+            { q: "Why do queued toasts collapse into a fan?", a: "Stacking is handled by the Toaster: older toasts compress behind the newest at decreasing scale and offset so the corner stays calm. Hover or focus the stack to expand all of them to full size; only three show in the collapsed fan and the rest wait until older ones dismiss." },
+          ]}
+        />
       </DocSection>
 
     </>

@@ -3,7 +3,7 @@
 import * as React from "react"
 
 /**
- * Accent ("color mode") — Koala's second theming axis, orthogonal to light/dark.
+ * Accent ("color mode"): Koala's second theming axis, orthogonal to light/dark.
  * Each name maps to a `[data-accent="…"]` preset in globals.css that sets a single
  * `--brand` token; every component reads the accent through that token, so switching
  * here recolors the entire system. Keep this list in sync with the presets in
@@ -24,7 +24,7 @@ export type Accent = (typeof ACCENTS)[number]
 /** Matches the `:root` default and `[data-accent="orange"]` preset (#F84416). */
 export const DEFAULT_ACCENT: Accent = "orange"
 
-/** Shared with the no-FOUC inline script in app/layout.tsx — keep both in sync. */
+/** Shared with the no-FOUC inline script in app/layout.tsx; keep both in sync. */
 export const ACCENT_STORAGE_KEY = "koala-accent"
 
 interface AccentContextValue {
@@ -53,7 +53,7 @@ export function AccentProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.setItem(ACCENT_STORAGE_KEY, next)
     } catch {
-      // Private mode / disabled storage — the choice just won't persist across reloads.
+      // Private mode / disabled storage: the choice just won't persist across reloads.
     }
   }, [])
 

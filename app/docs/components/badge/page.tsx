@@ -1,9 +1,10 @@
 ﻿import {
-  ArrowsClockwise,
   Check,
+  CheckCircle,
+  CircleNotch,
   Clock,
+  Confetti,
   GitBranch,
-  GitMerge,
   GitPullRequest,
   Lightning,
   Lock,
@@ -20,6 +21,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 import { DismissibleDemo } from "./dismissible-demo"
 
 export const metadata = {
@@ -90,18 +92,22 @@ export function Example() {
           (<code className="font-mono text-sm">--success</code>,{" "}
           <code className="font-mono text-sm">--warning</code>,{" "}
           <code className="font-mono text-sm">--info</code>), so they stay legible across
-          all four themes.
+          all three themes.
         </p>
         <ComponentPreview
-          code={`<Badge variant="success"><GitMerge /> Merged</Badge>
+          code={`<Badge variant="success"><CheckCircle weight="fill" /> Approved</Badge>
+<Badge variant="success"><Confetti /> Merged</Badge>
 <Badge variant="info"><GitPullRequest /> In review</Badge>
-<Badge variant="warning"><Clock /> Pending</Badge>
+<Badge variant="warning"><Clock weight="fill" /> Pending</Badge>
 <Badge variant="destructive"><X /> Failed</Badge>
-<Badge variant="secondary"><ArrowsClockwise /> Running</Badge>
+<Badge variant="secondary"><CircleNotch className="animate-spin motion-reduce:animate-none" /> Running</Badge>
 <Badge variant="default"><Minus /> Skipped</Badge>`}
         >
           <Badge variant="success">
-            <GitMerge /> Merged
+            <CheckCircle weight="fill" /> Approved
+          </Badge>
+          <Badge variant="success">
+            <Confetti /> Merged
           </Badge>
           <Badge variant="info">
             <GitPullRequest /> In review
@@ -113,7 +119,7 @@ export function Example() {
             <X /> Failed
           </Badge>
           <Badge variant="secondary">
-            <ArrowsClockwise /> Running
+            <CircleNotch className="animate-spin motion-reduce:animate-none" /> Running
           </Badge>
           <Badge variant="default">
             <Minus /> Skipped
@@ -124,7 +130,7 @@ export function Example() {
       <DocSection title="Categorical">
         <p className="mt-4 text-pretty text-muted-foreground">
           Four extra hues for labeling categories, feature flags, and tags. All follow the
-          same soft-tint pattern and re-theme across all four themes.
+          same soft-tint pattern and re-theme across all three themes.
         </p>
         <ComponentPreview
           code={`<Badge variant="purple"><Lightning /> Beta</Badge>
@@ -292,6 +298,32 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            {
+              q: "When should I use a Badge instead of a Button?",
+              a: "A Badge labels: it states status, a count, or a category and is not meant to be clicked. A Button performs an action. If a user is expected to interact, reach for Button (or a chip with an explicit control). The exception is asChild, which lets the badge styling wrap a link.",
+            },
+            {
+              q: "What's the difference between the dot and the soft status variants?",
+              a: "Both read from the same semantic token. The soft variant tints a background plus text; adding the dot prop strips the background so only a small colored dot carries the state, ideal for presence indicators and dense lists where a full tinted pill would be too heavy.",
+            },
+            {
+              q: "How do I make a dismissible tag?",
+              a: "Pass an onRemove handler to render a trailing dismiss button, and always give a descriptive removeLabel (e.g. `Remove Design`) so screen readers announce what is being removed. pill pairs well with removable tags.",
+            },
+            {
+              q: "Can I put a Badge inside a link or another element?",
+              a: "Yes: set asChild and pass a single child element (an <a>, for instance). The badge renders its styles onto that element via Radix Slot instead of emitting its own <span>, so you keep valid markup.",
+            },
+            {
+              q: "Will the colors adapt to dark and the other themes?",
+              a: "Yes. Every variant, including the categorical hues, derives from semantic tokens, so badges re-theme automatically across light, dark, cream, and moonlight. Avoid hard-coding a palette color if you want that behavior.",
+            },
+          ]}
+        />
+      </DocSection>
     </>
   )
 }

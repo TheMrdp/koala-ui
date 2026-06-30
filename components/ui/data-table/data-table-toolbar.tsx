@@ -16,9 +16,9 @@ import {
 import { Kbd } from "@/components/ui/kbd"
 
 /**
- * DataTableToolbar — the control rail that sits above a DataTable: search on the left, view
+ * DataTableToolbar: the control rail that sits above a DataTable: search on the left, view
  * actions on the right (filter, sort, export, view options, a primary action). Pure layout
- * built from Koala natives — Input for the search, Button for every action — so it inherits
+ * built from Koala natives (Input for the search, Button for every action) so it inherits
  * the same focus rings, density, and press feedback as the rest of the system.
  *
  * It's the seam the multi-view DataTable will grow from: today it frames the table; next it
@@ -45,8 +45,8 @@ export function DataTableToolbar({ className, ...props }: DataTableToolbarProps)
 
 export type DataTableToolbarSectionProps = React.ComponentProps<"div">
 
-/** A cluster of controls. Place two inside the toolbar — left (search + filters) and right
- *  (actions) — and the root pushes them to opposite edges. */
+/** A cluster of controls. Place two inside the toolbar (left for search + filters and right
+ *  for actions) and the root pushes them to opposite edges. */
 export function DataTableToolbarSection({ className, ...props }: DataTableToolbarSectionProps) {
   return (
     <div data-slot="data-table-toolbar-section" className={sectionSlot({ className })} {...props} />
@@ -54,7 +54,7 @@ export function DataTableToolbarSection({ className, ...props }: DataTableToolba
 }
 
 export interface DataTableSearchProps extends InputFieldProps {
-  /** Control size — forwarded to the underlying Input. @default "md" */
+  /** Control size, forwarded to the underlying Input. @default "md" */
   size?: InputRootProps["size"]
   /** Classes for the search box (the InputRoot), e.g. to set its width. */
   rootClassName?: string
@@ -66,7 +66,7 @@ export interface DataTableSearchProps extends InputFieldProps {
 }
 
 /**
- * The search box preset — a magnifier-prefixed Input with a trailing shortcut hint. It's a thin
+ * The search box preset: a magnifier-prefixed Input with a trailing shortcut hint. It's a thin
  * arrangement of Input parts (no new styling) so it tracks the Input component exactly; pass any
  * `<input>` prop straight through, and grab the `ref` to focus it from a ⌘K handler.
  */

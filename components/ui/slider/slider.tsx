@@ -7,10 +7,10 @@ import { cn } from "@/lib/utils"
 import { tv, type VariantProps } from "@/lib/tv"
 
 /**
- * Slider — a Radix Slider styled with Koala tokens. Conceptually single-part (track, range,
+ * Slider: a Radix Slider styled with Koala tokens. Conceptually single-part (track, range,
  * and thumb scale together), so one `tv` recipe with `slots`. Thumbs are auto-rendered from
- * the value array, so a single-value slider and a two-thumb range share the same component —
- * pass `defaultValue={[20, 80]}` to get a range.
+ * the value array, so a single-value slider and a two-thumb range share the same component.
+ * Pass `defaultValue={[20, 80]}` to get a range.
  *
  * `"use client"` because Radix Slider is interactive (drag state + context) and the optional
  * value tooltip mirrors the live value. Both orientations are styled via `data-orientation`,
@@ -26,7 +26,7 @@ export const sliderVariants = tv({
       "data-[orientation=vertical]:h-48 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
     ],
-    // The unfilled rail — `secondary` reads as a recessed groove on every theme.
+    // The unfilled rail: `secondary` reads as a recessed groove on every theme.
     track: [
       "relative grow overflow-hidden rounded-full bg-secondary",
       "data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full",
@@ -42,7 +42,7 @@ export const sliderVariants = tv({
       "cursor-grab active:cursor-grabbing",
       // Specific transition (never `transition: all`, #14); tactile press scale (#12).
       "transition-[transform,box-shadow,border-color] duration-fast ease-out active:scale-[0.96]",
-      // Focus ring is always the accent — one universal indicator regardless of fill color
+      // Focus ring is always the accent: one universal indicator regardless of fill color
       // (Switch/Checkbox do the same).
       "outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background",
       "data-[disabled]:cursor-not-allowed",
@@ -50,7 +50,7 @@ export const sliderVariants = tv({
       // thumb to a comfortable hit/drag target without growing the visual.
       "before:absolute before:left-1/2 before:top-1/2 before:size-10 before:-translate-x-1/2 before:-translate-y-1/2 before:content-['']",
     ],
-    // Value bubble — hidden until the thumb is hovered, focused, or dragged.
+    // Value bubble: hidden until the thumb is hovered, focused, or dragged.
     tooltip: [
       "pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2",
       "rounded-md px-2 py-1 text-xs font-medium tabular-nums shadow-sm",
@@ -77,8 +77,9 @@ export const sliderVariants = tv({
       },
     },
     // Fill color: the range, the thumb's border, and the tooltip background move together so
-    // each variant reads as one accent. `default` follows the DS form-control language
-    // (primary, like Switch/Checkbox on-state); the rest tint for domain meaning.
+    // each variant reads as one accent. `default` stays on the neutral `primary` so a plain
+    // slider reads as chrome; pick the `brand` variant to match the accent-filled toggles, or
+    // the rest to tint for domain meaning.
     variant: {
       default: {
         range: "bg-primary",
@@ -108,7 +109,7 @@ export const sliderVariants = tv({
     },
     // The corner language: `round` is the pill default; `square` squares the rail and gives
     // the thumb a fader-cap look (reads especially well on vertical EQ-style stacks). The
-    // radii stay concentric — `radius-sm` rail with a slightly tighter thumb.
+    // radii stay concentric: `radius-sm` rail with a slightly tighter thumb.
     shape: {
       round: {},
       square: {
@@ -160,7 +161,7 @@ export function Slider({
   )
   const current = value ?? internal
 
-  // setState lives in a named handler (not an effect) — see the repo's strict react-hooks lint.
+  // setState lives in a named handler (not an effect); see the repo's strict react-hooks lint.
   function handleValueChange(next: number[]) {
     if (!isControlled) setInternal(next)
     onValueChange?.(next)

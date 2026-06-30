@@ -8,7 +8,7 @@ import { useDensity } from "@/lib/density"
 import { tv, type VariantProps } from "@/lib/tv"
 
 /**
- * Card — the reference multi-part component. Pattern: one `tv` recipe with `slots`,
+ * Card: the reference multi-part component. Pattern: one `tv` recipe with `slots`,
  * shared variants flowing to every part through React Context (never prop-drilled or
  * cloned). See docs/ARCHITECTURE.md §2.
  */
@@ -56,7 +56,7 @@ export interface CardProps
 
 /**
  * Parts are exported individually (not as `Card.Header` dot-notation) because
- * namespaced statics don't survive the RSC server→client boundary — only named
+ * namespaced statics don't survive the RSC server→client boundary; only named
  * exports do. Compose as `<Card><CardHeader>…`.
  */
 export function Card({

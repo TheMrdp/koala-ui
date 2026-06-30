@@ -7,23 +7,23 @@ import { tv, type VariantProps } from "@/lib/tv"
 import { useDensity } from "@/lib/density"
 
 /**
- * Popover — the general-purpose floating surface over Radix Popover (focus management,
+ * Popover: the general-purpose floating surface over Radix Popover (focus management,
  * dismiss, collision-aware positioning). Where DropdownMenu is for action menus and
  * Tooltip for hover hints, Popover hosts arbitrary content: forms, pickers, info cards.
  *
  * Named parts, not dot-notation (RSC-safe). The content shell matches the rest of the DS
- * — `bg-popover`, soft border, layered shadow, fade + zoom + slide enter and a softer exit
- * — and exposes `--surface` so nested Inputs/Selects blend with the panel, not the page.
+ * (`bg-popover`, soft border, layered shadow, fade + zoom + slide enter and a softer exit)
+ * and exposes `--surface` so nested Inputs/Selects blend with the panel, not the page.
  * `density` tunes the content padding (and nothing else). See docs/ARCHITECTURE.md.
  */
 
 export const popoverVariants = tv({
   slots: {
     content: [
-      "z-50 w-72 rounded-xl border border-border-soft bg-popover text-popover-foreground shadow-lg outline-none",
+      "z-50 w-72 rounded-lg border border-border-soft bg-popover text-popover-foreground shadow-lg outline-none",
       // Nested controls read this so they paint the panel surface, not a --background block.
       "[--surface:var(--popover)]",
-      // Enter: fade + zoom + directional slide. Exit: fade + zoom only, and snappier — softer
+      // Enter: fade + zoom + directional slide. Exit: fade + zoom only, and snappier, softer
       // than the enter (polish).
       "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
       "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
@@ -34,7 +34,7 @@ export const popoverVariants = tv({
     // The arrow is filled with the panel color; the soft border doesn't trace it (kept simple,
     // matching how the rest of the DS treats popover arrows).
     arrow: "fill-popover",
-    title: "text-sm font-semibold leading-none tracking-tight text-foreground",
+    title: "text-base font-semibold leading-none tracking-tight text-foreground",
     description: "text-sm text-muted-foreground",
     close: [
       "absolute top-3 right-3 inline-flex size-7 items-center justify-center rounded-md",

@@ -35,7 +35,7 @@ React design-system patterns - taking what scales, dropping what's clever-but-fr
 
 ### System structure
 1. **Theming = CSS variables + semantic tokens + a class toggle**, never hardcoded in
-   components (`.dark`, `.cream`, `.moonlight`).
+   components (`.dark`, `.moonlight`).
 2. **Behavior/a11y belongs in a primitive layer**, not bespoke per component. We use Radix.
 3. **`tailwind-variants` (`tv`) with `slots`** is the right variant engine for a DS, because a
    DS is *mostly multi-part components* - one recipe styles every part. Wrap `tv` with our own

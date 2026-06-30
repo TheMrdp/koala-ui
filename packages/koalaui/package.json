@@ -1,15 +1,17 @@
 {
   "name": "koalaui",
   "version": "0.1.0",
-  "description": "Add Koala UI components to your React project — copies the source in, you own the code.",
+  "description": "Add Koala UI components to your React project: copies the source in, you own the code.",
   "type": "module",
   "bin": {
     "koalaui": "bin.mjs"
   },
   "files": [
     "bin.mjs",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
+  "author": "Koala UI (https://koalaui.com)",
   "keywords": [
     "koala-ui",
     "react",
@@ -18,8 +20,13 @@
     "radix",
     "design-system"
   ],
-  "homepage": "https://github.com/TheMrdp/koala-ui-react",
-  "license": "UNLICENSED",
+  "homepage": "https://koalaui.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheMrdp/koala-ui.git"
+  },
+  "bugs": "https://github.com/TheMrdp/koala-ui/issues",
+  "license": "MIT",
   "engines": {
     "node": ">=18"
   }

@@ -1,7 +1,7 @@
 /**
  * Country reference data for `PhoneInput`'s country picker.
  *
- * `iso2` is the ISO 3166-1 alpha-2 code — it matches both the flag module names in
+ * `iso2` is the ISO 3166-1 alpha-2 code: it matches both the flag module names in
  * `country-flag-icons/react/3x2/<ISO2>` and the keys exported from that package's index,
  * so the picker can resolve a flag from the code with no extra mapping.
  *
@@ -18,7 +18,7 @@ export interface Country {
   dial: string
 }
 
-// Deliberately unsorted source order — sorted once below so the array consumers import is
+// Deliberately unsorted source order, sorted once below so the array consumers import is
 // already alphabetical (the picker renders it verbatim).
 const RAW: Country[] = [
   { iso2: "AF", name: "Afghanistan", dial: "93" },

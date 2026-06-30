@@ -5,6 +5,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 
 export const metadata = {
   title: "Label",
@@ -15,7 +16,7 @@ export default function LabelDocsPage() {
     <>
       <DocHeader
         title="Label"
-        description="The one label + helper-text recipe behind every form control in Koala. Input, Field, and OTP Input all compose Label and Hint, so a field reads identically everywhere — and inside a Field they auto-wire their own ids, htmlFor, and aria-describedby."
+        description="The one label + helper-text recipe behind every form control in Koala. Input, Field, and OTP Input all compose Label and Hint, so a field reads identically everywhere, and inside a Field they auto-wire their own ids, htmlFor, and aria-describedby."
       />
 
       <ComponentPreview
@@ -64,7 +65,7 @@ export function Example() {
         <p className="mt-4 text-pretty text-muted-foreground">
           Set <code className="font-mono text-sm">required</code> to append a destructive
           asterisk. It carries a visually-hidden <code className="font-mono text-sm">(required)</code>{" "}
-          so screen readers announce it — the glyph itself is{" "}
+          so screen readers announce it. The glyph itself is{" "}
           <code className="font-mono text-sm">aria-hidden</code>.
         </p>
         <ComponentPreview
@@ -135,6 +136,19 @@ export function Example() {
             <FieldHint>We&apos;ll send a confirmation here.</FieldHint>
           </Field>
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "What is the difference between Label and Hint?", a: "`Label` is the form label above a control; `Hint` is the helper text below it. They are the single recipe behind every Koala form control, so a field reads identically everywhere." },
+            { q: "How do I wire a standalone Label to its input?", a: "Pass `htmlFor` on the `Label` pointing at the control's `id` so clicking the label focuses it. Inside a `Field` you can skip this: the label adopts the field's `id` from context automatically." },
+            { q: "How do I show a required field?", a: "Set `required` on `Label` to append a destructive asterisk. The glyph is `aria-hidden`, and a visually hidden `(required)` is added so screen readers still announce it." },
+            { q: "How do I turn a Hint into an error message?", a: "Set `hasError` on `Hint` and it switches to the destructive tone. The color transitions, so the error fades in rather than snapping, and the same element doubles as both helper and error text." },
+            { q: "What do I gain by wrapping Label and Hint in a Field?", a: "Inside a `Field` they auto-wire: the label adopts the control's `htmlFor` and `required`, and the hint registers itself so the control points `aria-describedby` at it, with no manual ids. `FieldLabel` and `FieldHint` are these same two primitives re-exported." },
+            { q: "How do I dim a label for a disabled control?", a: "Pass `disabled` to `Label`, or set `disabled` on the surrounding `Field` and the label infers it from context. The opacity transitions so it dims smoothly." },
+          ]}
+        />
       </DocSection>
 
     </>

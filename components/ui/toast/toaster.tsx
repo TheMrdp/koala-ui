@@ -8,28 +8,28 @@ import { useToastStore } from "./use-toast"
 import { ToastItem } from "./toast"
 
 /**
- * Toaster — renders the fixed toast viewport and orchestrates the stacking interaction.
+ * Toaster: renders the fixed toast viewport and orchestrates the stacking interaction.
  *
  * Stacking model (newest toast is index 0, rendered at the front/bottom):
  *
  *   Collapsed (default, ≥2 toasts):
- *     toast[0]  translateY(0)      scale(1)     — fully visible
- *     toast[1]  translateY(-16px)  scale(0.96)  — peeks behind
- *     toast[2]  translateY(-32px)  scale(0.92)  — barely peeks
+ *     toast[0]  translateY(0)      scale(1)     : fully visible
+ *     toast[1]  translateY(-16px)  scale(0.96)  : peeks behind
+ *     toast[2]  translateY(-32px)  scale(0.92)  : barely peeks
  *     toast[3+] hidden (opacity 0, pointer-events none)
  *
  *   Expanded (hover/focus):
  *     toast[0]  translateY(0)
  *     toast[1]  translateY(-(h₀ + gap))
  *     toast[2]  translateY(-(h₀ + h₁ + 2·gap))
- *     …all toasts visible at full size with 12px gaps
+ *     all toasts visible at full size with 12px gaps
  *
  * Transitions: expand uses ease-out-expo (fast start, settles smoothly).
  *              collapse uses ease-in-out (snappy return).
  *              All transition props live in inline styles so they are never
  *              overridden by a Tailwind utility class.
  *
- * Place <Toaster /> once in your root layout — outside any scroll container.
+ * Place <Toaster /> once in your root layout, outside any scroll container.
  */
 
 const MAX_COLLAPSED_VISIBLE = 3
@@ -39,9 +39,9 @@ const EXPANDED_GAP = 16      // px between toasts in expanded mode
 // Used before ResizeObserver fires. Matches a title-only toast (p-4 top/bottom + ~20px line).
 const FALLBACK_H = 56
 
-// Easing curves — principle #4 (interruptible CSS transitions, never keyframes here).
+// Easing curves: principle #4 (interruptible CSS transitions, never keyframes here).
 // Expand is fast (220ms) so the stack opens immediately on hover, not after a noticeable delay.
-// Collapse is slightly slower (200ms) — exits softer than enters (principle #6).
+// Collapse is slightly slower (200ms): exits softer than enters (principle #6).
 const EXPAND_TRANSITION   = "transform 220ms cubic-bezier(0.16, 1, 0.3, 1), opacity 180ms ease-out"
 const COLLAPSE_TRANSITION = "transform 200ms cubic-bezier(0.4, 0, 0.6, 1), opacity 150ms ease-out"
 const SNAP_TRANSITION     = "opacity 100ms ease-out, transform 100ms ease-out"

@@ -1,12 +1,12 @@
 /**
- * Emoji dataset for EmojiPicker — plain data, no React, no icons (the nav maps category
+ * Emoji dataset for EmojiPicker: plain data, no React, no icons (the nav maps category
  * ids to Phosphor icons in `emoji-picker.tsx`, so this file stays a swappable data source).
  *
  * Each datum carries the glyph, a human `name` (shown in the preview and used as the
  * button's aria-label) and optional `keywords` (synonyms/shortcodes that broaden search
  * beyond the name). Categories follow the Unicode ordering used by every native picker.
  *
- * This is a curated, representative set — enough to feel complete and to exercise search,
+ * This is a curated, representative set, enough to feel complete and to exercise search,
  * sections, and pagination. Because the picker takes a `data` prop, a consumer can drop in
  * a fuller export (e.g. the full Unicode set) without touching the component.
  */
@@ -14,14 +14,14 @@
 export interface EmojiDatum {
   /** The rendered glyph. */
   char: string
-  /** Human name — preview label, button aria-label, and primary search target. */
+  /** Human name: preview label, button aria-label, and primary search target. */
   name: string
   /** Extra search terms beyond the name (synonyms, shortcodes). */
   keywords?: string[]
 }
 
 export interface EmojiCategory {
-  /** Stable id — also the scroll anchor and nav key. */
+  /** Stable id: also the scroll anchor and nav key. */
   id: string
   /** Section header + nav tooltip label. */
   label: string
@@ -501,7 +501,7 @@ export const emojiCategories: EmojiCategory[] = [
 ]
 
 /**
- * Default "frequently used" presets — the quick-reaction row pinned above the categories.
+ * Default "frequently used" presets: the quick-reaction row pinned above the categories.
  * Override per call site via the `presets` prop.
  */
 export const defaultEmojiPresets: string[] = [

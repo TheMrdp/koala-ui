@@ -29,8 +29,8 @@ import { CircleFlag } from "@/components/docs/circle-flag"
 
 /**
  * A registration form inside a Dialog, composed with Field. Demonstrates two things:
- * the Field auto-wiring (id / htmlFor / aria-describedby) works through Radix's Portal —
- * React context flows by component tree, not DOM tree — and `<Field hasError>` cascades to
+ * the Field auto-wiring (id / htmlFor / aria-describedby) works through Radix's Portal
+ * (React context flows by component tree, not DOM tree), and `<Field hasError>` cascades to
  * the control + hint with nothing wired by hand.
  */
 export function FieldDialogDemo() {

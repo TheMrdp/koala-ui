@@ -3,6 +3,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 
 export const metadata = {
   title: "Skeleton",
@@ -73,8 +74,8 @@ export function Example() {
       <DocSection title="Multi-line text">
         <p className="mt-4 text-pretty text-muted-foreground">
           Pass <code className="font-mono text-sm">lines</code> with{" "}
-          <code className="font-mono text-sm">variant="text"</code> to render a paragraph-shaped
-          block — the last line wraps short, the way real running text does.
+          <code className="font-mono text-sm">variant=&quot;text&quot;</code> to render a paragraph-shaped
+          block. The last line wraps short, the way real running text does.
         </p>
         <ComponentPreview
           previewClassName="justify-start"
@@ -105,8 +106,8 @@ export function Example() {
 
       <DocSection title="Composition">
         <p className="mt-4 text-pretty text-muted-foreground">
-          Skeletons are layout primitives — compose them to trace the real content. Wrap the
-          loading region in <code className="font-mono text-sm">aria-busy="true"</code> so the
+          Skeletons are layout primitives; compose them to trace the real content. Wrap the
+          loading region in <code className="font-mono text-sm">aria-busy=&quot;true&quot;</code> so the
           placeholders (each <code className="font-mono text-sm">aria-hidden</code>) stay silent
           to screen readers while one status is announced for the whole region.
         </p>
@@ -139,6 +140,18 @@ export function Example() {
             </div>
           </div>
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "When should I reach for a Skeleton instead of a spinner?", a: "Use a Skeleton when you know the shape of the content that is loading, like a card or a list row, so the layout stays stable and there is no jump when the data arrives. A spinner is better for indeterminate, full-page waits where the eventual layout is unknown." },
+            { q: "What is the difference between the rectangle, circle, and text variants?", a: "`rectangle` is the default block (pair it with width/height via `className`); `circle` is aspect-square so a single `size-*` reads as a round avatar placeholder; and `text` is `h-[1lh]` so it matches the surrounding line-height exactly." },
+            { q: "How do I render a multi-line paragraph placeholder?", a: "Pass `lines` together with `variant=\"text\"` to stack that many lines, with the last one shortened the way real running text wraps. The prop is ignored for other variants and for `lines <= 1`." },
+            { q: "Which animation should I pick, and does it respect reduced motion?", a: "`pulse` (the default) breathes opacity, `shimmer` sweeps a highlight via the `--animate-shimmer` token, and `none` holds static. All three stop automatically under `prefers-reduced-motion`." },
+            { q: "How do I keep skeletons quiet for screen readers?", a: "Every Skeleton element is already `aria-hidden`, so wrap the loading region in `aria-busy=\"true\"` and announce one status for the whole region rather than letting each placeholder shout." },
+          ]}
+        />
       </DocSection>
 
     </>

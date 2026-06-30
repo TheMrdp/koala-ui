@@ -14,7 +14,7 @@ export const dropdownMenuVariants = tv({
     content: [
       "z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover",
       "text-popover-foreground shadow-lg",
-      // Enter & exit: fade + directional slide only — no scale.
+      // Enter & exit: fade + directional slide only, no scale.
       "data-[state=open]:animate-in data-[state=open]:fade-in-0",
       "data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
       "data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2",
@@ -24,35 +24,33 @@ export const dropdownMenuVariants = tv({
       "duration-base ease-out",
     ],
     item: [
-      "relative flex cursor-pointer select-none items-center gap-2 text-sm outline-none",
+      "relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium outline-none",
       "transition-colors duration-fast ease-out",
       "focus:bg-accent focus:text-accent-foreground",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-      "[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      "[&>svg]:text-muted-foreground [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
     ],
     checkboxItem: [
-      "relative flex cursor-pointer select-none items-center gap-2 text-sm outline-none",
-      "pl-8",
+      "relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium outline-none",
       "transition-colors duration-fast ease-out",
       "focus:bg-accent focus:text-accent-foreground",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-      "[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      "[&>svg]:text-muted-foreground [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
     ],
     radioItem: [
-      "relative flex cursor-pointer select-none items-center gap-2 text-sm outline-none",
-      "pl-8",
+      "relative flex cursor-pointer select-none items-center gap-2 text-sm font-medium outline-none",
       "transition-colors duration-fast ease-out",
       "focus:bg-accent focus:text-accent-foreground",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-      "[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      "[&>svg]:text-muted-foreground [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
     ],
     // `group` lets the caret nudge on sub-menu open.
     subTrigger: [
-      "group flex cursor-pointer select-none items-center gap-2 text-sm outline-none",
+      "group flex cursor-pointer select-none items-center gap-2 text-sm font-medium outline-none",
       "transition-colors duration-fast ease-out",
       "focus:bg-accent focus:text-accent-foreground",
       "data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
-      "[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      "[&>svg]:text-muted-foreground [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
     ],
     subContent: [
       "z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover",
@@ -63,7 +61,7 @@ export const dropdownMenuVariants = tv({
       "data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2",
       "duration-base ease-out",
     ],
-    itemIndicator: "absolute left-2 flex size-4 items-center justify-center",
+    itemIndicator: "absolute right-2 flex size-4 items-center justify-center",
     label: "font-medium text-muted-foreground",
     separator: "-mx-1 h-px bg-border",
     subCaret: "ml-auto size-4 text-muted-foreground",
@@ -74,8 +72,8 @@ export const dropdownMenuVariants = tv({
         // content rounded-md (~10px) − viewport p-1.5 (6px) ≈ 4px → rounded-sm keeps items concentric
         content: "p-1.5",
         item: "px-3 py-2 rounded-sm",
-        checkboxItem: "pr-3 py-2 rounded-sm",
-        radioItem: "pr-3 py-2 rounded-sm",
+        checkboxItem: "px-3 pr-8 py-2 rounded-sm",
+        radioItem: "px-3 pr-8 py-2 rounded-sm",
         subTrigger: "px-3 py-2 rounded-sm",
         subContent: "p-1.5",
         label: "px-3 py-1.5 text-xs",
@@ -85,16 +83,26 @@ export const dropdownMenuVariants = tv({
         // content rounded-md (~10px) − viewport p-1 (4px) ≈ 6px → rounded-sm keeps items concentric
         content: "p-1",
         item: "px-2 py-1.5 rounded-sm",
-        checkboxItem: "pr-2 py-1.5 rounded-sm",
-        radioItem: "pr-2 py-1.5 rounded-sm",
+        checkboxItem: "px-2 pr-7 py-1.5 rounded-sm",
+        radioItem: "px-2 pr-7 py-1.5 rounded-sm",
         subTrigger: "px-2 py-1.5 rounded-sm",
         subContent: "p-1",
         label: "px-2 py-1 text-xs",
         separator: "my-1",
       },
     },
+    // Destructive (delete / log out) rows. The leading icon is colored to match the label,
+    // not left muted, so a red row reads as one red unit; the hover background tints red to
+    // match. `[&>svg]` overrides the base muted leading-icon rule via tailwind-merge while
+    // never touching the check indicator (it isn't a direct svg child).
+    variant: {
+      default: {},
+      destructive: {
+        item: "text-destructive focus:bg-destructive/10 focus:text-destructive [&>svg]:text-destructive",
+      },
+    },
   },
-  defaultVariants: { density: "comfortable" },
+  defaultVariants: { density: "comfortable", variant: "default" },
 })
 
 export const DropdownMenu = DropdownMenuPrimitive.Root
@@ -138,9 +146,10 @@ export function DropdownMenuItem({
   className,
   inset,
   density,
+  variant,
   ...props
 }: DropdownMenuItemProps) {
-  const slots = dropdownMenuVariants({ density: useDensity(density) })
+  const slots = dropdownMenuVariants({ density: useDensity(density), variant })
   return (
     <DropdownMenuPrimitive.Item
       data-slot="dropdown-menu-item"
@@ -197,8 +206,8 @@ export function DropdownMenuRadioItem({
       className={slots.radioItem({ className })}
       {...props}
     >
-      {/* Selected items in a menu read clearest with a check — the native-menu convention
-          (macOS/Linear) — so radio and checkbox share one indicator. The exclusive-vs-toggle
+      {/* Selected items in a menu read clearest with a check (the native-menu convention,
+          macOS/Linear), so radio and checkbox share one indicator. The exclusive-vs-toggle
           semantics still live in the role (`menuitemradio`) and the section grouping, not the glyph. */}
       <span className={slots.itemIndicator()}>
         <DropdownMenuPrimitive.ItemIndicator>
@@ -250,7 +259,7 @@ export function DropdownMenuSeparator({
 
 /**
  * Right-aligned shortcut hint for a menu item. Renders the shared `Kbd` primitive
- * (`outline` variant — the documented choice for dense inline help text) so every
+ * (`outline` variant: the documented choice for dense inline help text) so every
  * keyboard key across the DS shares one treatment, rather than bespoke text styling.
  */
 export function DropdownMenuShortcut({ className, ...props }: React.ComponentProps<typeof Kbd>) {

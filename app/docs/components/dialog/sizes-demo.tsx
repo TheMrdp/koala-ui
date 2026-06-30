@@ -9,7 +9,7 @@ import { dialogVariants } from "@/components/ui/dialog"
 /**
  * Static, non-portal preview of every DialogContent `size`. We render the real
  * `dialogVariants` slots directly (no Radix Root/Portal) so all four widths are
- * visible at once without opening anything — the panels are visually identical to
+ * visible at once without opening anything. The panels are visually identical to
  * a live dialog, just inert. Title/description use plain h2/p instead of the Radix
  * parts, which require a Dialog context to render.
  */
@@ -23,7 +23,7 @@ const SIZES = [
   {
     size: "md",
     width: "max-w-lg · 32rem / 512px",
-    use: "The default — most forms and messages.",
+    use: "The default, most forms and messages.",
   },
   {
     size: "lg",
@@ -49,7 +49,7 @@ export function DialogSizesShowcase() {
                 size=&quot;{size}&quot;
               </code>
               <span className="text-xs text-muted-foreground">{width}</span>
-              <span className="text-xs text-muted-foreground">— {use}</span>
+              <span className="text-xs text-muted-foreground">{use}</span>
             </div>
             {/* The real content slot, rendered inline (no portal). */}
             <div className={slots.content({ className: "mx-auto" })} aria-hidden>

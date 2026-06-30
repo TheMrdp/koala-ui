@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 const ITEMS = ["Overview", "Analytics", "Reports", "Members", "Billing", "Settings"]
 
 /**
- * Live demo for the Stagger primitive — a grid of tiles that cascades in on mount. The Replay
+ * Live demo for the Stagger primitive: a grid of tiles that cascades in on mount. The Replay
  * button bumps a key so the whole <Stagger> remounts and the cascade plays again.
  */
 export function StaggerDemo() {

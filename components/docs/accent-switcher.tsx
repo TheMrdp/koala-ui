@@ -13,7 +13,7 @@ import { ACCENTS, useAccent, type Accent } from "@/components/accent-provider"
 
 /**
  * Each swatch carries its own `data-accent`, so `bg-brand` resolves to that preset's
- * `--brand` regardless of the active accent — no JS color list to drift from the CSS.
+ * `--brand` regardless of the active accent: no JS color list to drift from the CSS.
  */
 function Swatch({ accent, className }: { accent: Accent; className?: string }) {
   return (

@@ -6,10 +6,10 @@ import { cn } from "@/lib/utils"
 import { tv, type VariantProps } from "@/lib/tv"
 
 /**
- * Badge — a single-element component (like Button): one `tv` recipe, semantic tokens
+ * Badge: a single-element component (like Button): one `tv` recipe, semantic tokens
  * only, `className` merged last. Status variants (success/warning/info/destructive) are
  * "soft": a tinted background + colored text derived from one status token via opacity,
- * so they re-theme across all four themes. See docs/ARCHITECTURE.md.
+ * so they re-theme across all three themes. See docs/ARCHITECTURE.md.
  */
 export const badgeVariants = tv({
   base: [
@@ -50,7 +50,9 @@ export const badgeVariants = tv({
     {
       dot: true,
       variant: ["default", "primary", "secondary", "success", "warning", "info", "destructive", "purple", "pink", "teal", "orange"],
-      class: "bg-transparent",
+      // dot variant: strip the variant fill and tinted border so only the dot carries the
+      // color; the hairline falls back to the neutral stroke (like the `outline` variant).
+      class: "border-border bg-transparent",
     },
   ],
   defaultVariants: {

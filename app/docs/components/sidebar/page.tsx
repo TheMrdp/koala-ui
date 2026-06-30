@@ -2,12 +2,18 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 import {
   SidebarDemo,
   SidebarSwitcherDemo,
   SidebarSwitcherVariantDemo,
   SidebarItemDemo,
   SidebarDensityDemo,
+  SidebarVariantsDemo,
+  SidebarNestedDemo,
+  SidebarCollapsibleGroupDemo,
+  SidebarFloatingDemo,
+  SidebarSideDemo,
 } from "./demos"
 
 export const metadata = { title: "Sidebar" }
@@ -17,14 +23,15 @@ const heroCode = `<Sidebar aria-label="Main">
     {/* workspace switcher: a SidebarSwitcher in a DropdownMenu */}
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <SidebarSwitcher leading={<Logo />} title="Acme Inc" subtitle="Enterprise plan" />
+        {/* compact by default; pass variant="full" + a subtitle for the roomy identity row */}
+        <SidebarSwitcher leading={<Logo />} title="Acme Inc" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">…</DropdownMenuContent>
     </DropdownMenu>
   </SidebarHeader>
 
   <SidebarContent>
-    {/* primary pages — first, unlabeled */}
+    {/* primary pages: first, unlabeled */}
     <SidebarGroup aria-label="Primary">
       <SidebarItem active><SquaresFour /> Dashboard</SidebarItem>
       <SidebarItem>
@@ -34,7 +41,7 @@ const heroCode = `<Sidebar aria-label="Main">
       <SidebarItem><Stack /> Projects</SidebarItem>
     </SidebarGroup>
 
-    {/* favorites — starred pages, marked with their page color */}
+    {/* favorites: starred pages, marked with their page color */}
     <SidebarGroup aria-label="Favorites">
       <SidebarGroupLabel>Favorites</SidebarGroupLabel>
       <SidebarItem><Dot className="bg-purple" /> Q3 Roadmap</SidebarItem>
@@ -53,7 +60,7 @@ const heroCode = `<Sidebar aria-label="Main">
     {/* profile switcher: same trigger, menu opens upward */}
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <SidebarSwitcher leading={<Avatar />} title="Mara Okonkwo" subtitle="mara@acme.io" />
+        <SidebarSwitcher leading={<Avatar />} title="Mara Okonkwo" />
       </DropdownMenuTrigger>
       <DropdownMenuContent side="top" align="start">…</DropdownMenuContent>
     </DropdownMenu>
@@ -109,8 +116,8 @@ export function AppSidebar() {
           <code className="font-mono text-sm">SidebarFooter</code> pin to the top and bottom
           with a hairline separator; <code className="font-mono text-sm">SidebarContent</code>{" "}
           is the scroll region in between. Inside it,{" "}
-          <code className="font-mono text-sm">SidebarGroup</code> is a navigation section —
-          give it a <code className="font-mono text-sm">SidebarGroupLabel</code> when it needs
+          <code className="font-mono text-sm">SidebarGroup</code> is a navigation section.
+          Give it a <code className="font-mono text-sm">SidebarGroupLabel</code> when it needs
           a heading, or leave it unlabeled for the primary pages. Each{" "}
           <code className="font-mono text-sm">SidebarItem</code> is a row.
         </p>
@@ -121,17 +128,18 @@ export function AppSidebar() {
           <code className="font-mono text-sm">SidebarSwitcher</code> is one trigger used for
           both the workspace switcher (top) and the profile switcher (bottom): a{" "}
           <code className="font-mono text-sm">leading</code> visual, a{" "}
-          <code className="font-mono text-sm">title</code>/<code className="font-mono text-sm">subtitle</code>{" "}
-          stack, and an up/down caret. It renders a real{" "}
+          <code className="font-mono text-sm">title</code> (with an optional{" "}
+          <code className="font-mono text-sm">subtitle</code>), and an up/down caret. It renders a real{" "}
           <code className="font-mono text-sm">{`<button>`}</code>, so it drops straight into a{" "}
-          <code className="font-mono text-sm">DropdownMenuTrigger asChild</code> — Radix owns
+          <code className="font-mono text-sm">DropdownMenuTrigger asChild</code>. Radix owns
           the keyboard, focus, and ARIA; the switcher stays lit while its menu is open.
         </p>
         <ComponentPreview
           previewClassName="block p-6"
           code={`<DropdownMenu>
   <DropdownMenuTrigger asChild>
-    <SidebarSwitcher leading={<Logo />} title="Acme Inc" subtitle="Enterprise plan" />
+    {/* compact by default, no variant needed */}
+    <SidebarSwitcher leading={<Logo />} title="Acme Inc" />
   </DropdownMenuTrigger>
   <DropdownMenuContent align="start">
     <DropdownMenuItem><Buildings /> Acme Inc <Check className="ml-auto" /></DropdownMenuItem>
@@ -145,25 +153,31 @@ export function AppSidebar() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="Minimal switcher">
+      <DocSection title="Full switcher">
         <p className="mt-4 text-pretty text-muted-foreground">
           <code className="font-mono text-sm">SidebarSwitcher</code> takes a{" "}
-          <code className="font-mono text-sm">variant</code>. The default is the full
-          identity row; <code className="font-mono text-sm">minimal</code> is smaller and
-          lighter — a tighter gap, a small muted caret, and reduced padding — for a secondary
-          or inline switcher. Pair it with a smaller{" "}
-          <code className="font-mono text-sm">leading</code> (an{" "}
-          <code className="font-mono text-sm">Avatar size=&quot;xs&quot;</code> or a compact
-          logo tile) and drop the <code className="font-mono text-sm">subtitle</code> for the
-          most compact trigger.
+          <code className="font-mono text-sm">variant</code>. The default is the compact trigger
+          (a tight gap, a small muted caret, and reduced padding), the everyday switcher, paired
+          with a small <code className="font-mono text-sm">leading</code> (an{" "}
+          <code className="font-mono text-sm">Avatar size=&quot;xs&quot;</code>, a single initial, or
+          a compact logo tile). Pass{" "}
+          <code className="font-mono text-sm">variant=&quot;full&quot;</code> for the roomier
+          identity row: a wider gap, a heavier title, and room for a{" "}
+          <code className="font-mono text-sm">subtitle</code>. Pair it with a larger leading (an{" "}
+          <code className="font-mono text-sm">Avatar size=&quot;md&quot;</code>, which keeps both
+          initials) for a primary or standalone switcher.
         </p>
         <ComponentPreview
           previewClassName="block p-6"
-          code={`{/* smaller leading + no subtitle reads as the most compact trigger */}
+          code={`{/* compact: the default, no variant needed */}
+<SidebarSwitcher leading={<Avatar size="xs" />} title="Acme Inc" />
+
+{/* full: a larger leading + a subtitle reads as the roomy identity row */}
 <SidebarSwitcher
-  variant="minimal"
-  leading={<Avatar size="xs" />}
+  variant="full"
+  leading={<Avatar size="md" />}
   title="Acme Inc"
+  subtitle="Enterprise plan"
 />`}
         >
           <SidebarSwitcherVariantDemo />
@@ -200,6 +214,157 @@ export function AppSidebar() {
         </ComponentPreview>
       </DocSection>
 
+      <DocSection title="Nested navigation">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          <code className="font-mono text-sm">SidebarCollapsible</code> folds a sub-list of routes
+          under a parent row. Give it an <code className="font-mono text-sm">icon</code> and{" "}
+          <code className="font-mono text-sm">label</code>, drop the child{" "}
+          <code className="font-mono text-sm">SidebarItem</code>s inside, and the row gains a caret
+          that toggles them open, built on Radix Collapsible, so it owns the keyboard, focus, and
+          height animation. The sub-list is indented under the label and traced by a guide rail;
+          set <code className="font-mono text-sm">active</code> on the parent when one of its child
+          routes is current. In the collapsed icon rail it falls back to a single icon row.
+        </p>
+        <ComponentPreview
+          previewClassName="block p-6"
+          code={`<SidebarGroup aria-label="Primary">
+  <SidebarItem active><SquaresFour /> Dashboard</SidebarItem>
+
+  {/* a parent row that folds its routes: active because a child is current */}
+  <SidebarCollapsible icon={<GearSix />} label="Settings" active defaultOpen>
+    <SidebarItem active asChild><a href="#">General</a></SidebarItem>
+    <SidebarItem asChild><a href="#">Members</a></SidebarItem>
+    <SidebarItem asChild><a href="#">Billing</a></SidebarItem>
+  </SidebarCollapsible>
+
+  <SidebarCollapsible
+    icon={<Stack />}
+    label="Projects"
+    actions={<Badge variant="secondary" size="sm">3</Badge>}
+  >
+    <SidebarItem asChild><a href="#">Koala UI</a></SidebarItem>
+    <SidebarItem asChild><a href="#">Marketing site</a></SidebarItem>
+  </SidebarCollapsible>
+</SidebarGroup>`}
+        >
+          <SidebarNestedDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Collapsible sections">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          Pass <code className="font-mono text-sm">collapsible</code> to a{" "}
+          <code className="font-mono text-sm">SidebarGroup</code> and its{" "}
+          <code className="font-mono text-sm">SidebarGroupLabel</code> becomes a toggle with a
+          caret. Wrap the rows in{" "}
+          <code className="font-mono text-sm">SidebarGroupContent</code> so they fold beneath it.
+          Use <code className="font-mono text-sm">defaultOpen</code> (or the controlled{" "}
+          <code className="font-mono text-sm">open</code>/
+          <code className="font-mono text-sm">onOpenChange</code> pair) to set the initial state.
+          Unlike nested navigation, this folds a whole flat section rather than revealing sub-routes.
+        </p>
+        <ComponentPreview
+          previewClassName="block p-6"
+          code={`<SidebarGroup collapsible defaultOpen aria-label="Favorites">
+  <SidebarGroupLabel>Favorites</SidebarGroupLabel>
+  <SidebarGroupContent>
+    <SidebarItem><Dot className="bg-purple" /> Q3 Roadmap</SidebarItem>
+    <SidebarItem><Dot className="bg-teal" /> Design System</SidebarItem>
+  </SidebarGroupContent>
+</SidebarGroup>
+
+{/* starts folded */}
+<SidebarGroup collapsible defaultOpen={false} aria-label="Workspace">
+  <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+  <SidebarGroupContent>
+    <SidebarItem><UsersThree /> Members</SidebarItem>
+    <SidebarItem><GearSix /> Settings</SidebarItem>
+  </SidebarGroupContent>
+</SidebarGroup>`}
+        >
+          <SidebarCollapsibleGroupDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Collapsed (icon rail)">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          The rail has two variants, driven by the same markup. The{" "}
+          <code className="font-mono text-sm">default</code> is the full-width rail;{" "}
+          <code className="font-mono text-sm">collapsed</code> shrinks it to a 48px icon-only
+          column. Labels go <code className="font-mono text-sm">sr-only</code>, each row becomes
+          a centered icon, the active row is marked with a left accent bar instead of a full
+          chip, sections are divided by a short rule, and the switcher reduces to its leading
+          visual. Give every <code className="font-mono text-sm">SidebarItem</code> a{" "}
+          <code className="font-mono text-sm">label</code> so the collapsed row gets a hover
+          tooltip and an accessible name, and mark secondary sections with{" "}
+          <code className="font-mono text-sm">{`<SidebarGroup hideWhenCollapsed>`}</code> so they
+          drop out of the rail rather than reducing to bare glyphs.
+        </p>
+        <ComponentPreview
+          previewClassName="block p-6"
+          code={`{/* default: the full-width rail */}
+<Sidebar aria-label="Main">…</Sidebar>
+
+{/* collapsed: a 48px icon rail */}
+<Sidebar collapsed aria-label="Main">
+  <SidebarHeader>{/* switcher collapses to its leading tile */}</SidebarHeader>
+  <SidebarContent>
+    <SidebarGroup aria-label="Primary">
+      {/* label drives the collapsed tooltip + accessible name */}
+      <SidebarItem active label="Dashboard"><SquaresFour /> Dashboard</SidebarItem>
+      <SidebarItem label="Inbox">
+        <Tray /> Inbox
+        <Badge variant="secondary" size="sm" className="ml-auto tabular-nums">8</Badge>
+      </SidebarItem>
+      <SidebarItem label="Projects"><Stack /> Projects</SidebarItem>
+    </SidebarGroup>
+    {/* secondary sections drop out of the rail */}
+    <SidebarGroup aria-label="Favorites" hideWhenCollapsed>…</SidebarGroup>
+  </SidebarContent>
+  <SidebarFooter>{/* profile switcher */}</SidebarFooter>
+</Sidebar>`}
+        >
+          <SidebarVariantsDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Floating (inset)">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          <code className="font-mono text-sm">floating</code> detaches the rail into an inset
+          card: a full outline, a rounded radius concentric with the app shell, and a shadow that
+          lifts it off the canvas, instead of a single edge hairline. Pair it with padding on the
+          container (or the <a href="/docs/components/layout" className="underline underline-offset-4">Layout</a>{" "}
+          gutter) so it floats clear of the viewport edges.
+        </p>
+        <ComponentPreview
+          previewClassName="block p-6"
+          code={`<div className="flex h-full bg-muted/30 p-3">
+  <Sidebar floating aria-label="Main" className="w-60">…</Sidebar>
+  <main className="flex-1">…</main>
+</div>`}
+        >
+          <SidebarFloatingDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Right side">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          <code className="font-mono text-sm">side=&quot;right&quot;</code> docks the rail against
+          the right edge. The separating hairline flips to its left so it reads as an
+          inspector/detail panel beside the main content. Everything else (switchers, sections,
+          density) is symmetric.
+        </p>
+        <ComponentPreview
+          previewClassName="block p-6"
+          code={`<div className="flex h-full">
+  <main className="flex-1">…</main>
+  <Sidebar side="right" aria-label="Details" className="w-60">…</Sidebar>
+</div>`}
+        >
+          <SidebarSideDemo />
+        </ComponentPreview>
+      </DocSection>
+
       <DocSection title="Density">
         <p className="mt-4 text-pretty text-muted-foreground">
           <code className="font-mono text-sm">density</code> on{" "}
@@ -208,7 +373,7 @@ export function AppSidebar() {
           <code className="font-mono text-sm">compact</code> is the default (app UI);{" "}
           <code className="font-mono text-sm">comfortable</code> is roomier. Set it once here
           or for a whole subtree with{" "}
-          <code className="font-mono text-sm">DensityProvider</code> — see{" "}
+          <code className="font-mono text-sm">DensityProvider</code>. See{" "}
           <a href="/docs/foundations/density" className="underline underline-offset-4">
             Density
           </a>
@@ -220,6 +385,19 @@ export function AppSidebar() {
         >
           <SidebarDensityDemo />
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "How do I wire a workspace or profile switcher?", a: "`SidebarSwitcher` is one trigger that renders a real `<button>`, so drop it into a `DropdownMenuTrigger asChild` and Radix owns the keyboard, focus, and ARIA. Use it in `SidebarHeader` for the workspace switcher (menu opens down) and in `SidebarFooter` for the profile switcher (menu opens up)." },
+            { q: "What is the difference between SidebarCollapsible and a collapsible SidebarGroup?", a: "`SidebarCollapsible` folds a sub-list of routes under a parent row, revealing nested navigation with a guide rail. Passing `collapsible` to a `SidebarGroup` turns its `SidebarGroupLabel` into a toggle that folds a whole flat section (wrap the rows in `SidebarGroupContent`). Use the first for sub-routes, the second to collapse a section." },
+            { q: "How do I mark the current page?", a: "Set `active` on the `SidebarItem`: it fills the row and sets `aria-current=\"page\"`. On a `SidebarCollapsible` parent, set `active` when one of its child routes is current." },
+            { q: "Should a SidebarItem be a button or a link?", a: "It is a `<button>` by default; pass `asChild` and wrap an `<a>` or a Next `<Link>` to make it a real navigation link while keeping the row styling." },
+            { q: "What do I need for the collapsed icon rail?", a: "Pass `collapsed` to the `Sidebar` to shrink it to a 48px icon-only column. Give every `SidebarItem` a `label` so the collapsed row gets a hover tooltip and an accessible name, and mark secondary sections with `<SidebarGroup hideWhenCollapsed>` so they drop out rather than reducing to bare glyphs." },
+            { q: "What do floating and side='right' change?", a: "`floating` detaches the rail into an inset card with a full outline, concentric radius, and a lifted shadow (pair it with container padding). `side=\"right\"` docks the rail to the right edge and flips the separating hairline to its left so it reads as an inspector panel." },
+          ]}
+        />
       </DocSection>
 
     </>

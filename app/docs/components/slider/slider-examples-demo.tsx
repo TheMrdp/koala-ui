@@ -5,7 +5,7 @@ import { SpeakerHigh, SpeakerLow, Sun } from "@phosphor-icons/react"
 
 import { Slider } from "@/components/ui/slider"
 
-/** Hero — a branded slider with a live value bubble on the thumb. */
+/** Hero: a branded slider with a live value bubble on the thumb. */
 export function SliderDemo() {
   return (
     <div className="w-full max-w-xs">
@@ -20,7 +20,7 @@ export function SliderDemo() {
   )
 }
 
-/** The three sizes — track thickness and thumb diameter scale together. */
+/** The three sizes: track thickness and thumb diameter scale together. */
 export function SizesDemo() {
   return (
     <div className="flex w-full max-w-xs flex-col gap-8">
@@ -34,7 +34,7 @@ export function SizesDemo() {
   )
 }
 
-/** Fill variants — each tints the range, thumb border, and tooltip together. */
+/** Fill variants: each tints the range, thumb border, and tooltip together. */
 export function VariantsDemo() {
   const variants = ["default", "brand", "success", "warning", "destructive"] as const
   return (
@@ -49,7 +49,7 @@ export function VariantsDemo() {
   )
 }
 
-/** Range — two thumbs from a two-value array; drag either end. */
+/** Range: two thumbs from a two-value array; drag either end. */
 export function RangeDemo() {
   return (
     <div className="w-full max-w-xs">
@@ -64,7 +64,7 @@ export function RangeDemo() {
   )
 }
 
-/** Stepped — `step` snaps the thumb; combine with min/max for a discrete scale. */
+/** Stepped: `step` snaps the thumb; combine with min/max for a discrete scale. */
 export function StepsDemo() {
   return (
     <div className="flex w-full max-w-xs flex-col gap-2">
@@ -85,7 +85,7 @@ export function StepsDemo() {
   )
 }
 
-/** Vertical — pass `orientation="vertical"`; give the root a height. */
+/** Vertical: pass `orientation="vertical"`; give the root a height. */
 export function VerticalDemo() {
   return (
     <div className="flex items-end gap-8">
@@ -114,7 +114,7 @@ export function VerticalDemo() {
   )
 }
 
-/** Square — squared rail + fader-cap thumb; reads especially well vertical. */
+/** Square: squared rail + fader-cap thumb; reads especially well vertical. */
 export function SquareDemo() {
   return (
     <div className="flex w-full max-w-xs flex-col gap-8">
@@ -124,7 +124,7 @@ export function SquareDemo() {
   )
 }
 
-/** Equalizer — a row of vertical, square sliders behaving as faders. */
+/** Equalizer: a row of vertical, square sliders behaving as faders. */
 export function EqualizerDemo() {
   const bands = [
     { label: "60", value: [70] },
@@ -154,7 +154,7 @@ export function EqualizerDemo() {
   )
 }
 
-/** Disabled — the whole control dims and stops responding. */
+/** Disabled: the whole control dims and stops responding. */
 export function DisabledDemo() {
   return (
     <div className="w-full max-w-xs">
@@ -163,7 +163,7 @@ export function DisabledDemo() {
   )
 }
 
-/** Controlled — drive the value from state and read it back into the UI. */
+/** Controlled: drive the value from state and read it back into the UI. */
 export function ControlledDemo() {
   const [value, setValue] = React.useState([35])
   const v = value[0]
@@ -177,7 +177,7 @@ export function ControlledDemo() {
   )
 }
 
-/** A settings row — icon, label, and a slider that reports its own value. */
+/** A settings row: icon, label, and a slider that reports its own value. */
 export function SettingsRowDemo() {
   const [value, setValue] = React.useState([72])
   return (

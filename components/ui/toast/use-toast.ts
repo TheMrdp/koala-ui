@@ -12,7 +12,7 @@ export interface ToastData {
   /** Auto-dismiss delay in ms. Default: 5000. Pass Infinity to persist. */
   duration?: number
   action?: { label: string; onClick: () => void }
-  /** Internal — false triggers the exit animation before removal. */
+  /** Internal: false triggers the exit animation before removal. */
   open: boolean
 }
 

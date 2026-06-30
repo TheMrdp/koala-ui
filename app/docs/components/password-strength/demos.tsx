@@ -30,7 +30,7 @@ export function PasswordStrengthDemo() {
           <span className="text-sm text-muted-foreground">
             Password strength
           </span>
-          <PasswordStrengthLabel placeholder="—" />
+          <PasswordStrengthLabel placeholder="-" />
         </div>
       </PasswordStrength>
     </div>
@@ -108,7 +108,7 @@ export function PasswordStrengthCustomDemo() {
       <PasswordStrength value={value} rules={corporateRules} className="gap-3">
         <div className="flex items-center justify-between gap-2">
           <PasswordStrengthMeter className="max-w-[60%]" />
-          <PasswordStrengthLabel placeholder="—" />
+          <PasswordStrengthLabel placeholder="-" />
         </div>
         <PasswordStrengthList />
       </PasswordStrength>

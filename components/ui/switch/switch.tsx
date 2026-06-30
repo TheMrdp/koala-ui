@@ -6,13 +6,13 @@ import { cn } from "@/lib/utils"
 import { tv } from "@/lib/tv"
 
 /**
- * Switch — a Radix Switch styled with Koala tokens. Conceptually single-part, so one `tv`
+ * Switch: a Radix Switch styled with Koala tokens. Conceptually single-part, so one `tv`
  * recipe with `slots` (the track and its thumb scale together). Use it for an instant,
  * self-applying boolean (notifications on/off); reach for a Checkbox when the choice is
  * submitted with a form.
  *
  * `"use client"` because Radix Switch is interactive (state + context). It renders only the
- * control — pair it with a `<label htmlFor>` for an accessible name and a larger hit target.
+ * control. Pair it with a `<label htmlFor>` for an accessible name and a larger hit target.
  */
 // polish: the 20px-tall track sits under the 40px hit target on the
 // short axis, so a transparent pseudo-element extends the vertical click area without changing
@@ -29,18 +29,18 @@ export const switchVariants = tv({
       hitX,
       // Specific transition (never `transition: all`, #14); tactile press scale (#12).
       "transition-colors duration-fast ease-out active:scale-[0.96]",
-      // Focus ring is always the accent — one universal indicator, regardless of the on-color
-      // (Checkbox does the same: it fills `primary` but rings `brand`).
+      // Focus ring is always the accent (brand): one universal focus indicator across the
+      // library, matching the on-track fill here.
       "outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-      // Off track is the form-control fill; on fills with the primary.
-      "bg-input data-[state=checked]:bg-primary",
+      // Off track is the form-control fill; on fills with the accent (brand), the primary-action color.
+      "bg-input data-[state=checked]:bg-brand",
       "disabled:cursor-not-allowed disabled:opacity-50",
     ],
     // The thumb is a fixed surface-colored disc that slides; the shadow lifts it off both
     // track states in every theme. Checked, it slides 16px to land flush at the far edge.
     thumb: [
       "pointer-events-none block size-4 rounded-full bg-background shadow-sm",
-      // Only the slide transitions — the position is the one property that animates (#14).
+      // Only the slide transitions: the position is the one property that animates (#14).
       "transition-transform duration-fast ease-out",
       "data-[state=unchecked]:translate-x-0 data-[state=checked]:translate-x-4",
     ],

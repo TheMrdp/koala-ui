@@ -4,6 +4,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 
 export const metadata = { title: "Tabs" }
 
@@ -110,37 +111,6 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="Underline">
-        <ComponentPreview
-          previewClassName="block"
-          code={`<Tabs defaultValue="overview" variant="underline">
-  <TabsList>
-    <TabsTrigger value="overview">Overview</TabsTrigger>
-    <TabsTrigger value="activity">Activity</TabsTrigger>
-    <TabsTrigger value="settings">Settings</TabsTrigger>
-  </TabsList>
-  …
-</Tabs>`}
-        >
-          <Tabs defaultValue="overview" variant="underline" className="mx-auto w-full max-w-md">
-            <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="activity">Activity</TabsTrigger>
-              <TabsTrigger value="settings">Settings</TabsTrigger>
-            </TabsList>
-            <TabsContent value="overview">
-              <DemoPanel>The bar slides between triggers.</DemoPanel>
-            </TabsContent>
-            <TabsContent value="activity">
-              <DemoPanel>Recent activity across the team.</DemoPanel>
-            </TabsContent>
-            <TabsContent value="settings">
-              <DemoPanel>Manage preferences and access.</DemoPanel>
-            </TabsContent>
-          </Tabs>
-        </ComponentPreview>
-      </DocSection>
-
       <DocSection title="Folder">
         <ComponentPreview
           previewClassName="block"
@@ -161,6 +131,37 @@ export function Example() {
             </TabsList>
             <TabsContent value="overview">
               <DemoPanel>Active tab shows a pill background and a sliding underline.</DemoPanel>
+            </TabsContent>
+            <TabsContent value="activity">
+              <DemoPanel>Recent activity across the team.</DemoPanel>
+            </TabsContent>
+            <TabsContent value="settings">
+              <DemoPanel>Manage preferences and access.</DemoPanel>
+            </TabsContent>
+          </Tabs>
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Line">
+        <ComponentPreview
+          previewClassName="block"
+          code={`<Tabs defaultValue="overview" variant="line">
+  <TabsList>
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="activity">Activity</TabsTrigger>
+    <TabsTrigger value="settings">Settings</TabsTrigger>
+  </TabsList>
+  …
+</Tabs>`}
+        >
+          <Tabs defaultValue="overview" variant="line" className="mx-auto w-full max-w-md">
+            <TabsList>
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="activity">Activity</TabsTrigger>
+              <TabsTrigger value="settings">Settings</TabsTrigger>
+            </TabsList>
+            <TabsContent value="overview">
+              <DemoPanel>No container, just the active label and a bar that lights up in the accent color.</DemoPanel>
             </TabsContent>
             <TabsContent value="activity">
               <DemoPanel>Recent activity across the team.</DemoPanel>
@@ -245,6 +246,19 @@ export function Example() {
             </Tabs>
           ))}
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "How are TabsTrigger and TabsContent wired together?", a: "Each `TabsTrigger` and its matching `TabsContent` share the same `value` string, and the active tab comes from `defaultValue` (uncontrolled) or `value` with `onValueChange` (controlled). It is Radix Tabs underneath, so they pair purely by value." },
+            { q: "What is the difference between the pill, folder, and line variants?", a: "`pill` (the default) is a contained segmented control with a sliding background. `folder` keeps a pill background on the active tab plus a sliding bar on a bottom rule. `line` drops the container entirely and shows only the accent-colored underline bar." },
+            { q: "How is the difference between size and density?", a: "`size` (`sm` or `md`) sets the height and text tier of the triggers, while `density` tightens the pill chrome, the container padding and concentric radii, for application UI without changing the height. You can set density per Tabs or for a subtree via `DensityProvider`." },
+            { q: "How does the active indicator slide?", a: "A single indicator element is measured in JS (offset box of the active trigger) and moved with `transform`. It re-measures on selection change, resize, and font shifts, and the transition only switches on after the first paint so it never animates in from the origin on load." },
+            { q: "Do I get keyboard navigation for free?", a: "Yes. Because Tabs is built on Radix Tabs you get arrow-key roving focus, Home and End, and the correct tab and tabpanel ARIA roles without any extra wiring." },
+            { q: "How do I add an icon to a trigger?", a: "Drop a Phosphor icon as a child of `TabsTrigger` alongside the label. The recipe already sizes any nested svg to 16px and spaces it from the text, so no extra classes are needed." },
+          ]}
+        />
       </DocSection>
 
     </>

@@ -3,6 +3,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 
 export const metadata = {
   title: "OTP Input",
@@ -55,7 +56,7 @@ export function Example() {
 
       <DocSection title="Length">
         <p className="mt-4 text-pretty text-muted-foreground">
-          <code>length</code> sets the number of digit slots — defaults to{" "}
+          <code>length</code> sets the number of digit slots, defaulting to{" "}
           <code>6</code>. Four-digit PINs and longer codes use the same
           component; paste a full code into any slot and it spreads across the
           rest.
@@ -99,7 +100,7 @@ export function Example() {
 
       <DocSection title="Sizes">
         <p className="mt-4 text-pretty text-muted-foreground">
-          Three sizes — <code>sm</code> (40 px slots), <code>md</code> (48 px,
+          Three sizes: <code>sm</code> (40 px slots), <code>md</code> (48 px,
           the default), and <code>lg</code> (56 px). Each stays at or above the
           40 px minimum touch target.
         </p>
@@ -149,7 +150,7 @@ export function Example() {
 
       <DocSection title="Validation & errors">
         <p className="mt-4 text-pretty text-muted-foreground">
-          Input is numeric-only by construction — non-digit characters (and
+          Input is numeric-only by construction: non-digit characters (and
           non-numeric pasted content) are stripped before they ever reach a
           slot, so you never validate the format yourself. For a{" "}
           <em>wrong code</em>, pass <code>hasError</code> to switch every slot to
@@ -183,6 +184,19 @@ export function Example() {
         <ComponentPreview code={`<OTPInput length={6} disabled defaultValue="12" />`}>
           <OTPInput length={6} disabled defaultValue="12" />
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "What is the difference between onChange and onComplete?", a: "`onChange` fires on every keystroke with the current value, so use it for keystroke-level state. `onComplete` fires once the moment the last slot fills, which is the right place to kick off verification." },
+            { q: "Do I need to validate or filter the input myself?", a: "No. The field is numeric-only by construction: non-digit characters and non-numeric pasted content are stripped before they ever reach a slot, so you never validate the format yourself." },
+            { q: "How do I show a wrong-code error?", a: "Pass `hasError` to switch every slot to the destructive border and ring and set `aria-invalid`. When set, the `hint` text also turns destructive, so it doubles as the error message." },
+            { q: "How do I split the digits into groups?", a: "Use `separator`: \"dash\" draws a short divider line, \"dot\" renders a centered middle dot, or pass any node for a custom mark. Groups default to two even halves; override the chunk size with `groupSize`." },
+            { q: "Does paste and SMS autofill work across the slots?", a: "Yes. Pasting a full code into any slot spreads it across the rest, and on mobile the first slot carries `autoComplete=\"one-time-code\"` so the OS can autofill a code from SMS." },
+            { q: "How are the label and hint wired for accessibility?", a: "The `label` becomes the group's `aria-labelledby` (clicking it focuses the first slot) and the `hint` becomes its `aria-describedby`. Add `required` for a destructive asterisk." },
+          ]}
+        />
       </DocSection>
 
     </>

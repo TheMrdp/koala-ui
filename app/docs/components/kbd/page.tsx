@@ -5,6 +5,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 
 export const metadata = {
   title: "Kbd",
@@ -52,18 +53,27 @@ export function Example() {
         <p className="mt-4 text-pretty text-muted-foreground">
           <code className="font-mono text-sm">default</code> is a raised keycap (border +
           soft <code className="font-mono text-sm">shadow-xs</code>),{" "}
+          <code className="font-mono text-sm">soft</code> is the same filled chip but
+          borderless and flat, for shortcuts that sit inside another tinted surface (a tooltip
+          or menu row) where a bordered cap reads as a competing outline,{" "}
           <code className="font-mono text-sm">outline</code> is a flat hairline for dense
-          inline help, and <code className="font-mono text-sm">solid</code> inverts for
-          high-contrast callouts.
+          inline help, <code className="font-mono text-sm">solid</code> inverts for
+          high-contrast callouts, and <code className="font-mono text-sm">ghost</code> drops
+          the cap entirely: just the muted glyph, for ⌘K hints inside a button or input where
+          a raised key would read as a second control.
         </p>
         <ComponentPreview
           code={`<Kbd variant="default">K</Kbd>
+<Kbd variant="soft">K</Kbd>
 <Kbd variant="outline">K</Kbd>
-<Kbd variant="solid">K</Kbd>`}
+<Kbd variant="solid">K</Kbd>
+<Kbd variant="ghost">K</Kbd>`}
         >
           <Kbd variant="default">K</Kbd>
+          <Kbd variant="soft">K</Kbd>
           <Kbd variant="outline">K</Kbd>
           <Kbd variant="solid">K</Kbd>
+          <Kbd variant="ghost">K</Kbd>
         </ComponentPreview>
       </DocSection>
 
@@ -82,7 +92,7 @@ export function Example() {
       <DocSection title="Combinations">
         <p className="mt-4 text-pretty text-muted-foreground">
           Kbd is a single key by design. Build a shortcut by placing several side by side
-          in an <code className="font-mono text-sm">inline-flex</code> row — each key keeps
+          in an <code className="font-mono text-sm">inline-flex</code> row, and each key keeps
           its own cap.
         </p>
         <ComponentPreview
@@ -116,7 +126,7 @@ export function Example() {
 
       <DocSection title="Inline">
         <p className="mt-4 text-pretty text-muted-foreground">
-          Drop a key straight into running text — the <code className="font-mono text-sm">outline</code>{" "}
+          Drop a key straight into running text. The <code className="font-mono text-sm">outline</code>{" "}
           variant sits quietly inside a sentence.
         </p>
         <ComponentPreview
@@ -128,6 +138,19 @@ export function Example() {
             <Kbd variant="outline" size="sm">K</Kbd> to open the command menu.
           </p>
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "How do I render a multi-key shortcut like Cmd+K?", a: "Kbd is one key by design, so place several side by side in an `inline-flex` row: each `Kbd` keeps its own cap. There is no combo prop." },
+            { q: "Which variant should I use for a hint inside a button or input?", a: "Use `variant=\"ghost\"`. It drops the keycap box entirely and renders just the muted glyph, so it does not read as a second, competing control next to the one it sits inside." },
+            { q: "Why does Kbd render a native <kbd> element?", a: "So it carries the correct semantics for assistive tech and document outlines. It is a single styled element with one `tv` recipe, like Badge." },
+            { q: "When would I use the outline variant?", a: "Use `variant=\"outline\"` for keys dropped into running text: it is a flat hairline with a transparent fill, so it sits quietly inside a sentence rather than reading as a raised cap." },
+            { q: "Can I wrap another element as the key?", a: "Yes. Pass `asChild` and Kbd renders your child as the key via Radix Slot, merging the keycap styling onto it instead of emitting its own `<kbd>`." },
+            { q: "Does Kbd re-theme automatically?", a: "Yes. It uses semantic tokens only (`bg-muted`, `border-border`, `text-muted-foreground`), so the keycap stays legible across all themes with no per-theme overrides." },
+          ]}
+        />
       </DocSection>
 
     </>

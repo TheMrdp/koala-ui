@@ -1,7 +1,7 @@
 import * as React from "react"
 
 /**
- * Typed context factory for compound components — the scalable alternative to
+ * Typed context factory for compound components: the scalable alternative to
  * prop-drilling or cloning children (see docs/ARCHITECTURE.md). Shared state
  * (size, variant, open…) flows from a `Root` provider to its parts.
  *

@@ -3,7 +3,9 @@
 import {
   BellSimple,
   ChatCircle,
+  Copy,
   CreditCard,
+  DotsThree,
   Envelope,
   FilePlus,
   Gear,
@@ -19,6 +21,12 @@ import {
   UserCircle,
   Users,
 } from "@phosphor-icons/react"
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+  AvatarStatus,
+} from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -90,7 +98,7 @@ export function AccountMenuDemo() {
           </DropdownMenuSub>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-destructive focus:text-destructive">
+        <DropdownMenuItem variant="destructive">
           <SignOut /> Log out
           <DropdownMenuShortcut>⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
@@ -136,7 +144,7 @@ export function EditMenuDemo() {
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-destructive focus:text-destructive">
+        <DropdownMenuItem variant="destructive">
           <Trash /> Delete
           <DropdownMenuShortcut>⌫</DropdownMenuShortcut>
         </DropdownMenuItem>
@@ -162,6 +170,83 @@ export function CheckboxMenuDemo() {
         <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem checked>Word wrap</DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem>Minimap</DropdownMenuCheckboxItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+export function UserMenuDemo() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          type="button"
+          aria-label="Open user menu"
+          className="cursor-pointer rounded-full outline-none ring-ring ring-offset-2 ring-offset-background transition-transform duration-fast ease-out focus-visible:ring-2 active:scale-[0.96]"
+        >
+          <Avatar size="md">
+            <AvatarImage src="https://i.pravatar.cc/160?img=12" alt="Esteban Alonso" />
+            <AvatarFallback>EA</AvatarFallback>
+            <AvatarStatus variant="online" />
+          </Avatar>
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-60">
+        <DropdownMenuLabel className="flex items-center gap-3 py-2 font-normal">
+          <Avatar size="sm">
+            <AvatarImage src="https://i.pravatar.cc/160?img=12" alt="Esteban Alonso" />
+            <AvatarFallback>EA</AvatarFallback>
+          </Avatar>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium leading-none text-foreground">
+              Esteban Alonso
+            </p>
+            <p className="mt-1 truncate text-xs text-muted-foreground">esteban@koala.ui</p>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            <UserCircle /> Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <CreditCard /> Billing
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Gear /> Settings
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem variant="destructive">
+          <SignOut /> Log out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+export function MoreActionsMenuDemo() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" iconOnly aria-label="More actions" tooltip={false}>
+          <DotsThree />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-44">
+        <DropdownMenuItem>
+          <PencilSimple /> Edit
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Copy /> Duplicate
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <ShareNetwork /> Share
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem variant="destructive">
+          <Trash /> Delete
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

@@ -7,14 +7,14 @@ import { createContext } from "@/lib/create-context"
 import { tv, type VariantProps } from "@/lib/tv"
 
 /**
- * RadioGroup — a Radix RadioGroup styled with Koala tokens. Multi-part (the group root and its
+ * RadioGroup: a Radix RadioGroup styled with Koala tokens. Multi-part (the group root and its
  * items), so the recipe lives in two slots and the shared `size` flows from `RadioGroup` to each
- * `RadioGroupItem` through a typed Context — never prop-drilled. Use it for a single choice from a
- * small, visible set; reach for a Select once the options grow long enough to want a dropdown.
+ * `RadioGroupItem` through a typed Context, never prop-drilled. Use it for a single choice from a
+ * small, visible set. Reach for a Select once the options grow long enough to want a dropdown.
  *
  * Sizes mirror Checkbox exactly (sm = 16px, md = 20px) so a radio and a checkbox line up pixel-for-
  * pixel in the same form. Unlike Checkbox, a radio keeps its ring when checked and fills only a
- * centered dot — the canonical "one of many" affordance.
+ * centered dot: the canonical "one of many" affordance.
  *
  * `"use client"` because Radix RadioGroup is interactive (roving focus + state). Each item renders
  * only the control; pair it with a `<label htmlFor>` for an accessible name and a larger hit target.
@@ -27,13 +27,13 @@ export const radioGroupVariants = tv({
       // Specific transition (never `transition: all`, #14); tactile press scale (#12).
       "transition-colors duration-fast ease-out active:scale-[0.96]",
       "outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-      // Checked keeps the ring but recolors it to the primary; the dot below carries the fill.
-      "data-[state=checked]:border-primary",
+      // Checked keeps the ring but recolors it to the accent (brand); the dot below carries the fill.
+      "data-[state=checked]:border-brand",
       "disabled:cursor-not-allowed disabled:opacity-50",
     ],
     indicator: "flex items-center justify-center",
-    // The dot zooms in from the center the moment the item mounts as checked (#15 — staged enter).
-    dot: "rounded-full bg-primary animate-in zoom-in-50 duration-fast ease-out",
+    // The dot zooms in from the center the moment the item mounts as checked (#15: staged enter).
+    dot: "rounded-full bg-brand animate-in zoom-in-50 duration-fast ease-out",
   },
   variants: {
     size: {

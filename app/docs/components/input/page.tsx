@@ -20,6 +20,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 import { NumberInputDemo, PhoneInputDemo } from "./demos"
 
 export const metadata = {
@@ -84,11 +85,11 @@ export function Example() {
       <DocSection title="Label & hint">
         <p className="mt-4 text-pretty text-muted-foreground">
           <code>InputLabel</code> sits above the control - wire it to the field
-          with <code>htmlFor</code> pointing at the <code>InputField</code>'s{" "}
+          with <code>htmlFor</code> pointing at the <code>InputField</code>’s{" "}
           <code>id</code> so clicking the label focuses the input. Pass{" "}
           <code>required</code> to append a destructive asterisk.{" "}
           <code>InputHint</code> renders helper text below; give it an{" "}
-          <code>id</code> and reference it from the field's{" "}
+          <code>id</code> and reference it from the field’s{" "}
           <code>aria-describedby</code>.
         </p>
         <ComponentPreview
@@ -431,6 +432,44 @@ export function Example() {
             </InputRoot>
           </div>
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Inline">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          Pass <code>{'variant="inline"'}</code> to <code>InputRoot</code> for a
+          chromeless field: the border and fill stay invisible at rest and the
+          container only materializes on hover, while focus keeps the usual brand
+          ring. Perfect for edit-in-place UI - editable titles, table cells, or
+          settings rows that should read as plain text until you reach for them.
+        </p>
+        <ComponentPreview
+          code={`<div className="flex flex-col gap-1.5">
+  <InputLabel htmlFor="inline-title">Project title</InputLabel>
+  <InputRoot variant="inline">
+    <InputField id="inline-title" defaultValue="Untitled project" />
+  </InputRoot>
+</div>`}
+        >
+          <div className="flex w-full max-w-sm flex-col gap-1.5">
+            <InputLabel htmlFor="inline-title">Project title</InputLabel>
+            <InputRoot variant="inline">
+              <InputField id="inline-title" defaultValue="Untitled project" />
+            </InputRoot>
+          </div>
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "Why is the input split into InputRoot and InputField?", a: "`InputRoot` is the bordered container that owns the size, error, and disabled state and shares it via context, while `InputField` is the actual `<input>`. Splitting them lets `InputPrefix`, `InputSuffix`, and buttons sit inside the same border as siblings of the field." },
+            { q: "Where do I set the size, and does it propagate to the parts?", a: "Set `size` on `InputRoot` (`sm`, `md`, the default, or `lg`). Every part reads it from context, so the prefix, suffix, and field all scale together." },
+            { q: "When should I use InputSuffix versus InputSuffixButton?", a: "Use `InputSuffix` for a decorative, non-interactive icon (it is marked `aria-hidden`). Use `InputSuffixButton` for an interactive control like a clear action, and always pass `aria-label` since it has no visible text." },
+            { q: "How do I show a validation error?", a: "Pass `hasError` to `InputRoot` to switch the border and focus ring to the destructive color and set `aria-invalid` on the input. Pass the same `hasError` to `InputHint` so the helper text reads as the error message." },
+            { q: "Should I build my own password show/hide toggle?", a: "No. Use `PasswordInput`, which wraps `InputRoot` + `InputField` + `InputSuffixButton` and manages the Eye / EyeSlash toggle internally. Use `rootClassName` to style the wrapper; other props pass through to the input." },
+            { q: "What value should I store from PhoneInput?", a: "Store `e164` as the canonical value. `onChange` reports a `{ country, dialCode, nationalNumber, e164 }` payload, and `e164` is the normalized form you can persist and re-parse." },
+          ]}
+        />
       </DocSection>
 
     </>

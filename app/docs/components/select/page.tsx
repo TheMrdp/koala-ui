@@ -2,11 +2,14 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 import {
   SelectDishDemo,
+  SelectScrollDemo,
   SelectCountryDemo,
   SelectTimezoneDemo,
   SelectPlanDemo,
+  SelectReasoningDemo,
   SelectDensityDemo,
 } from "./demos"
 
@@ -129,41 +132,61 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="Country select">
+      <DocSection title="Long lists">
         <p className="mt-4 text-pretty text-muted-foreground">
-          For country pickers, lead each option with a flag. Cropping the 3:2 flag into a circle
-          with a small{" "}
-          <code className="font-mono text-sm">CircleFlag</code> wrapper keeps the leading edge
-          aligned with the text icons used elsewhere.
+          When the options outgrow the available height the menu scrolls, and its top and bottom
+          edges fade softly into the popover, the{" "}
+          <a href="/docs/foundations/scroll-fade" className="underline underline-offset-4">
+            scroll fade
+          </a>{" "}
+          utility, so there&rsquo;s a clear &ldquo;more above / below&rdquo; cue without a
+          scrollbar. Open this and scroll: the leading edge stays crisp, the trailing edge
+          dissolves, and a keyboard-focused row always lands clear of the fade.
         </p>
         <ComponentPreview
-          code={`import CA from "country-flag-icons/react/3x2/CA"
-import FR from "country-flag-icons/react/3x2/FR"
-// ...one import per country
+          code={`import { MapPin } from "@phosphor-icons/react"
 
-// Crop a 3:2 flag into a circle that lines up with other leading icons
-function CircleFlag({ flag: Flag }) {
-  return (
-    <span className="inline-flex size-4 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-inset ring-border">
-      <Flag className="h-full w-auto max-w-none" />
-    </span>
-  )
-}
+const cities = ["Amsterdam", "Bangkok", "Berlin" /* … */]
 
 <Select>
   <SelectTrigger className="w-56">
-    <SelectValue placeholder="Select a country" />
+    <SelectValue placeholder="Select a city" />
   </SelectTrigger>
   <SelectContent>
-    <SelectItem value="ca">
-      <span className="flex items-center gap-2"><CircleFlag flag={CA} /> Canada</span>
-    </SelectItem>
-    <SelectItem value="fr">
-      <span className="flex items-center gap-2"><CircleFlag flag={FR} /> France</span>
-    </SelectItem>
-    {/* ...one SelectItem per country, sorted A→Z */}
+    {cities.map((city) => (
+      <SelectItem key={city} value={city}>
+        <span className="flex items-center gap-2"><MapPin /> {city}</span>
+      </SelectItem>
+    ))}
   </SelectContent>
 </Select>`}
+        >
+          <SelectScrollDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Country select">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          A plain <code className="font-mono text-sm">Select</code> over ~250 countries is a long
+          scroll, so reach for <code className="font-mono text-sm">CountrySelect</code>, a
+          searchable picker that looks like a Select trigger but filters as you type and is fully
+          keyboard-navigable. It returns the selected ISO 3166-1 alpha-2 code and lives in the{" "}
+          <a href="/docs/components/input" className="underline underline-offset-4">Input</a>{" "}
+          family, sharing the canonical country dataset and circular flags with{" "}
+          <code className="font-mono text-sm">PhoneInput</code>. Inside a{" "}
+          <a href="/docs/components/field" className="underline underline-offset-4">Field</a> it
+          wires up label, aria, and error state automatically.
+        </p>
+        <ComponentPreview
+          code={`import { CountrySelect } from "@/components/ui/input"
+
+const [country, setCountry] = useState("US")
+
+<CountrySelect
+  value={country}
+  onValueChange={setCountry}
+  className="w-56"
+/>`}
         >
           <SelectCountryDemo />
         </ComponentPreview>
@@ -191,6 +214,43 @@ function CircleFlag({ flag: Flag }) {
 </Select>`}
         >
           <SelectPlanDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Option hints">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          Some labels are too terse to stand on their own. <code className="font-mono text-sm">High</code>{" "}
+          and <code className="font-mono text-sm">Medium</code> say nothing about the trade-off
+          behind them. Pass a <code className="font-mono text-sm">tooltip</code> to{" "}
+          <code className="font-mono text-sm">SelectItem</code> to attach a hint that surfaces on
+          hover and on keyboard focus, so the choice is informed without crowding the row. Use{" "}
+          <code className="font-mono text-sm">tooltipPlacement</code> to change the side it grows
+          toward (defaults to <code className="font-mono text-sm">right</code>).
+        </p>
+        <ComponentPreview
+          code={`import { Gauge, Lightning, Brain } from "@phosphor-icons/react"
+
+<Select defaultValue="low">
+  <SelectTrigger className="w-56">
+    <SelectValue placeholder="Reasoning effort" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="minimal" tooltip="Fastest, shallowest pass. Good for simple, well-scoped tasks.">
+      <span className="flex items-center gap-2"><Gauge /> Minimal</span>
+    </SelectItem>
+    <SelectItem value="low" tooltip="Optimizes for latency over depth.">
+      <span className="flex items-center gap-2"><Lightning /> Low</span>
+    </SelectItem>
+    <SelectItem value="medium" tooltip="Balances response speed against how hard the model thinks.">
+      <span className="flex items-center gap-2"><Gauge /> Medium</span>
+    </SelectItem>
+    <SelectItem value="high" tooltip="Deepest reasoning. Slower and more expensive, best for hard problems.">
+      <span className="flex items-center gap-2"><Brain /> High</span>
+    </SelectItem>
+  </SelectContent>
+</Select>`}
+        >
+          <SelectReasoningDemo />
         </ComponentPreview>
       </DocSection>
 
@@ -222,6 +282,31 @@ function CircleFlag({ flag: Flag }) {
         >
           <SelectDensityDemo />
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Selecting multiple values">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          <code className="font-mono text-sm">Select</code> picks exactly one value and closes on
+          pick. For checkboxes, switches, and sections that stay open while you toggle several
+          values, reach for{" "}
+          <a href="/docs/components/multi-select" className="underline underline-offset-4">
+            Multi Select
+          </a>{" "}
+          - a Popover-backed sibling with the same surface and motion.
+        </p>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "When should I use Select versus MultiSelect or CountrySelect?", a: "Use `Select` to pick exactly one value from a short list; it closes on pick. For toggling several values with checkboxes or switches that stay open, reach for `MultiSelect`, and for the ~250-country case use the searchable `CountrySelect` from the Input family." },
+            { q: "How do I compose the parts?", a: "Wrap everything in `Select`, put `SelectValue` (with a `placeholder`) inside a `SelectTrigger`, and list `SelectItem`s inside `SelectContent`. Organize long lists with `SelectGroup` plus `SelectLabel`, and divide groups with `SelectSeparator`." },
+            { q: "How do I attach a hint to a terse option?", a: "Pass a `tooltip` string to `SelectItem` to surface a hint on hover and on keyboard focus, useful for labels like High or Medium that say nothing about the trade-off. Use `tooltipPlacement` to change the side it grows toward (defaults to `right`)." },
+            { q: "How do I set density, and where does the prop go?", a: "Pass `density` to `SelectTrigger` to switch between `comfortable` (h-10) and `compact` (h-8), and pass the same prop to `SelectContent` so the menu items match. You can also drive both from a parent `DensityProvider`." },
+            { q: "Is keyboard navigation and type-ahead handled for me?", a: "Yes. Select is built on Radix Select, so arrow-key navigation, type-ahead search, and ARIA come for free. Mark an option `disabled` to skip it in that navigation." },
+            { q: "How do I add an icon to each option?", a: "Koala's convention is a leading Phosphor icon per option: wrap the icon and label in a `<span className=\"flex items-center gap-2\">` inside the `SelectItem`. Render icons in outline weight to match the rest of the system." },
+          ]}
+        />
       </DocSection>
 
     </>

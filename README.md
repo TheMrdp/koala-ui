@@ -2,7 +2,7 @@
 
 > **Never start from 0.** A polished React design system for AI-powered products. Ship beautiful MVPs fast.
 
-Production-ready components built on Tailwind CSS v4, Radix UI and `tailwind-variants`, with four themes (light, dark, cream, moonlight), a density system and a strict house style. Every component ships feeling finished.
+Production-ready components built on Tailwind CSS v4, Radix UI and `tailwind-variants`, with three themes (light, dark, moonlight), a density system and a strict house style. Every component ships feeling finished.
 
 This is the **React implementation** of [Koala UI](https://koalaui.com). It's the code side of the design system you can explore at [koalaui.com](https://koalaui.com).
 

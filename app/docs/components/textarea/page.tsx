@@ -8,7 +8,8 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
-import { AutoResizeDemo, CounterDemo } from "./demos"
+import { Faq } from "@/components/docs/faq"
+import { AutoResizeDemo, AddonCounterDemo, CounterDemo } from "./demos"
 
 export const metadata = {
   title: "Textarea",
@@ -19,7 +20,7 @@ export default function TextareaDocsPage() {
     <>
       <DocHeader
         title="Textarea"
-        description="A multi-line text field built from slots and Context — pairs with a label and hint, grows to fit its content, and carries an optional character counter in its footer. Each part is a named export."
+        description="A multi-line text field built from slots and Context: pairs with a label and hint, grows to fit its content, and carries an optional character counter in its footer. Each part is a named export."
       />
 
       <ComponentPreview
@@ -67,7 +68,7 @@ export function Example() {
 
       <DocSection title="Label & hint">
         <p className="mt-4 text-pretty text-muted-foreground">
-          <code>TextareaLabel</code> sits above the control — wire it with{" "}
+          <code>TextareaLabel</code> sits above the control. Wire it with{" "}
           <code>htmlFor</code> pointing at the <code>TextareaField</code>’s{" "}
           <code>id</code> so clicking the label focuses the field. Pass{" "}
           <code>required</code> to append a destructive asterisk.{" "}
@@ -114,7 +115,7 @@ export function Example() {
       <DocSection title="Auto-resize">
         <p className="mt-4 text-pretty text-muted-foreground">
           Pass <code>autoResize</code> to <code>TextareaField</code> and the
-          field grows to fit its content as you type — no inner scrollbar. It
+          field grows to fit its content as you type, with no inner scrollbar. It
           rides the native CSS <code>field-sizing: content</code> where the
           browser supports it (no JavaScript at all), and falls back to a{" "}
           <code>scrollHeight</code> measurement everywhere else, so it works in
@@ -136,9 +137,32 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="Character counter">
+      <DocSection title="Character count addon">
         <p className="mt-4 text-pretty text-muted-foreground">
-          <code>TextareaFooter</code> is a slot inside the field’s border —
+          For the common case, pass <code>showCount</code> to{" "}
+          <code>TextareaField</code> and it renders the footer and counter for
+          you, with no separate state and no extra parts. It tracks the field’s own
+          length, so it works whether the field is controlled or uncontrolled.
+          Add the native <code>maxLength</code> to show <code>current / max</code>{" "}
+          and hard-cap the input.
+        </p>
+        <ComponentPreview
+          code={`<TextareaRoot resize="none">
+  <TextareaField
+    showCount
+    maxLength={180}
+    placeholder="Tell us about yourself…"
+  />
+</TextareaRoot>`}
+        >
+          <AddonCounterDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Character counter (manual)">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          For full control over the footer, compose it by hand.{" "}
+          <code>TextareaFooter</code> is a slot inside the field’s border,
           ideal for a helper note on the left and a counter on the right.{" "}
           <code>TextareaCount</code> takes the current length and an optional{" "}
           <code>max</code>; it uses <code>tabular-nums</code> so the count never
@@ -164,7 +188,7 @@ export function Example() {
 
       <DocSection title="Sizes">
         <p className="mt-4 text-pretty text-muted-foreground">
-          Three sizes scale padding, text, and the minimum height —{" "}
+          Three sizes scale padding, text, and the minimum height:{" "}
           <code>sm</code>, <code>md</code> (the default), and <code>lg</code>.
           Set <code>size</code> on <code>TextareaRoot</code>; every part picks it
           up from context.
@@ -208,7 +232,7 @@ export function Example() {
       <DocSection title="Resize">
         <p className="mt-4 text-pretty text-muted-foreground">
           The <code>resize</code> prop on <code>TextareaRoot</code> controls the
-          drag handle — <code>vertical</code> (default), <code>none</code>,{" "}
+          drag handle: <code>vertical</code> (default), <code>none</code>,{" "}
           <code>horizontal</code>, or <code>both</code>. The handle stays clipped
           to the field’s rounded corner.
         </p>
@@ -298,6 +322,19 @@ export function Example() {
             </TextareaRoot>
           </div>
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "Why is the Textarea split into TextareaRoot and TextareaField?", a: "`TextareaRoot` owns the bordered surface, size, resize behavior, and error state and shares them through Context, while `TextareaField` is the actual `textarea` element. Splitting them lets the footer and counter live inside the same border as the input." },
+            { q: "Should I use showCount or compose TextareaFooter and TextareaCount by hand?", a: "For the common case, pass `showCount` (and optionally `maxLength`) to `TextareaField` and it renders the footer and counter for you, tracking the field's own length whether controlled or uncontrolled. Compose `TextareaFooter` with `TextareaCount` manually only when you also want custom footer content like a helper note." },
+            { q: "How do I make the field grow with its content?", a: "Pass `autoResize` to `TextareaField`. It rides the native CSS `field-sizing: content` where supported with no JS, and falls back to a `scrollHeight` measurement elsewhere. It also pins the drag handle to none, since manual dragging would fight the content height." },
+            { q: "How do I wire up the label and hint accessibly?", a: "Point `TextareaLabel`'s `htmlFor` at the `TextareaField`'s `id` so clicking the label focuses it, and give `TextareaHint` an `id` referenced from the field's `aria-describedby`. Add `required` on the label to append a destructive asterisk." },
+            { q: "How do I show an error state?", a: "Pass `hasError` to `TextareaRoot` to flip the border and focus ring to the destructive color and set `aria-invalid` on the textarea. Pass the same `hasError` to `TextareaHint` so the helper text doubles as the error message." },
+            { q: "What is the difference between the size and resize props?", a: "`size` (`sm`, `md`, `lg`) scales padding, text, and the minimum height and is read from Context by every part. `resize` controls only the drag handle (`vertical` by default, or `none`, `horizontal`, `both`). Both are set on `TextareaRoot`." },
+          ]}
+        />
       </DocSection>
 
     </>

@@ -12,11 +12,11 @@ import {
 } from "@/components/ui/empty-state"
 
 /**
- * DataTableEmpty — the table's zero-row placeholder, a thin preset over EmptyState so the two
+ * DataTableEmpty: the table's zero-row placeholder, a thin preset over EmptyState so the two
  * cases a grid hits read differently out of the box:
  *
- *  • `kind="empty"`  — there's genuinely nothing yet (a fresh, unfilled table).
- *  • `kind="search"` — there *is* data, but nothing matched the active search/filters.
+ *  • `kind="empty"`:  there's genuinely nothing yet (a fresh, unfilled table).
+ *  • `kind="search"`: there *is* data, but nothing matched the active search/filters.
  *
  * Drop it straight into `DataTable`'s `emptyState` prop (it's the default when none is given).
  * It runs `density="compact"` because it lives inside a panel, not on a full page. Override the
@@ -36,7 +36,7 @@ const PRESETS = {
 } as const
 
 export interface DataTableEmptyProps {
-  /** Which case this is — drives the default icon and copy. @default "empty" */
+  /** Which case this is: drives the default icon and copy. @default "empty" */
   kind?: keyof typeof PRESETS
   /** Override the media icon. */
   icon?: React.ReactNode

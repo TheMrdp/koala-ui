@@ -9,26 +9,26 @@ import { cn } from "@/lib/utils"
 import { type ToastData, startDismiss } from "./use-toast"
 
 /**
- * Toast — a multi-part component over Radix Toast (swipe-to-dismiss, keyboard, a11y).
+ * Toast: a multi-part component over Radix Toast (swipe-to-dismiss, keyboard, a11y).
  * Stacking logic lives in Toaster; this file owns the visual recipe and the per-toast item.
  *
- * Architecture: the <li> (Toast.Root) is a transparent positioner — its transform and
+ * Architecture: the <li> (Toast.Root) is a transparent positioner. Its transform and
  * opacity are driven by the Toaster's stacking engine via inline style. The inner <div>
  * (surface) owns all visible styling and the enter/exit animations, keeping both axes of
  * motion independent so they never fight each other.
  *
  * polish applied:
- *   #1 – concentric radius: viewport rounded-xl, surface rounded-xl (viewport is not visible so no nesting issue)
- *   #3 – layered box-shadow instead of a plain border for natural depth
- *   #5 – staggered enter: icon, title, description each start slightly offset (via CSS delay)
- *   #6 – subtle exit: slides right (direction-hinting) with a shorter implicit 200 ms
- *   #11 – inner 1 px inset ring (light: black/7%, dark: white/8%) instead of a solid border
- *   #12 – close button uses active:scale-[0.96]
- *   #14 – transition specifies exact properties, never "all"
+ *   #1 : concentric radius: viewport rounded-xl, surface rounded-xl (viewport is not visible so no nesting issue)
+ *   #3 : layered box-shadow instead of a plain border for natural depth
+ *   #5 : staggered enter: icon, title, description each start slightly offset (via CSS delay)
+ *   #6 : subtle exit: slides right (direction-hinting) with a shorter implicit 200 ms
+ *   #11 : inner 1 px inset ring (light: black/7%, dark: white/8%) instead of a solid border
+ *   #12 : close button uses active:scale-[0.96]
+ *   #14 : transition specifies exact properties, never "all"
  */
 export const toastVariants = tv({
   slots: {
-    // Transparent positioner <li>: stacking transform + opacity-on-exit live here.
+    // Transparent positioner <li>: stacking transform plus opacity-on-exit live here.
     // Transition is fully owned by getStackStyle inline styles (never Tailwind class)
     // so there is no specificity conflict between the two.
     root: [
@@ -115,115 +115,110 @@ export interface ToastItemProps {
   stackStyle: React.CSSProperties
   /** Fired on mount, resize, and unmount (null = cleanup). */
   onHeightChange: (id: string, height: number | null) => void
-  /** Called when the cursor enters this toast — expands the stack. */
+  /** Called when the cursor enters this toast: expands the stack. */
   onExpand: () => void
-  /** Called when the cursor leaves this toast — starts the collapse timer. */
+  /** Called when the cursor leaves this toast: starts the collapse timer. */
   onCollapse: () => void
+  /** Optional ref to the positioner <li>. React 19: ref is a regular prop. */
+  ref?: React.Ref<HTMLLIElement>
 }
 
-export const ToastItem = React.forwardRef<HTMLLIElement, ToastItemProps>(
-  function ToastItem({ toast, stackStyle, onHeightChange, onExpand, onCollapse }, forwardedRef) {
-    // polish: trigger enter animation after first paint.
-    const [entered, setEntered] = React.useState(false)
-    const surfaceRef = React.useRef<HTMLDivElement>(null)
+export function ToastItem({
+  toast,
+  stackStyle,
+  onHeightChange,
+  onExpand,
+  onCollapse,
+  ref,
+}: ToastItemProps) {
+  // polish: trigger enter animation after first paint.
+  const [entered, setEntered] = React.useState(false)
+  const surfaceRef = React.useRef<HTMLDivElement>(null)
 
-    // Merge forwarded ref with internal ref for Toaster's height tracking.
-    const liRef = React.useRef<HTMLLIElement>(null)
-    const setRef = React.useCallback(
-      (el: HTMLLIElement | null) => {
-        ;(liRef as React.MutableRefObject<HTMLLIElement | null>).current = el
-        if (typeof forwardedRef === "function") forwardedRef(el)
-        else if (forwardedRef)
-          (forwardedRef as React.MutableRefObject<HTMLLIElement | null>).current = el
-      },
-      [forwardedRef],
-    )
+  // Report surface height so Toaster can compute expanded-stack offsets.
+  React.useLayoutEffect(() => {
+    const el = surfaceRef.current
+    if (!el) return
+    onHeightChange(toast.id, el.offsetHeight)
+    const ro = new ResizeObserver(() => onHeightChange(toast.id, el.offsetHeight))
+    ro.observe(el)
+    return () => {
+      ro.disconnect()
+      onHeightChange(toast.id, null)
+    }
+  }, [toast.id, onHeightChange])
 
-    // Report surface height so Toaster can compute expanded-stack offsets.
-    React.useLayoutEffect(() => {
-      const el = surfaceRef.current
-      if (!el) return
-      onHeightChange(toast.id, el.offsetHeight)
-      const ro = new ResizeObserver(() => onHeightChange(toast.id, el.offsetHeight))
-      ro.observe(el)
-      return () => {
-        ro.disconnect()
-        onHeightChange(toast.id, null)
-      }
-    }, [toast.id, onHeightChange])
+  React.useLayoutEffect(() => {
+    const id = requestAnimationFrame(() => setEntered(true))
+    return () => cancelAnimationFrame(id)
+  }, [])
 
-    React.useLayoutEffect(() => {
-      const id = requestAnimationFrame(() => setEntered(true))
-      return () => cancelAnimationFrame(id)
-    }, [])
+  const slots = toastVariants({ variant: toast.variant })
+  const Icon = toast.variant && toast.variant !== "default" ? VARIANT_ICONS[toast.variant] : null
 
-    const slots = toastVariants({ variant: toast.variant })
-    const Icon = toast.variant && toast.variant !== "default" ? VARIANT_ICONS[toast.variant] : null
-
-    return (
-      <ToastPrimitive.Root
-        ref={setRef}
-        open={toast.open}
-        onOpenChange={open => {
-          // Fires when Radix wants to close (duration elapsed or Close clicked).
-          if (!open) startDismiss(toast.id)
-        }}
-        duration={toast.duration ?? 5000}
-        onMouseEnter={onExpand}
-        onMouseLeave={onCollapse}
+  return (
+    <ToastPrimitive.Root
+      ref={ref}
+      open={toast.open}
+      onOpenChange={open => {
+        // Fires when Radix wants to close (duration elapsed or Close clicked).
+        if (!open) startDismiss(toast.id)
+      }}
+      duration={toast.duration ?? 5000}
+      onMouseEnter={onExpand}
+      onMouseLeave={onCollapse}
+      className={cn(
+        slots.root(),
+        // Exit: fade the positioner so Radix Presence detects transitionend (300 ms)
+        // and the outer layer dissolves while the surface slides right.
+        !toast.open && "opacity-0",
+      )}
+      style={stackStyle}
+    >
+      {/*
+       * Surface <div>: handles the enter slide-up and exit slide-right independently
+       * from the stacking transform on the <li> above.
+       */}
+      <div
+        ref={surfaceRef}
         className={cn(
-          slots.root(),
-          // Exit: fade the positioner so Radix Presence detects transitionend (300 ms)
-          // and the outer layer dissolves while the surface slides right.
-          !toast.open && "opacity-0",
+          slots.surface(),
+          // Enter: start slightly below + transparent, then transition to resting state.
+          !entered && "translate-y-2 opacity-0",
+          // polish: exit slides right (directional cue).
+          !toast.open && "translate-x-full",
         )}
-        style={stackStyle}
       >
-        {/*
-         * Surface <div> — handles the enter slide-up and exit slide-right independently
-         * from the stacking transform on the <li> above.
-         */}
-        <div
-          ref={surfaceRef}
-          className={cn(
-            slots.surface(),
-            // Enter: start slightly below + transparent, then transition to resting state.
-            !entered && "translate-y-2 opacity-0",
-            // polish: exit slides right (directional cue).
-            !toast.open && "translate-x-full",
-          )}
-        >
-          {Icon && (
-            <div className={slots.iconWrap()}>
-              <Icon weight="fill" />
-            </div>
-          )}
-          <div className={slots.content()}>
-            {toast.title && (
-              <ToastPrimitive.Title className={slots.title()}>
-                {toast.title}
-              </ToastPrimitive.Title>
-            )}
-            {toast.description && (
-              <ToastPrimitive.Description className={slots.description()}>
-                {toast.description}
-              </ToastPrimitive.Description>
-            )}
-            {toast.action && (
-              <ToastPrimitive.Action
-                altText={toast.action.label}
-                onClick={toast.action.onClick}
-                className={slots.action()}
-              >
-                {toast.action.label}
-              </ToastPrimitive.Action>
-            )}
+        {Icon && (
+          <div className={slots.iconWrap()}>
+            <Icon weight="fill" />
           </div>
-          <ToastPrimitive.Close data-slot="toast-close" className={slots.close()}>
-            <X weight="bold" />
-          </ToastPrimitive.Close>
+        )}
+        <div className={slots.content()}>
+          {toast.title && (
+            <ToastPrimitive.Title className={slots.title()}>
+              {toast.title}
+            </ToastPrimitive.Title>
+          )}
+          {toast.description && (
+            <ToastPrimitive.Description className={slots.description()}>
+              {toast.description}
+            </ToastPrimitive.Description>
+          )}
+          {toast.action && (
+            <ToastPrimitive.Action
+              altText={toast.action.label}
+              onClick={toast.action.onClick}
+              className={slots.action()}
+            >
+              {toast.action.label}
+            </ToastPrimitive.Action>
+          )}
         </div>
-      </ToastPrimitive.Root>
-    )
-  },
-)
+        <ToastPrimitive.Close data-slot="toast-close" className={slots.close()}>
+          <X weight="bold" />
+        </ToastPrimitive.Close>
+      </div>
+    </ToastPrimitive.Root>
+  )
+}

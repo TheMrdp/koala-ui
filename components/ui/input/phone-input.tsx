@@ -27,7 +27,7 @@ const FLAGS = Flags as unknown as Record<
 
 const phoneInputVariants = tv({
   slots: {
-    // Country button: flush against the root's left border with a divider on the right —
+    // Country button: flush against the root's left border with a divider on the right,
     // same negative-margin trick InputPrefixLabel uses, so it clips at the rounded corner.
     trigger: [
       "group flex shrink-0 cursor-pointer items-center gap-1.5 self-stretch",
@@ -54,7 +54,7 @@ const phoneInputVariants = tv({
       "outline-none transition-colors duration-fast ease-out",
       "data-[active=true]:bg-accent data-[active=true]:text-accent-foreground",
       // Skip paint/layout of off-screen rows so all 200+ flag SVGs don't render at once on
-      // open. DOM-only hint — keyboard nav, search and aria are untouched; the reserved
+      // open. DOM-only hint: keyboard nav, search and aria are untouched; the reserved
       // intrinsic height keeps the scrollbar stable.
       "[content-visibility:auto] [contain-intrinsic-size:auto_2.25rem]",
     ],
@@ -186,7 +186,7 @@ export function PhoneInput({
     onCountryChange?.(iso2)
     emit(iso2, number)
     setOpen(false)
-    // Hand focus to the number field — the natural next action after picking a country.
+    // Hand focus to the number field: the natural next action after picking a country.
     requestAnimationFrame(() => numberRef.current?.focus())
   }
 

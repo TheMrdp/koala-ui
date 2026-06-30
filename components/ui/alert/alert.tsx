@@ -7,7 +7,7 @@ import { createContext } from "@/lib/create-context"
 import { tv, type VariantProps } from "@/lib/tv"
 
 /**
- * Alert — inline status banner. Use for page-level messages, validation
+ * Alert: inline status banner. Use for page-level messages, validation
  * summaries, or contextual feedback. For ephemeral toasts, prefer Toast.
  *
  * polish applied:
@@ -135,7 +135,7 @@ export function Alert({
   )
 }
 
-/** Optional icon area — auto-picks the variant icon when no children are given. */
+/** Optional icon area: auto-picks the variant icon when no children are given. */
 export function AlertIcon({ children, className, ...props }: React.ComponentProps<"div">) {
   const { slots, variant } = useAlertContext("AlertIcon")
   const Icon = VARIANT_ICONS[variant]

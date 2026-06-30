@@ -1,4 +1,4 @@
-﻿import Link from "next/link"
+import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import { DocHeader } from "@/components/docs/doc-page"
@@ -28,15 +28,18 @@ export default function DocsIntroPage() {
         : the same design system, as production-ready React components. Components are owned
         source in your repo, styled with a single{" "}
         <code className="font-mono text-sm">tv</code> recipe, accessible by way of Radix
-        primitives, and themed entirely through semantic design tokens. Four themes ship out
-        of the box: light, dark, cream, and moonlight.
+        primitives, and themed entirely through semantic design tokens. Three themes ship out
+        of the box: light, dark, and moonlight.
       </p>
 
       <div className="mt-8 flex flex-wrap gap-3">
         <Button asChild>
-          <Link href="/docs/components/button">Browse components</Link>
+          <Link href="/docs/installation">Get started</Link>
         </Button>
         <Button asChild variant="outline">
+          <Link href="/docs/components">Browse components</Link>
+        </Button>
+        <Button asChild variant="ghost">
           <Link href="/docs/architecture">Architecture</Link>
         </Button>
       </div>

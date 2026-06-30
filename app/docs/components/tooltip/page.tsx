@@ -2,9 +2,13 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 import { MotionDemo } from "@/components/docs/motion-demo"
 import {
   HeroDemo,
+  VariantsDemo,
+  CapacityTooltipDemo,
+  ToneTooltipDemo,
   PlacementDemo,
   IconContentDemo,
   InteractiveDemo,
@@ -35,7 +39,7 @@ export default function TooltipDocsPage() {
       </ComponentPreview>
 
       <DocSection title="Installation">
-        <Installation component="tooltip" dependencies="npm install @tippyjs/react" />
+        <Installation component="tooltip" dependencies="npm install tippy.js" />
       </DocSection>
 
       <DocSection title="Usage">
@@ -56,6 +60,92 @@ export function Example() {
   )
 }`}
         />
+      </DocSection>
+
+      <DocSection title="Variants">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          <code className="font-mono text-sm">variant</code> sets the content shape.{" "}
+          <code className="font-mono text-sm">text</code> (the default) is a single centered
+          label with tight padding - the right call for a short hint. Switch to{" "}
+          <code className="font-mono text-sm">graph</code> when the content is a multi-line
+          data card (a title plus stats, as shown over a chart bar): it drops the centering
+          for a left-aligned block and adds <code className="font-mono text-sm">8px 12px</code>{" "}
+          padding so the rows aren&apos;t cramped against the bubble edge.
+        </p>
+        <ComponentPreview
+          previewClassName="gap-10"
+          code={`// Short label - the default
+<Tooltip content="Save changes">…</Tooltip>
+
+// Rich data card - left-aligned, roomier padding
+<Tooltip
+  variant="graph"
+  content={
+    <div className="space-y-0.5">
+      <div className="font-medium text-popover-foreground">Trail Runner GTX</div>
+      <div className="text-muted-foreground">1,284 units · 100% of #1</div>
+      <div className="text-muted-foreground">$92,448 revenue · +14% MoM</div>
+    </div>
+  }
+>
+  <Button variant="outline" iconOnly aria-label="Product stats">
+    <ChartBar />
+  </Button>
+</Tooltip>`}
+        >
+          <VariantsDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Data breakdown">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          For a richer <code className="font-mono text-sm">graph</code> tooltip, compose the
+          breakdown parts instead of hand-rolling markup:{" "}
+          <code className="font-mono text-sm">TooltipHeader</code> /{" "}
+          <code className="font-mono text-sm">TooltipValue</code> for the title and total,{" "}
+          <code className="font-mono text-sm">TooltipSeparator</code> for the rule, and{" "}
+          <code className="font-mono text-sm">TooltipSection</code> +{" "}
+          <code className="font-mono text-sm">TooltipStat</code> for tone-railed rows of
+          label / percent / value. The rail color is a token role via{" "}
+          <code className="font-mono text-sm">tone</code> (
+          <code className="font-mono text-sm">brand · info · success · warning · destructive · neutral</code>
+          ), so it tracks the theme - no raw colors. Mark sub-lines with{" "}
+          <code className="font-mono text-sm">indent</code>.
+        </p>
+        <ComponentPreview
+          previewClassName="gap-10"
+          code={`<Tooltip
+  variant="graph"
+  placement="right"
+  content={
+    <>
+      <TooltipHeader>
+        <TooltipHeaderText>
+          <TooltipTitle>Friday, Jul 5</TooltipTitle>
+          <TooltipDescription>Total capacity</TooltipDescription>
+        </TooltipHeaderText>
+        <TooltipValue>08h 00m</TooltipValue>
+      </TooltipHeader>
+      <TooltipSeparator />
+      <TooltipSection tone="info">
+        <TooltipStat label="Tracked time" percent="40%" value="03h 09m" />
+        <TooltipStat label="Billable" percent="79%" value="02h 30m" indent />
+        <TooltipStat label="Non-billable" percent="21%" value="00h 39m" indent />
+      </TooltipSection>
+      <TooltipSection tone="neutral">
+        <TooltipStat label="Remaining capacity" percent="60%" value="04h 50m" />
+      </TooltipSection>
+    </>
+  }
+>
+  <Button variant="outline" iconOnly aria-label="Day capacity">
+    <Clock />
+  </Button>
+</Tooltip>`}
+        >
+          <CapacityTooltipDemo />
+          <ToneTooltipDemo />
+        </ComponentPreview>
       </DocSection>
 
       <DocSection title="Placement">
@@ -293,7 +383,7 @@ export function Example() {
   <Tooltip
     placement="bottom"
     content={
-      <>New file <Kbd size="sm" className="ml-1">⌘N</Kbd></>
+      <>New file <Kbd variant="soft" size="sm" className="ml-1">⌘N</Kbd></>
     }
   >
     <Button variant="ghost" iconOnly aria-label="New file">
@@ -303,7 +393,7 @@ export function Example() {
   <Tooltip
     placement="bottom"
     content={
-      <>Search <Kbd size="sm" className="ml-1">⌘K</Kbd></>
+      <>Search <Kbd variant="soft" size="sm" className="ml-1">⌘K</Kbd></>
     }
   >
     <Button variant="ghost" iconOnly aria-label="Search">
@@ -313,7 +403,7 @@ export function Example() {
   <Tooltip
     placement="bottom"
     content={
-      <>Settings <Kbd size="sm" className="ml-1">⌘,</Kbd></>
+      <>Settings <Kbd variant="soft" size="sm" className="ml-1">⌘,</Kbd></>
     }
   >
     <Button variant="ghost" iconOnly aria-label="Settings">
@@ -372,8 +462,8 @@ export function Example() {
         <p className="text-pretty text-muted-foreground">
           Inside a <code className="font-mono text-sm">TooltipGroup</code> the shared bubble
           uses the <code className="font-mono text-sm">singleton</code> transition variant:
-          opacity-only on the bubble element (no scale, so it doesn't shrink between
-          consecutive triggers). Spatial motion is handled entirely by Tippy's{" "}
+          opacity-only on the bubble element (no scale, so it doesn’t shrink between
+          consecutive triggers). Spatial motion is handled entirely by Tippy’s{" "}
           <code className="font-mono text-sm">moveTransition</code> - a single{" "}
           <code className="font-mono text-sm">transform</code> transition that drives the
           positional glide.
@@ -407,7 +497,7 @@ moveTransition="transform var(--duration-fast) var(--ease-out)"`}
           Both variants extend the same base transition declaration. Only specific properties
           are named - never{" "}
           <code className="font-mono text-sm">transition: all</code> - so unrelated properties
-          (like <code className="font-mono text-sm">background-color</code>) aren't
+          (like <code className="font-mono text-sm">background-color</code>) aren’t
           accidentally caught and the browser can composite the animation on the GPU.
         </p>
         <CodeSnippet
@@ -465,6 +555,20 @@ moveTransition="transform var(--duration-fast) var(--ease-out)"`}
   <Tooltip content="Save">…</Tooltip>
   <Tooltip content="Copy">…</Tooltip>
 </TooltipGroup>`}
+        />
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "Why is Tooltip the one component not built on Radix?", a: "Tooltip uses Tippy.js in headless mode for positioning, hover-intent, and a11y, because its placement and singleton glide behavior go beyond what the Radix primitive offers. Koala still owns the bubble markup, styled with our tokens, so this is a documented exception to the Radix-first rule." },
+            { q: "When should I use variant=\"graph\" instead of the default?", a: "Use `graph` whenever `content` is more than a single short line - a title plus a couple of stat rows, like the data card shown over a chart bar. It left-aligns the block and adds 8px/12px padding so the rows breathe; the default `text` variant centers a single label with tight padding, which looks cramped around multi-line content. Inside a `TooltipGroup` the shared bubble has one shape, so set `variant` on the group, not the individual tooltips." },
+            { q: "How do I keep a tooltip open so I can click a link inside it?", a: "Pass `interactive`, which keeps the bubble open while the pointer is over it. Pair it with a `delay` like `[150, 80]` so the close delay gives the user time to travel from the trigger to the bubble before it dismisses." },
+            { q: "What is TooltipGroup for?", a: "Wrap several `Tooltip`s in `TooltipGroup` to share one bubble that glides from trigger to trigger (a Tippy singleton) instead of each fading out and in. Use it for toolbars, avatar stacks, or any dense row of labeled controls." },
+            { q: "Why are my per-tooltip delay and offset being ignored?", a: "Inside a `TooltipGroup` the `delay` and `offset` on individual `Tooltip`s are ignored because one shared bubble can have only one timing and distance. Set `delay` and `offset` once on the `TooltipGroup` instead." },
+            { q: "My tooltip pops open when a dialog auto-focuses the button. How do I stop that?", a: "Pass `trigger=\"mouseenter\"` to drop the default focus trigger. By default `trigger` is `\"mouseenter focus\"`, so Radix auto-focusing the first control on dialog open will also open the tooltip unless you suppress the focus event." },
+            { q: "Do I need to manage z-index to show a tooltip above a dialog?", a: "No. Tippy appends the bubble to `document.body`, so it renders above the dialog stacking context with no extra `z-index` or portal configuration." },
+          ]}
         />
       </DocSection>
 

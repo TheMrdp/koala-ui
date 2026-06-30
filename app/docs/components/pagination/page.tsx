@@ -2,6 +2,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 
 import {
   FullDemo,
@@ -21,7 +22,7 @@ export default function PaginationDocsPage() {
     <>
       <DocHeader
         title="Pagination"
-        description="A toolbar for navigating a paged dataset — current page and total, prev/next, a go-to-page field, and a rows-per-page select. Each addon is toggled by a show* boolean, so the same component covers a bare prev/next bar or a full data-table footer."
+        description="A toolbar for navigating a paged dataset: current page and total, prev/next, a go-to-page field, and a rows-per-page select. Each addon is toggled by a show* boolean, so the same component covers a bare prev/next bar or a full data-table footer."
       />
 
       <ComponentPreview
@@ -75,7 +76,7 @@ export function Example() {
       <DocSection title="Default">
         <p className="mt-4 text-pretty text-muted-foreground">
           Out of the box you get the page readout and prev/next controls. The component is
-          fully controlled — drive it with <code className="font-mono text-sm">page</code>{" "}
+          fully controlled: drive it with <code className="font-mono text-sm">page</code>{" "}
           and <code className="font-mono text-sm">onPageChange</code>. The buttons disable
           themselves at the first and last page.
         </p>
@@ -136,7 +137,7 @@ export function Example() {
           Like the rest of Koala, Pagination honors the{" "}
           <code className="font-mono text-sm">density</code> axis (prop or{" "}
           <code className="font-mono text-sm">DensityProvider</code>). The whole toolbar lands
-          on one matched control height — a 40px row when comfortable, a 32px row when compact.
+          on one matched control height: a 40px row when comfortable, a 32px row when compact.
         </p>
         <ComponentPreview
           previewClassName="px-6"
@@ -151,11 +152,11 @@ export function Example() {
         <p className="mt-4 text-pretty text-muted-foreground">
           For a bespoke arrangement, drop the <code className="font-mono text-sm">show*</code>{" "}
           toggles and compose the parts yourself inside{" "}
-          <code className="font-mono text-sm">PaginationRoot</code>. Every part —{" "}
+          <code className="font-mono text-sm">PaginationRoot</code>. Every part:{" "}
           <code className="font-mono text-sm">PaginationInfo</code>,{" "}
           <code className="font-mono text-sm">PaginationControls</code>,{" "}
           <code className="font-mono text-sm">PaginationGoTo</code>,{" "}
-          <code className="font-mono text-sm">PaginationRowsPerPage</code> — reads the shared
+          <code className="font-mono text-sm">PaginationRowsPerPage</code>, reads the shared
           state from context.
         </p>
         <ComponentPreview
@@ -168,6 +169,19 @@ export function Example() {
         >
           <CustomLayoutDemo />
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "Is Pagination controlled or uncontrolled?", a: "It is fully controlled. Drive it with `page` and `pageCount` and update your state in `onPageChange`; the prev/next controls disable themselves automatically at the first and last page." },
+            { q: "How do I turn the extra pieces on?", a: "Each addon is gated by a `show*` boolean: `showInfo` for the page readout, `showControls` for prev/next, `showGoTo` for the jump field, and `showRowsPerPage` for the rows-per-page select. That lets the same component be a bare prev/next bar or a full data-table footer." },
+            { q: "What happens if someone types an out-of-range page in the go-to field?", a: "With `showGoTo`, the value commits on Enter or blur and is clamped into range, so an out-of-bounds entry snaps back to the nearest valid page." },
+            { q: "How do I wire the rows-per-page select?", a: "Set `showRowsPerPage` and pass `rowsPerPage` with `onRowsPerPageChange`. Customize the choices with `rowsPerPageOptions`, for example `[10, 25, 50, 100]`." },
+            { q: "Can I build a custom layout from the parts?", a: "Yes. Drop the `show*` toggles and compose `PaginationInfo`, `PaginationControls`, `PaginationGoTo`, and `PaginationRowsPerPage` yourself inside `PaginationRoot`; every part reads the shared state from context." },
+            { q: "Does Pagination respect density?", a: "Yes. The `density` prop (or a surrounding DensityProvider) lands the whole toolbar on one matched control height: a 40px row when comfortable and a 32px row when compact." },
+          ]}
+        />
       </DocSection>
 
     </>

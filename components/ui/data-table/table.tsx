@@ -8,10 +8,10 @@ import { tv, type VariantProps } from "@/lib/tv"
 import { cn } from "@/lib/utils"
 
 /**
- * Table — the styling layer over TanStack Table. Koala keeps the two concerns split the way
+ * Table: the styling layer over TanStack Table. Koala keeps the two concerns split the way
  * the references do: TanStack owns the *behavior* (sorting, grouping, selection, pinning) in
  * `data-table.tsx`; these primitives own the *look*. They are plain styled `<table>` elements
- * — usable on their own for static tables, and the render target the `DataTable` wires
+ * usable on their own for static tables, and the render target the `DataTable` wires
  * TanStack into.
  *
  * Pattern: one `tv` recipe with `slots`, the resolved slots flowing to every part through
@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils"
  * under sticky headers/columns while scrolling, so dividers live on the cells themselves.
  * Rows carry a concrete surface color so a pinned `bg-inherit` cell tracks its row's stripe,
  * hover, and selected states instead of going transparent over the scrolling content. That
- * surface is the `--table-surface` variable, set once on the root by the `variant` knob — so
+ * surface is the `--table-surface` variable, set once on the root by the `variant` knob, so
  * every opaque mix below (rows, stripe, hover, footer, sticky header/column) rebases together:
  * the chromeless default tracks the container's `--surface` (Dialog → popover, Layout → card),
  * falling back to `--background` on a plain page; `--card` for the opt-in bordered `container`.
@@ -41,7 +41,7 @@ export const tableVariants = tv({
     caption: "mt-4 text-sm text-pretty text-muted-foreground",
   },
   variants: {
-    // The surface treatment. `minimal` is the default — no border, radius, or fill, with the edge
+    // The surface treatment. `minimal` is the default: no border, radius, or fill, with the edge
     // cells pulled flush so the rows read as lined records and drop into whatever already frames
     // them. `container` is the opt-in: the bordered, rounded card for when the table stands on its
     // own. Both rebase every opaque surface via `--table-surface` so stripe/hover/sticky keep
@@ -50,9 +50,9 @@ export const tableVariants = tv({
       minimal: {
         // Honors the `--surface` contract: a container that declares one (Dialog → popover,
         // Layout → card) gets a table that blends into it; on a plain page `--surface` is unset
-        // so this falls back to `--background` — identical to before.
+        // so this falls back to `--background`, identical to before.
         root: "[--table-surface:var(--surface,var(--background))]",
-        // Edge cells go flush with the table's bounds — without a container border to sit
+        // Edge cells go flush with the table's bounds: without a container border to sit
         // inside, the leading/trailing padding would just read as a stray indent.
         table: "[&_tr>*:first-child]:pl-0 [&_tr>*:last-child]:pr-0",
       },
@@ -68,14 +68,14 @@ export const tableVariants = tv({
       compact: { head: "h-9 px-3", cell: "h-9 px-3 py-1.5" },
     },
     // Zebra striping. Scoped with `:not(:hover):not([data-state=selected])` so the stripe never
-    // fights the hover or selected backgrounds — those stay deterministic regardless of cascade.
+    // fights the hover or selected backgrounds; those stay deterministic regardless of cascade.
     // The tint is mixed into the table surface (not layered with alpha) so it stays fully opaque:
     // a pinned `bg-inherit` cell that takes it on must cover content scrolling under it, not bleed it.
     striped: {
       true: { body: "[&>tr:nth-child(even):not(:hover):not([data-state=selected])]:bg-[color-mix(in_oklab,var(--muted)_40%,var(--table-surface))]" },
       false: {},
     },
-    // Row hover. Applied on the body so only data rows light up — header/footer rows never do.
+    // Row hover. Applied on the body so only data rows light up; header/footer rows never do.
     // Opaque (mixed into the table surface, not `/50` alpha) for the same pinned-column reason as `striped`.
     hoverable: {
       true: { body: "[&>tr:hover]:bg-[color-mix(in_oklab,var(--muted)_50%,var(--table-surface))]" },
@@ -123,16 +123,16 @@ function stickyClass(sticky: "left" | "right" | undefined, surface: "head" | "ce
 export interface TableProps
   extends React.ComponentProps<"table">,
     VariantProps<typeof tableVariants> {
-  /** Surface treatment: `minimal` (no border/radius/fill, edge cells flush — lined records on the
+  /** Surface treatment: `minimal` (no border/radius/fill, edge cells flush, lined records on the
    *  page; the default) or `container` (the bordered, rounded card). @default "minimal" */
   variant?: "minimal" | "container"
-  /** Props for the scroll container that wraps the table — e.g. a `max-h-*` for sticky-header scroll. */
+  /** Props for the scroll container that wraps the table, e.g. a `max-h-*` for sticky-header scroll. */
   containerProps?: React.ComponentProps<"div">
 }
 
 /**
  * Parts are exported individually (not `Table.Row` dot-notation) because namespaced statics
- * don't survive the RSC server→client boundary — only named exports do. Compose as
+ * don't survive the RSC server→client boundary; only named exports do. Compose as
  * `<Table><TableHeader><TableRow><TableHead>…`.
  */
 export function Table({
@@ -183,7 +183,7 @@ export function TableFooter({ className, ...props }: React.ComponentProps<"tfoot
 }
 
 export interface TableRowProps extends React.ComponentProps<"tr"> {
-  /** Highlight the row as selected — stamps `data-state="selected"`. */
+  /** Highlight the row as selected; stamps `data-state="selected"`. */
   selected?: boolean
 }
 
@@ -252,7 +252,7 @@ export function TableCaption({ className, ...props }: React.ComponentProps<"capt
 }
 
 /**
- * A two-line cell — primary label over muted supporting text (e.g. name over email). One of the
+ * A two-line cell: primary label over muted supporting text (e.g. name over email). One of the
  * common "cell types" a data table reaches for; compose it inside a `<TableCell>`.
  */
 export function TableCellText({
@@ -274,7 +274,7 @@ export function TableCellText({
   )
 }
 
-/** Full-width empty state — a single cell spanning every column. Drop into `<TableBody>` when
+/** Full-width empty state: a single cell spanning every column. Drop into `<TableBody>` when
  *  there are no rows. */
 export function TableEmpty({
   colSpan,

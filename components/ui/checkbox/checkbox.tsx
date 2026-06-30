@@ -6,12 +6,12 @@ import { Checkbox as CheckboxPrimitive } from "radix-ui"
 import { tv, type VariantProps } from "@/lib/tv"
 
 /**
- * Checkbox — a Radix Checkbox styled with Koala tokens. Single-part, so one `tv` recipe with
+ * Checkbox: a Radix Checkbox styled with Koala tokens. Single-part, so one `tv` recipe with
  * `slots` (the box and its indicator icon scale together). Supports the tri-state
  * `"indeterminate"` value a "select all" needs, shown as a minus rather than a check.
  *
  * `"use client"` because Radix Checkbox is interactive (state + context). Pair it with a
- * `<label htmlFor>` for an accessible name and a larger hit target — see the docs.
+ * `<label htmlFor>` for an accessible name and a larger hit target. See the docs.
  */
 export const checkboxVariants = tv({
   slots: {
@@ -20,9 +20,9 @@ export const checkboxVariants = tv({
       // Specific transition (never `transition: all`, #14); tactile press scale (#12).
       "transition-colors duration-fast ease-out active:scale-[0.96]",
       "outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-      // Checked and indeterminate both fill with the primary; the indicator inherits the fg.
-      "data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
-      "data-[state=indeterminate]:border-primary data-[state=indeterminate]:bg-primary data-[state=indeterminate]:text-primary-foreground",
+      // Checked and indeterminate both fill with the accent (brand); the indicator inherits the fg.
+      "data-[state=checked]:border-brand data-[state=checked]:bg-brand data-[state=checked]:text-white",
+      "data-[state=indeterminate]:border-brand data-[state=indeterminate]:bg-brand data-[state=indeterminate]:text-white",
       "disabled:cursor-not-allowed disabled:opacity-50",
     ],
     indicator: "flex items-center justify-center text-current",
@@ -30,8 +30,8 @@ export const checkboxVariants = tv({
   },
   variants: {
     // The corner radius scales with the box so both sizes read with the same roundness. `md`
-    // (20px) uses the `rounded-sm` token; `sm` (16px) is 0.8× that — exactly its box ratio
-    // (16/20) — so it stays proportional instead of looking over-rounded at the smaller size.
+    // (20px) uses the `rounded-sm` token; `sm` (16px) is 0.8× that, exactly its box ratio
+    // (16/20), so it stays proportional instead of looking over-rounded at the smaller size.
     size: {
       sm: { root: "size-4 rounded-[calc(var(--radius-sm)*0.8)]", icon: "size-3" },
       md: { root: "size-5 rounded-sm", icon: "size-3.5" },

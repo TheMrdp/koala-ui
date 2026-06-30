@@ -8,15 +8,16 @@ import { tv, type VariantProps } from "@/lib/tv"
 import { cn } from "@/lib/utils"
 import { useDensity } from "@/lib/density"
 import { useFieldContext } from "@/lib/field-context"
+import { Tooltip, type TooltipProps } from "@/components/ui/tooltip"
 
 export const selectVariants = tv({
   slots: {
     trigger: [
       // `group` lets the chevron read data-state=open off the trigger.
-      // rounded-md matches Button + Input — form controls share one control radius.
+      // rounded-md matches Button + Input: form controls share one control radius.
       "group flex w-full cursor-pointer items-center justify-between gap-2 rounded-md border border-input",
       // Opaque background that matches whatever surface the trigger sits on: reads `--surface`
-      // if a container set one (e.g. Dialog → popover), else falls back to the page background —
+      // if a container set one (e.g. Dialog → popover), else falls back to the page background:
       // same logic as Input, so the control blends in without ever looking "filled".
       "bg-[var(--surface,var(--background))] px-3 text-sm text-left text-foreground shadow-xs",
       "transition-[border-color,box-shadow] duration-fast ease-out",
@@ -27,7 +28,14 @@ export const selectVariants = tv({
       // Inside a Field with `hasError`, the trigger picks up aria-invalid and turns red.
       "aria-[invalid=true]:border-destructive aria-[invalid=true]:focus:ring-destructive",
       "data-[placeholder]:text-muted-foreground",
-      "[&>span]:line-clamp-1",
+      // The selected value mirrors the chosen item (leading icon + label). Lay it out as a
+      // flex row so the icon stays aligned and correctly sized: a `line-clamp` here forces
+      // `display: -webkit-box`, which distorts inline SVGs (e.g. a leading Sparkle rendered
+      // doubled/oversized). `truncate` keeps long labels on one line; `min-w-0` lets them clip.
+      "[&>span]:flex [&>span]:min-w-0 [&>span]:items-center [&>span]:gap-2 [&>span]:truncate",
+      // Any icon in the trigger (mirrored value icon) gets a 1rem box and never shrinks; the
+      // chevron keeps its own size (it already carries a `size-*`, so it's excluded).
+      "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
     ],
     chevron: [
       "size-4 shrink-0 text-muted-foreground",
@@ -37,7 +45,7 @@ export const selectVariants = tv({
     content: [
       "relative z-50 min-w-[var(--radix-select-trigger-width)] overflow-hidden",
       "rounded-md border border-border bg-popover text-popover-foreground shadow-lg",
-      // Enter: fade + zoom + slide. Exit: fade + slide only — softer than the enter.
+      // Enter: fade + zoom + slide. Exit: fade + slide only, softer than the enter.
       "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
       "data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
       "data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2",
@@ -46,14 +54,19 @@ export const selectVariants = tv({
     ],
     item: [
       // Check sits on the right (pr-7) so leading icons/flags align flush-left regardless of
-      // selection — the left edge is a stable optical line.
+      // selection: the left edge is a stable optical line.
       "relative flex w-full cursor-pointer select-none items-center gap-2 pl-2 pr-7",
-      "text-sm outline-none",
+      "text-sm font-medium outline-none",
       "transition-colors duration-fast ease-out",
       "focus:bg-accent focus:text-accent-foreground",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       "[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
     ],
+    // The label span Radix mirrors into the trigger value. Flex so a leading icon sits inline
+    // with the text (Tailwind's preflight makes SVGs `display:block`, which would otherwise
+    // stack the icon above the label): no per-option flex wrapper needed. `min-w-0` lets a
+    // long label truncate rather than push the check off the row.
+    itemText: "flex min-w-0 items-center gap-2 [&_svg]:text-muted-foreground",
     itemIndicator: "absolute right-2 flex size-4 items-center justify-center",
     label: "px-2 font-medium text-muted-foreground",
     separator: "-mx-1 h-px bg-border",
@@ -153,6 +166,11 @@ export function SelectContent({
         </SelectPrimitive.ScrollUpButton>
         <SelectPrimitive.Viewport
           className={cn(
+            // Soften the scroll edges into the popover (the only scroll cue, since the viewport's
+            // scrollbar is hidden). `scroll-py-10` matches the fade depth so a keyboard-focused
+            // item scrolls in clear of the fade, never half-dissolved. The native overflow scroll
+            // (Radix sets `overflow:hidden auto`) is what the `scroll()` timeline tracks.
+            "scroll-fade scroll-py-10",
             viewportPadding[d],
             position === "popper" && "w-full min-w-[var(--radix-select-trigger-width)]",
           )}
@@ -169,11 +187,28 @@ export function SelectContent({
 
 export interface SelectItemProps
   extends React.ComponentProps<typeof SelectPrimitive.Item>,
-    VariantProps<typeof selectVariants> {}
+    VariantProps<typeof selectVariants> {
+  /**
+   * Optional hint shown on hover/keyboard-focus of the row. Use it for terse options whose
+   * meaning isn't obvious from the label alone. "High" / "Medium" tells you nothing about the
+   * trade-off, so a hint like "Optimizes for latency" earns its place. Supply any node (plain
+   * text, or text plus a small leading glyph). When set, the row renders inside a {@link Tooltip}.
+   */
+  tooltip?: React.ReactNode
+  /** Side the hint grows toward. Defaults to `"right"`, the open side of a left-aligned row. */
+  tooltipPlacement?: TooltipProps["placement"]
+}
 
-export function SelectItem({ className, children, density, ...props }: SelectItemProps) {
+export function SelectItem({
+  className,
+  children,
+  density,
+  tooltip,
+  tooltipPlacement = "right",
+  ...props
+}: SelectItemProps) {
   const slots = selectVariants({ density: useDensity(density) })
-  return (
+  const item = (
     <SelectPrimitive.Item
       data-slot="select-item"
       className={slots.item({ className })}
@@ -184,8 +219,21 @@ export function SelectItem({ className, children, density, ...props }: SelectIte
           <Check className="size-4" />
         </SelectPrimitive.ItemIndicator>
       </span>
-      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+      <SelectPrimitive.ItemText className={slots.itemText()}>
+        {children}
+      </SelectPrimitive.ItemText>
     </SelectPrimitive.Item>
+  )
+
+  if (!tooltip) return item
+
+  // `mouseenter focus` (Tooltip's default) means arrowing through the list also surfaces the
+  // hint, not just hovering, so the keyboard path stays informative. The tooltip portals to the
+  // body, so it floats above the content's `overflow-hidden` without being clipped.
+  return (
+    <Tooltip content={tooltip} placement={tooltipPlacement} offset={[0, 8]}>
+      {item}
+    </Tooltip>
   )
 }
 

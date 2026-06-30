@@ -3,7 +3,7 @@ import { createTV } from "tailwind-variants"
 import { twMergeConfig } from "@/lib/utils"
 
 /**
- * The Koala UI variant engine — an instance of `tailwind-variants` wired to the same
+ * The Koala UI variant engine: an instance of `tailwind-variants` wired to the same
  * `tailwind-merge` config as `cn`, so custom token scales resolve consistently.
  *
  * Always import `tv` from here, never from "tailwind-variants" directly.

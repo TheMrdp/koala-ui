@@ -21,18 +21,18 @@ const otpInputVariants = tv({
       "text-center font-medium tabular-nums caret-brand",
       "rounded-lg border border-input bg-background text-foreground",
       "placeholder:text-muted-foreground/40",
-      // Hide the placeholder while focused — it only guides empty, unfocused slots.
+      // Hide the placeholder while focused: it only guides empty, unfocused slots.
       "focus:placeholder:text-transparent",
       "appearance-none outline-none",
       "transition-[border-color,box-shadow,background-color] duration-fast ease-out",
       "selection:bg-brand/20",
       // The focused slot lifts above its neighbours so its ring is never clipped.
-      "focus:z-10 focus:border-brand focus:[box-shadow:0_0_0_3px_var(--ring-brand)]",
+      "focus:z-10 focus:border-brand focus:brand-ring",
       "disabled:cursor-not-allowed",
       // Filled slots read a touch heavier than empty ones.
       "data-[filled=true]:border-ring",
       // Re-apply focus ring on filled slots (data-attr selector has same specificity as :focus, last wins).
-      "data-[filled=true]:focus:border-brand data-[filled=true]:focus:[box-shadow:0_0_0_3px_var(--ring-brand)]",
+      "data-[filled=true]:focus:border-brand data-[filled=true]:focus:brand-ring",
       // Hide the number-spinner affordances some browsers add to numeric fields.
       "[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
     ],
@@ -62,7 +62,7 @@ const otpInputVariants = tv({
       true: {
         slot: [
           "border-destructive caret-destructive",
-          "focus:border-destructive focus:[box-shadow:0_0_0_3px_color-mix(in_oklch,var(--destructive)_20%,transparent)]",
+          "focus:border-destructive focus:destructive-ring",
         ],
       },
     },
@@ -107,7 +107,7 @@ export interface OTPInputProps
   hint?: React.ReactNode
   /** Appends a destructive asterisk to the label. */
   required?: boolean
-  /** Controlled value — the concatenated digits. */
+  /** Controlled value: the concatenated digits. */
   value?: string
   /** Uncontrolled initial value. */
   defaultValue?: string
@@ -222,7 +222,7 @@ function OTPInput({
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const digit = onlyDigits(event.target.value)
-    // Deletions arrive as an empty value — handled in keydown so we ignore them here.
+    // Deletions arrive as an empty value, handled in keydown so we ignore them here.
     if (!digit) return
     const next = [...chars]
     next[index] = digit.slice(-1)
@@ -243,7 +243,7 @@ function OTPInput({
           next[index] = ""
           emit(next)
         } else if (index > 0) {
-          // Already empty — step back and clear the previous slot.
+          // Already empty: step back and clear the previous slot.
           next[index - 1] = ""
           emit(next)
           focusSlot(index - 1)

@@ -11,6 +11,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 import { DismissibleDemo } from "./dismissible-demo"
 
 export const metadata = {
@@ -310,6 +311,37 @@ export function Example() {
         >
           <DismissibleDemo />
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            {
+              q: "When should I reach for Alert instead of Toast?",
+              a: "Use Alert for inline, persistent messages that stay in the page flow: validation summaries, page-level banners, or contextual feedback next to the content it describes. Reach for Toast when the message is ephemeral and should auto-dismiss without occupying layout space.",
+            },
+            {
+              q: "What does the variant prop change beyond the color?",
+              a: "variant sets the semantic tone (`default`, `info`, `success`, `warning`, `destructive`) which drives both the accent color and, when you render an empty `AlertIcon`, the auto-selected Phosphor icon. The tints derive from a single token per role so all five variants re-theme across the four Koala themes.",
+            },
+            {
+              q: "How does AlertIcon pick its icon?",
+              a: "Leave `AlertIcon` empty and it auto-selects the icon matching the current variant (CheckCircle for success, Warning for warning, and so on). Pass children to use a custom icon, or omit `AlertIcon` entirely for an icon-free alert.",
+            },
+            {
+              q: "How do I make an Alert dismissible?",
+              a: "Pass an `onDismiss` handler to render the close button; the component is uncontrolled, so you own the visibility state (typically a `useState` boolean that conditionally renders the Alert). Set `dismissLabel` to customize the screen-reader label, which defaults to \"Dismiss\".",
+            },
+            {
+              q: "Where do AlertActions and AlertContent go in the part tree?",
+              a: "Wrap your title and description in `AlertContent`, and place `AlertActions` as the last child inside `AlertContent` so the button row sits below the description. Keep `AlertIcon` as a sibling of `AlertContent`, not nested inside it.",
+            },
+            {
+              q: "Is Alert announced to screen readers?",
+              a: "Yes. The root renders with `role=\"alert\"`, so assistive tech announces the content when it appears. For messages that are not urgent status updates, consider whether a less interruptive pattern is more appropriate.",
+            },
+          ]}
+        />
       </DocSection>
 
     </>

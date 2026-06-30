@@ -9,11 +9,11 @@ import { cn } from "@/lib/utils"
 import { tv, type VariantProps } from "@/lib/tv"
 
 /**
- * Tabs — multi-part component over Radix Tabs. Pattern: one `tv` recipe with `slots`,
+ * Tabs: multi-part component over Radix Tabs. Pattern: one `tv` recipe with `slots`,
  * shared variants flowing to every part through React Context. See docs/ARCHITECTURE.md §2.
  *
  * The active state is drawn by a single **sliding indicator** measured in JS and moved
- * with `transform` — the one detail that makes tabs feel alive (polish:
+ * with `transform`: the one detail that makes tabs feel alive (polish:
  * interruptible transitions, skip-animation-on-load).
  */
 export const tabsVariants = tv({
@@ -36,8 +36,15 @@ export const tabsVariants = tv({
       "before:absolute before:inset-x-0 before:top-1/2 before:h-10 before:-translate-y-1/2 before:content-['']",
       "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
     ],
-    content:
+    // Radix unmounts the inactive panel and mounts the active one fresh, so the new panel
+    // appears at its end state: a CSS transition wouldn't fire, but a tw-animate-css animation
+    // runs on mount. Cross-fade + a 4px rise on activate, riding the same motion tokens as the
+    // sliding indicator, so switching tabs reads as one gesture instead of a snap.
+    content: [
       "rounded-md outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+      "data-[state=active]:animate-in data-[state=active]:fade-in-0 data-[state=active]:slide-in-from-bottom-1",
+      "duration-base ease-out",
+    ],
     // Positioned/sized by JS (see useActiveIndicator); transition added once ready.
     indicator: "pointer-events-none absolute left-0 top-0 z-0",
   },
@@ -47,17 +54,19 @@ export const tabsVariants = tv({
         list: "gap-1 bg-muted dark:bg-card",
         indicator: "bg-background dark:bg-muted shadow-xs",
       },
-      underline: {
-        list: "gap-1 border-b border-border",
-        // polish: a soft-capped bar reads cleaner than a hard rule.
-        indicator: "rounded-full bg-primary",
-      },
       // Active trigger shows a pill background (CSS fade) + a sliding bar on the bottom rule.
       // `pb-1.5` opens the gap that separates the pill from the colored indicator below it.
       folder: {
         list: "gap-1 border-b border-border pb-2.5",
         trigger: "data-[state=active]:bg-muted",
         indicator: "rounded-full bg-primary",
+      },
+      // Folder geometry (bar on the bottom rule, gap below) but no pill container: the
+      // only active affordance is a single bar in the accent color, keyed off `--brand`
+      // so it follows whatever accent is active (see globals.css §accent).
+      line: {
+        list: "gap-1 border-b border-border pb-2.5",
+        indicator: "rounded-full bg-brand",
       },
     },
     size: {
@@ -73,13 +82,13 @@ export const tabsVariants = tv({
     },
   },
   compoundVariants: [
-    // polish: concentric radius — inner = outer − padding.
+    // polish: concentric radius. inner = outer − padding.
     // pill·comfortable: list rounded-xl(16) + p-1(4) → trigger/indicator rounded-lg(11).
     { variant: "pill", density: "comfortable", className: { list: "rounded-xl p-1", trigger: "rounded-lg", indicator: "rounded-lg" } },
     // pill·compact: list rounded-lg(11) + p-0.5(2) → trigger/indicator rounded-md(9).
     { variant: "pill", density: "compact", className: { list: "rounded-lg p-0.5", trigger: "rounded-md", indicator: "rounded-md" } },
-    // Underline triggers are square; the moving bar is the only active affordance.
-    { variant: "underline", className: { trigger: "rounded-none" } },
+    // Line triggers are square; the moving accent bar is the only active affordance.
+    { variant: "line", className: { trigger: "rounded-none" } },
     // Folder: concentric radius on active trigger background (outer list has no padding container).
     { variant: "folder", density: "comfortable", className: { trigger: "rounded-xl" } },
     { variant: "folder", density: "compact", className: { trigger: "rounded-lg" } },
@@ -101,7 +110,7 @@ const [TabsProvider, useTabsContext] = createContext<{
 
 /**
  * Tracks the active trigger's box and returns the indicator's transform/size. Re-measures
- * on selection change (data-state mutation), on resize, and on font/layout shifts — never
+ * on selection change (data-state mutation), on resize, and on font/layout shifts, never
  * polls. `ready` gates visibility so the indicator never paints at the origin; `animate`
  * turns the transition on one frame *after* the first placement, so it snaps into position
  * on load and only slides on later selection changes (polish).
@@ -126,10 +135,16 @@ function useActiveIndicator(
       }
       const { offsetLeft: left, offsetTop: top, offsetWidth: width, offsetHeight: height } = active
       let next: React.CSSProperties
-      if (variant === "underline") {
-        next = { transform: `translate(${left}px, ${top + height - 2}px)`, width, height: 2 }
+      if (variant === "line") {
+        // Bar sits on the bottom rule like folder, but inset to the trigger's content box
+        // (padding removed) so it underlines the *label*, not the full padded hit area;
+        // otherwise it spills left of the first tab's text and reads misaligned.
+        const cs = getComputedStyle(active)
+        const padL = parseFloat(cs.paddingLeft) || 0
+        const padR = parseFloat(cs.paddingRight) || 0
+        next = { transform: `translate(${left + padL}px, ${list.clientHeight - 1}px)`, width: width - padL - padR, height: 2 }
       } else if (variant === "folder") {
-        // Bar sits on the list's bottom rule, in the gap below the active pill — so the
+        // Bar sits on the list's bottom rule, in the gap below the active pill, so the
         // pill background never covers it (no z-index fight with the trigger).
         next = { transform: `translate(${left}px, ${list.clientHeight - 1}px)`, width, height: 2 }
       } else {
@@ -150,7 +165,7 @@ function useActiveIndicator(
     ro.observe(list)
     for (const child of list.children) ro.observe(child)
 
-    // Radix flips `data-state` on the triggers when the value changes — watch that.
+    // Radix flips `data-state` on the triggers when the value changes; watch that.
     const mo = new MutationObserver(measure)
     mo.observe(list, { attributes: true, attributeFilter: ["data-state"], subtree: true })
 
@@ -192,9 +207,9 @@ export function TabsList({ className, children, ...props }: React.ComponentProps
       <span
         aria-hidden
         data-slot="tabs-indicator"
-        // Interruptible transition (CSS, named properties — never `transition: all`);
+        // Interruptible transition (CSS, named properties, never `transition: all`);
         // hidden until the first measure, and the transition only switches on after that
-        // placement has painted — so it never slides in from the origin on load.
+        // placement has painted, so it never slides in from the origin on load.
         className={cn(
           slots.indicator(),
           ready ? "opacity-100" : "opacity-0",

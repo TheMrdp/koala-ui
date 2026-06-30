@@ -41,6 +41,49 @@
       ]
     },
     {
+      "name": "activity-feed",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Activity Feed",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/activity-feed/activity-feed.tsx",
+        "components/ui/activity-feed/index.ts"
+      ]
+    },
+    {
+      "name": "ai-panel",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "AI Panel",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "button"
+      ],
+      "libDependencies": [
+        "create-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/ai-panel/ai-panel.tsx",
+        "components/ui/ai-panel/index.ts"
+      ]
+    },
+    {
       "name": "alert",
       "type": "component",
       "tier": "free",
@@ -57,6 +100,33 @@
       "files": [
         "components/ui/alert/alert.tsx",
         "components/ui/alert/index.ts"
+      ]
+    },
+    {
+      "name": "auth-form",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Auth Form",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "button",
+        "checkbox",
+        "divider",
+        "field",
+        "input",
+        "password-strength"
+      ],
+      "libDependencies": [
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/auth-form/auth-form.tsx",
+        "components/ui/auth-form/brand-logos.tsx",
+        "components/ui/auth-form/index.ts"
       ]
     },
     {
@@ -80,6 +150,24 @@
       ]
     },
     {
+      "name": "avatar-group",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Avatar Group",
+      "dependencies": {},
+      "registryDependencies": [
+        "avatar"
+      ],
+      "libDependencies": [
+        "tv"
+      ],
+      "files": [
+        "components/ui/avatar-group/avatar-group.tsx",
+        "components/ui/avatar-group/index.ts"
+      ]
+    },
+    {
       "name": "badge",
       "type": "component",
       "tier": "free",
@@ -97,6 +185,65 @@
       "files": [
         "components/ui/badge/badge.tsx",
         "components/ui/badge/index.ts"
+      ]
+    },
+    {
+      "name": "badge-group",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Badge Group",
+      "dependencies": {},
+      "registryDependencies": [
+        "badge",
+        "tooltip"
+      ],
+      "libDependencies": [
+        "tv"
+      ],
+      "files": [
+        "components/ui/badge-group/badge-group.tsx",
+        "components/ui/badge-group/index.ts"
+      ]
+    },
+    {
+      "name": "banner",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Banner",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/banner/banner.tsx",
+        "components/ui/banner/index.ts"
+      ]
+    },
+    {
+      "name": "bento",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Bento",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "tv"
+      ],
+      "files": [
+        "components/ui/bento/bento.tsx",
+        "components/ui/bento/index.ts"
       ]
     },
     {
@@ -138,7 +285,9 @@
       ],
       "files": [
         "components/ui/button/button.tsx",
-        "components/ui/button/index.ts"
+        "components/ui/button/index.ts",
+        "components/ui/button/social-button.tsx",
+        "components/ui/button/social-logos.tsx"
       ]
     },
     {
@@ -207,6 +356,52 @@
       ]
     },
     {
+      "name": "chart",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Chart",
+      "dependencies": {},
+      "registryDependencies": [
+        "skeleton",
+        "tooltip"
+      ],
+      "libDependencies": [
+        "create-context",
+        "motion",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/chart/chart.tsx",
+        "components/ui/chart/index.ts"
+      ]
+    },
+    {
+      "name": "chat",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Chat",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "avatar",
+        "button"
+      ],
+      "libDependencies": [
+        "create-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/chat/chat.tsx",
+        "components/ui/chat/index.ts"
+      ]
+    },
+    {
       "name": "checkbox",
       "type": "component",
       "tier": "free",
@@ -222,6 +417,147 @@
       "files": [
         "components/ui/checkbox/checkbox.tsx",
         "components/ui/checkbox/index.ts"
+      ]
+    },
+    {
+      "name": "code-snippet",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Code Snippet",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "button"
+      ],
+      "libDependencies": [
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/code-snippet/code-snippet.tsx",
+        "components/ui/code-snippet/index.ts"
+      ]
+    },
+    {
+      "name": "color-picker",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Color Picker",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "input",
+        "toggle-group"
+      ],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/color-picker/color-picker.tsx",
+        "components/ui/color-picker/color.ts",
+        "components/ui/color-picker/index.ts"
+      ]
+    },
+    {
+      "name": "command",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Command",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/command/command.tsx",
+        "components/ui/command/index.ts"
+      ]
+    },
+    {
+      "name": "contact-form",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Contact Form",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "button",
+        "field",
+        "input",
+        "select",
+        "textarea"
+      ],
+      "libDependencies": [
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/contact-form/contact-form.tsx",
+        "components/ui/contact-form/index.ts"
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Context Menu",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "kbd"
+      ],
+      "libDependencies": [
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/context-menu/context-menu.tsx",
+        "components/ui/context-menu/index.ts"
+      ]
+    },
+    {
+      "name": "cookie-consent",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Cookie Consent",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "badge",
+        "button",
+        "dialog",
+        "switch"
+      ],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/cookie-consent/cookie-consent.tsx",
+        "components/ui/cookie-consent/index.ts"
       ]
     },
     {
@@ -248,6 +584,7 @@
         "@tanstack/react-table": "^8.21.3"
       },
       "registryDependencies": [
+        "badge",
         "button",
         "card",
         "checkbox",
@@ -256,7 +593,9 @@
         "input",
         "kbd",
         "pagination",
-        "skeleton"
+        "popover",
+        "skeleton",
+        "tooltip"
       ],
       "libDependencies": [
         "create-context",
@@ -267,6 +606,8 @@
       ],
       "files": [
         "components/ui/data-table/data-table-empty.tsx",
+        "components/ui/data-table/data-table-faceted-filter.tsx",
+        "components/ui/data-table/data-table-selection-bar.tsx",
         "components/ui/data-table/data-table-toolbar.tsx",
         "components/ui/data-table/data-table-view-options.tsx",
         "components/ui/data-table/data-table.tsx",
@@ -307,6 +648,26 @@
       "libDependencies": [],
       "files": [
         "lib/density.tsx"
+      ]
+    },
+    {
+      "name": "description-list",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Description List",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/description-list/description-list.tsx",
+        "components/ui/description-list/index.ts"
       ]
     },
     {
@@ -440,6 +801,54 @@
       ]
     },
     {
+      "name": "faqs",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Faqs",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "accordion",
+        "toggle-group"
+      ],
+      "libDependencies": [
+        "create-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/faqs/faqs.tsx",
+        "components/ui/faqs/index.ts"
+      ]
+    },
+    {
+      "name": "feedback-form",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Feedback Form",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "button",
+        "field",
+        "textarea",
+        "toggle-group"
+      ],
+      "libDependencies": [
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/feedback-form/feedback-form.tsx",
+        "components/ui/feedback-form/index.ts"
+      ]
+    },
+    {
       "name": "field",
       "type": "component",
       "tier": "free",
@@ -472,6 +881,115 @@
       ]
     },
     {
+      "name": "file-card",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "File Card",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/file-card/file-card.tsx",
+        "components/ui/file-card/index.ts"
+      ]
+    },
+    {
+      "name": "file-upload",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "File Upload",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "button"
+      ],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/file-upload/file-upload.tsx",
+        "components/ui/file-upload/index.ts"
+      ]
+    },
+    {
+      "name": "footer",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Footer",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/footer/footer.tsx",
+        "components/ui/footer/index.ts"
+      ]
+    },
+    {
+      "name": "gallery",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Gallery",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/gallery/gallery-accordion.tsx",
+        "components/ui/gallery/gallery.tsx",
+        "components/ui/gallery/index.ts"
+      ]
+    },
+    {
+      "name": "hero",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Hero",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "rating"
+      ],
+      "libDependencies": [
+        "create-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/hero/hero.tsx",
+        "components/ui/hero/index.ts"
+      ]
+    },
+    {
       "name": "input",
       "type": "component",
       "tier": "free",
@@ -493,10 +1011,29 @@
       ],
       "files": [
         "components/ui/input/countries.ts",
+        "components/ui/input/country-select.tsx",
         "components/ui/input/index.ts",
         "components/ui/input/input.tsx",
         "components/ui/input/number-input.tsx",
         "components/ui/input/phone-input.tsx"
+      ]
+    },
+    {
+      "name": "input-group",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Input Group",
+      "dependencies": {},
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "field-context",
+        "tv"
+      ],
+      "files": [
+        "components/ui/input-group/index.ts",
+        "components/ui/input-group/input-group.tsx"
       ]
     },
     {
@@ -540,8 +1077,12 @@
       "tier": "free",
       "repo": "TheMrdp/koala-ui",
       "title": "Layout",
-      "dependencies": {},
-      "registryDependencies": [],
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "drawer"
+      ],
       "libDependencies": [
         "create-context",
         "density",
@@ -551,6 +1092,48 @@
       "files": [
         "components/ui/layout/index.ts",
         "components/ui/layout/layout.tsx"
+      ]
+    },
+    {
+      "name": "lightbox",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Lightbox",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/lightbox/index.ts",
+        "components/ui/lightbox/lightbox.tsx"
+      ]
+    },
+    {
+      "name": "list",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "List",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/list/index.ts",
+        "components/ui/list/list.tsx"
       ]
     },
     {
@@ -584,6 +1167,77 @@
       "libDependencies": [],
       "files": [
         "lib/motion.ts"
+      ]
+    },
+    {
+      "name": "multi-select",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Multi Select",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "checkbox",
+        "switch"
+      ],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/multi-select/index.ts",
+        "components/ui/multi-select/multi-select.tsx"
+      ]
+    },
+    {
+      "name": "navbar",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Navbar",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "input"
+      ],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/navbar/index.ts",
+        "components/ui/navbar/navbar.tsx"
+      ]
+    },
+    {
+      "name": "newsletter-form",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Newsletter Form",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "button",
+        "input"
+      ],
+      "libDependencies": [
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/newsletter-form/index.ts",
+        "components/ui/newsletter-form/newsletter-form.tsx"
       ]
     },
     {
@@ -648,6 +1302,29 @@
       ]
     },
     {
+      "name": "payment-form",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Payment Form",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "button",
+        "field",
+        "input"
+      ],
+      "libDependencies": [
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/payment-form/index.ts",
+        "components/ui/payment-form/payment-form.tsx"
+      ]
+    },
+    {
       "name": "popover",
       "type": "component",
       "tier": "free",
@@ -667,6 +1344,90 @@
       ]
     },
     {
+      "name": "pricing",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Pricing",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "tooltip"
+      ],
+      "libDependencies": [
+        "create-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/pricing/index.ts",
+        "components/ui/pricing/pricing.tsx"
+      ]
+    },
+    {
+      "name": "pricing-comparison",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Pricing Comparison",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "tooltip"
+      ],
+      "libDependencies": [
+        "create-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/pricing-comparison/index.ts",
+        "components/ui/pricing-comparison/pricing-comparison.tsx"
+      ]
+    },
+    {
+      "name": "prompt-input",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Prompt Input",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "button"
+      ],
+      "libDependencies": [
+        "create-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/prompt-input/index.ts",
+        "components/ui/prompt-input/prompt-input.tsx"
+      ]
+    },
+    {
+      "name": "qr-code",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Qr Code",
+      "dependencies": {},
+      "registryDependencies": [],
+      "libDependencies": [
+        "tv"
+      ],
+      "files": [
+        "components/ui/qr-code/index.ts",
+        "components/ui/qr-code/qr-code.tsx",
+        "components/ui/qr-code/qr-encoder.ts"
+      ]
+    },
+    {
       "name": "radio-group",
       "type": "component",
       "tier": "free",
@@ -683,6 +1444,65 @@
       "files": [
         "components/ui/radio-group/index.ts",
         "components/ui/radio-group/radio-group.tsx"
+      ]
+    },
+    {
+      "name": "ranking",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Ranking",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/ranking/index.ts",
+        "components/ui/ranking/ranking.tsx"
+      ]
+    },
+    {
+      "name": "rating",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Rating",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "tv"
+      ],
+      "files": [
+        "components/ui/rating/index.ts",
+        "components/ui/rating/rating.tsx"
+      ]
+    },
+    {
+      "name": "resizable",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Resizable",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "tv"
+      ],
+      "files": [
+        "components/ui/resizable/index.ts",
+        "components/ui/resizable/resizable.tsx"
       ]
     },
     {
@@ -718,6 +1538,41 @@
       ]
     },
     {
+      "name": "section",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Section",
+      "dependencies": {},
+      "registryDependencies": [],
+      "libDependencies": [
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/section/index.ts",
+        "components/ui/section/section.tsx"
+      ]
+    },
+    {
+      "name": "section-header",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Section Header",
+      "dependencies": {},
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/section-header/index.ts",
+        "components/ui/section-header/section-header.tsx"
+      ]
+    },
+    {
       "name": "select",
       "type": "component",
       "tier": "free",
@@ -727,7 +1582,9 @@
         "@phosphor-icons/react": "^2.1.10",
         "radix-ui": "^1.5.0"
       },
-      "registryDependencies": [],
+      "registryDependencies": [
+        "tooltip"
+      ],
       "libDependencies": [
         "density",
         "field-context",
@@ -740,6 +1597,31 @@
       ]
     },
     {
+      "name": "settings-form",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Settings Form",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "avatar",
+        "button",
+        "field",
+        "input",
+        "textarea"
+      ],
+      "libDependencies": [
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/settings-form/index.ts",
+        "components/ui/settings-form/settings-form.tsx"
+      ]
+    },
+    {
       "name": "sidebar",
       "type": "component",
       "tier": "free",
@@ -749,7 +1631,9 @@
         "@phosphor-icons/react": "^2.1.10",
         "radix-ui": "^1.5.0"
       },
-      "registryDependencies": [],
+      "registryDependencies": [
+        "tooltip"
+      ],
       "libDependencies": [
         "create-context",
         "density",
@@ -812,6 +1696,30 @@
       ]
     },
     {
+      "name": "stat",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Stat",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [
+        "chart"
+      ],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv",
+        "utils"
+      ],
+      "files": [
+        "components/ui/stat/index.ts",
+        "components/ui/stat/stat.tsx"
+      ]
+    },
+    {
       "name": "stepper",
       "type": "component",
       "tier": "free",
@@ -831,6 +1739,52 @@
       "files": [
         "components/ui/stepper/index.ts",
         "components/ui/stepper/stepper.tsx"
+      ]
+    },
+    {
+      "name": "suggestions",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Suggestions",
+      "dependencies": {},
+      "registryDependencies": [
+        "badge",
+        "button",
+        "popover"
+      ],
+      "libDependencies": [
+        "create-context",
+        "tv"
+      ],
+      "files": [
+        "components/ui/suggestions/index.ts",
+        "components/ui/suggestions/suggestions.tsx"
+      ]
+    },
+    {
+      "name": "survey",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Survey",
+      "dependencies": {},
+      "registryDependencies": [
+        "checkbox",
+        "input",
+        "radio-group",
+        "rating",
+        "select",
+        "textarea"
+      ],
+      "libDependencies": [
+        "create-context",
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/survey/index.ts",
+        "components/ui/survey/survey.tsx"
       ]
     },
     {
@@ -871,6 +1825,26 @@
       "files": [
         "components/ui/tabs/index.ts",
         "components/ui/tabs/tabs.tsx"
+      ]
+    },
+    {
+      "name": "testimonials",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Testimonials",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "tv"
+      ],
+      "files": [
+        "components/ui/testimonials/index.ts",
+        "components/ui/testimonials/testimonials.tsx"
       ]
     },
     {
@@ -916,14 +1890,32 @@
       ]
     },
     {
+      "name": "toggle-group",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Toggle Group",
+      "dependencies": {
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "tv"
+      ],
+      "files": [
+        "components/ui/toggle-group/index.ts",
+        "components/ui/toggle-group/toggle-group.tsx"
+      ]
+    },
+    {
       "name": "tooltip",
       "type": "component",
       "tier": "free",
       "repo": "TheMrdp/koala-ui",
       "title": "Tooltip",
       "dependencies": {
-        "@tippyjs/react": "^4.2.6",
-        "tippy.js": "latest"
+        "tippy.js": "^6.3.7"
       },
       "registryDependencies": [],
       "libDependencies": [
@@ -932,6 +1924,26 @@
       "files": [
         "components/ui/tooltip/index.ts",
         "components/ui/tooltip/tooltip.tsx"
+      ]
+    },
+    {
+      "name": "tree",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Tree",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10",
+        "radix-ui": "^1.5.0"
+      },
+      "registryDependencies": [],
+      "libDependencies": [
+        "create-context",
+        "tv"
+      ],
+      "files": [
+        "components/ui/tree/index.ts",
+        "components/ui/tree/tree.tsx"
       ]
     },
     {
@@ -987,6 +1999,29 @@
       "files": [
         "components/ui/video-player/index.ts",
         "components/ui/video-player/video-player.tsx"
+      ]
+    },
+    {
+      "name": "waitlist-form",
+      "type": "component",
+      "tier": "free",
+      "repo": "TheMrdp/koala-ui",
+      "title": "Waitlist Form",
+      "dependencies": {
+        "@phosphor-icons/react": "^2.1.10"
+      },
+      "registryDependencies": [
+        "avatar",
+        "button",
+        "input"
+      ],
+      "libDependencies": [
+        "density",
+        "tv"
+      ],
+      "files": [
+        "components/ui/waitlist-form/index.ts",
+        "components/ui/waitlist-form/waitlist-form.tsx"
       ]
     }
   ]

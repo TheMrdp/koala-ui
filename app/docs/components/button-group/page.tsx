@@ -13,6 +13,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 
 export const metadata = {
   title: "Button Group",
@@ -346,6 +347,19 @@ export function Example() {
             <ButtonGroupItem variant="destructive">Delete</ButtonGroupItem>
           </ButtonGroup>
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "When should I use a ButtonGroup instead of separate Buttons?", a: "Use ButtonGroup when several related actions read as one unit, like a Day/Week/Month switch or a formatting toolbar. It shares variant, size, and density across items via context and, when attached, fuses them into a single pill. For unrelated actions, keep them as standalone Buttons." },
+            { q: "What is the difference between attached and detached?", a: "attached (the default) strips interior border radii and collapses the shared border with a -1px margin overlap so the items look joined. Set attached={false} for a spaced layout where each item keeps its own rounding." },
+            { q: "How do I set the variant or size for the whole group?", a: "Set variant, size, or density on the ButtonGroup and every ButtonGroupItem inherits it through context. The group defaults to variant=\"outline\" and size=\"md\"." },
+            { q: "Can I override one item's variant?", a: "Yes. Any prop on a ButtonGroupItem overrides the group context, for example a primary confirm next to secondary items. In attached mode keep all items the same surface style (both bordered or both filled) so the joined edges look intentional." },
+            { q: "Do icon-only items need anything special?", a: "Set iconOnly on the item to collapse it to a square, and always pass an `aria-label` since there is no visible text. Koala warns in development when an iconOnly item has no accessible name." },
+            { q: "Why does the group lose the press-scale animation?", a: "ButtonGroupItem sets active:scale-100 so adjacent fused items do not visually shift against each other on press. The focus ring and z-index lift on hover and focus still signal the active item." },
+          ]}
+        />
       </DocSection>
 
     </>

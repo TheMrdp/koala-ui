@@ -16,7 +16,7 @@ const textareaVariants = tv({
       // The field stays opaque (real bg) but visually blends, so it never looks "filled".
       "rounded-md border border-input bg-[var(--surface,var(--background))]",
       "transition-[border-color,box-shadow] duration-fast ease-out",
-      "focus-within:outline-none focus-within:border-brand focus-within:[box-shadow:0_0_0_3px_var(--ring-brand)]",
+      "focus-within:outline-none focus-within:border-brand focus-within:brand-ring",
     ],
     field: [
       "w-full bg-transparent outline-none",
@@ -57,7 +57,7 @@ const textareaVariants = tv({
       true: {
         root: [
           "border-destructive",
-          "focus-within:border-destructive focus-within:[box-shadow:0_0_0_3px_color-mix(in_oklch,var(--destructive)_20%,transparent)]",
+          "focus-within:border-destructive focus-within:destructive-ring",
         ],
       },
     },
@@ -145,7 +145,7 @@ function TextareaRoot({
 
 // Auto-resize rides the native CSS `field-sizing: content` (no JS, no scrollbar). Where the
 // browser lacks it (Firefox today) we fall back to measuring `scrollHeight`. Detection is
-// memoized and SSR-safe — `false` on the server, so the JS path only ever runs on the client.
+// memoized and SSR-safe: `false` on the server, so the JS path only ever runs on the client.
 let fieldSizingSupported: boolean | null = null
 function supportsFieldSizing() {
   if (fieldSizingSupported === null) {
@@ -157,28 +157,36 @@ function supportsFieldSizing() {
   return fieldSizingSupported
 }
 
-// JS fallback: grow the element to fit its content by writing the inline height directly —
-// no React state — so it stays clear of the repo's set-state-in-effect lint.
+// JS fallback: grow the element to fit its content by writing the inline height directly,
+// no React state, so it stays clear of the repo's set-state-in-effect lint.
 function autoSize(el: HTMLTextAreaElement) {
   el.style.height = "auto"
   el.style.height = `${el.scrollHeight}px`
 }
 
-// React 19: `ref` is a regular prop — ComponentProps (not …WithoutRef) keeps it in the type
+// React 19: `ref` is a regular prop. ComponentProps (not …WithoutRef) keeps it in the type
 // so callers can grab the underlying <textarea> (e.g. to focus it when a dialog opens).
 export interface TextareaFieldProps
   extends Omit<React.ComponentProps<"textarea">, "size"> {
   /** Grow to fit content as the user types; pins the resize affordance to `none`. */
   autoResize?: boolean
+  /**
+   * Opt-in character-count addon: renders a `TextareaFooter` + `TextareaCount` below the
+   * field, tracked automatically (works controlled or uncontrolled). Pass the native
+   * `maxLength` to show `current / max` and hard-cap input.
+   */
+  showCount?: boolean
 }
 
 function TextareaField({
   className,
   disabled,
   autoResize,
+  showCount,
   id,
   ref,
   value,
+  defaultValue,
   onInput,
   "aria-describedby": ariaDescribedBy,
   ...props
@@ -205,13 +213,23 @@ function TextareaField({
   )
 
   // Re-fit when a controlled `value` changes from the outside (paste, autofill, reset).
-  // Reads the ref and mutates style only — no state — so the strict hooks lint stays happy.
+  // Reads the ref and mutates style only, no state, so the strict hooks lint stays happy.
   React.useEffect(() => {
     if (fallbackActive && innerRef.current) autoSize(innerRef.current)
   }, [fallbackActive, value])
 
+  // Character-count addon: when controlled the count derives straight from `value` (no state);
+  // when uncontrolled we track the field's own length, seeded from `defaultValue` and updated on
+  // input: the setState lives in the event handler, clear of the repo's set-state-in-effect lint.
+  const isControlled = value !== undefined
+  const [uncontrolledCount, setUncontrolledCount] = React.useState(
+    () => String(defaultValue ?? "").length,
+  )
+  const count = isControlled ? String(value ?? "").length : uncontrolledCount
+
   const handleInput: NonNullable<TextareaFieldProps["onInput"]> = (event) => {
     if (fallbackActive) autoSize(event.currentTarget)
+    if (showCount && !isControlled) setUncontrolledCount(event.currentTarget.value.length)
     onInput?.(event)
   }
 
@@ -219,12 +237,13 @@ function TextareaField({
   // either path, so pin resize off. Appended via className so tailwind-merge lets `resize-none`
   // win over the recipe's `resize-*`.
   const autoClasses = autoResize ? "field-sizing-content resize-none" : ""
-  return (
+  const textarea = (
     <textarea
       data-slot="textarea-field"
       ref={setRefs}
       id={id ?? field?.id}
       value={value}
+      defaultValue={defaultValue}
       onInput={handleInput}
       className={slots.field({
         className: `${autoClasses} ${className ?? ""}`.trim() || undefined,
@@ -234,6 +253,18 @@ function TextareaField({
       aria-invalid={hasError || field?.hasError || undefined}
       {...props}
     />
+  )
+
+  // The addon footer is a sibling of the <textarea> inside the root, so it lays out below the
+  // field exactly like a hand-composed TextareaFooter would.
+  if (!showCount) return textarea
+  return (
+    <>
+      {textarea}
+      <TextareaFooter>
+        <TextareaCount current={count} max={props.maxLength} />
+      </TextareaFooter>
+    </>
   )
 }
 
@@ -256,7 +287,7 @@ function TextareaFooter({ className, ...props }: TextareaFooterProps) {
 
 export interface TextareaCountProps
   extends Omit<React.ComponentPropsWithoutRef<"span">, "children"> {
-  /** Current character count — pass `value.length` from your controlled field. */
+  /** Current character count: pass `value.length` from your controlled field. */
   current: number
   /** Optional limit. Rendered as `current / max` and turns destructive once exceeded. */
   max?: number
@@ -282,7 +313,7 @@ function TextareaCount({ current, max, className, ...props }: TextareaCountProps
 }
 
 // TextareaLabel / TextareaHint are the shared Label / Hint primitives (one label recipe in
-// the DS). Placed *outside* TextareaRoot, they style identically and — inside a Field —
+// the DS). Placed *outside* TextareaRoot, they style identically and, inside a Field,
 // auto-wire ids/aria.
 export {
   TextareaRoot,

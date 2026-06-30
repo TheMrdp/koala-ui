@@ -2,6 +2,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 import {
   DatePickerHeroDemo,
   CalendarSingleDemo,
@@ -24,7 +25,7 @@ export default function DatePickerDocsPage() {
     <>
       <DocHeader
         title="Date Picker"
-        description="A calendar surface plus two ready pickers — single date and date range — built over Radix Popover with a hand-rolled grid (native Date math, no date dependency). Selection reads the brand accent; the in-range fill is the neutral accent surface so the two never compete. Ships with rich quick-pick presets."
+        description="A calendar surface plus two ready pickers (single date and date range) built over Radix Popover with a hand-rolled grid (native Date math, no date dependency). Selection reads the brand accent; the in-range fill is the neutral accent surface so the two never compete. Ships with rich quick-pick presets."
       />
 
       <ComponentPreview previewClassName="min-h-72 items-start" code={`const [date, setDate] = React.useState<Date>()
@@ -157,7 +158,7 @@ export function Example() {
       <DocSection title="Density">
         <p className="mt-4 text-pretty text-muted-foreground">
           Like the rest of Koala, the calendar honors{" "}
-          <code className="font-mono text-sm">density</code> — <code className="font-mono text-sm">compact</code>{" "}
+          <code className="font-mono text-sm">density</code>: <code className="font-mono text-sm">compact</code>{" "}
           tightens cells and controls for dense application UI.
         </p>
         <ComponentPreview
@@ -172,7 +173,7 @@ export function Example() {
         <p className="mt-4 text-pretty text-muted-foreground">
           Drop a picker inside a <code className="font-mono text-sm">Field</code> and it
           auto-wires the label, hint, <code className="font-mono text-sm">id</code>, and
-          error/disabled state — no manual props.
+          error/disabled state, with no manual props.
         </p>
         <ComponentPreview
           previewClassName="min-h-72 items-start"
@@ -184,6 +185,37 @@ export function Example() {
         >
           <FieldDemo />
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            {
+              q: "When should I reach for the standalone Calendar instead of DatePicker or DateRangePicker?",
+              a: "Use Calendar when you need an always-open grid inline on the page, such as a booking surface or a sidebar. DatePicker and DateRangePicker wrap that same Calendar in a Radix Popover with a trigger, so prefer them whenever the calendar should open from a field-like button.",
+            },
+            {
+              q: "How do I switch the range picker to a single-date picker, and how does selection differ?",
+              a: "They are separate exports: DatePicker resolves a single Date, while DateRangePicker resolves a `{ from, to }` DateRange. On the underlying Calendar this maps to `mode=\"single\"` versus `mode=\"range\"`, where the first range click sets `from` and the second closes the span with a hover preview in between.",
+            },
+            {
+              q: "What is the difference between passing `presets` as a boolean versus an array?",
+              a: "Passing `presets` as `true` renders the built-in rail: getDatePresets() for DatePicker and getDateRangePresets() for DateRangePicker. Pass your own array of `{ label, value }` items (DatePreset or DateRangePreset) to fully control the shortcuts shown.",
+            },
+            {
+              q: "How do I disable specific days like weekends or dates outside a window?",
+              a: "Bound the selectable window with the `min` and `max` props (both inclusive), and pass `isDateDisabled` for arbitrary rules, for example `(d) => d.getDay() === 0 || d.getDay() === 6` to block weekends. Disabled days become inert and render struck through.",
+            },
+            {
+              q: "What keyboard navigation does the calendar grid support?",
+              a: "The grid uses a roving tabindex, so arrow keys move the focused day, PageUp and PageDown shift by a month, and Home and End jump to the week edges. Enter or Space commits the focused day, and the caption button cycles the day, month, and year views.",
+            },
+            {
+              q: "Do I need to wire up the label and error state when using a picker inside a Field?",
+              a: "No. Both pickers read useFieldContext, so dropping a DatePicker inside a Field auto-wires the `id`, `aria-describedby`, disabled, and error state from the surrounding Field. You can still override explicitly with the `disabled`, `hasError`, and `id` props when used standalone.",
+            },
+          ]}
+        />
       </DocSection>
 
     </>

@@ -2,6 +2,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 import {
   PasswordStrengthDemo,
   PasswordStrengthRequirementsDemo,
@@ -29,7 +30,7 @@ export default function PasswordStrengthDocsPage() {
   <PasswordStrengthMeter />
   <div className="flex items-center justify-between gap-2">
     <span className="text-sm text-muted-foreground">Password strength</span>
-    <PasswordStrengthLabel placeholder="—" />
+    <PasswordStrengthLabel placeholder="-" />
   </div>
 </PasswordStrength>`}
       >
@@ -68,7 +69,7 @@ export function Example() {
       <PasswordInput value={value} onChange={(e) => setValue(e.target.value)} />
       <PasswordStrength value={value}>
         <PasswordStrengthMeter />
-        <PasswordStrengthLabel placeholder="—" />
+        <PasswordStrengthLabel placeholder="-" />
       </PasswordStrength>
     </>
   )
@@ -130,13 +131,26 @@ export function Example() {
 <PasswordStrength value={value} rules={corporateRules}>
   <div className="flex items-center justify-between gap-2">
     <PasswordStrengthMeter className="max-w-[60%]" />
-    <PasswordStrengthLabel placeholder="—" />
+    <PasswordStrengthLabel placeholder="-" />
   </div>
   <PasswordStrengthList />
 </PasswordStrength>`}
         >
           <PasswordStrengthCustomDemo />
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "Why is this a separate component from the password input?", a: "Scoring is kept a separate concern so the meter drops in below any `PasswordInput` without coupling. You hold the password in state and hand the same value to both the input and `PasswordStrength`." },
+            { q: "How do I compose the parts?", a: "The root scores the value and exposes the result through context, so place `PasswordStrengthMeter`, `PasswordStrengthLabel`, and `PasswordStrengthList` in any arrangement inside `PasswordStrength`. `PasswordStrengthLabel` takes a `placeholder` shown before anything is typed." },
+            { q: "How do I change the password policy?", a: "Pass `rules`, an array of `{ id, label, test }`. The default policy is at least 8 characters, mixed case, a number, and a symbol; `test` receives the value and returns whether the rule is met." },
+            { q: "What happens to the four-segment meter if I supply a different number of rules?", a: "The meter always normalises however many rules you pass onto its four segments, climbing red to green, while `PasswordStrengthList` renders exactly one row per rule. So five corporate rules still map cleanly onto the bar." },
+            { q: "Can it live inside a Field?", a: "Yes. It composes straight into a `Field`, sitting where the hint would go, so the `FieldLabel` and input keep their auto-wiring while the meter reports on the value below them." },
+            { q: "How does the requirements list signal progress?", a: "Each row in `PasswordStrengthList` cross-fades from a dot to a check the moment the password satisfies that rule, so the user can always see what is left." },
+          ]}
+        />
       </DocSection>
 
     </>

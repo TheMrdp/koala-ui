@@ -17,7 +17,7 @@ const inputVariants = tv({
       // The field stays opaque (real bg) but visually blends, so it never looks "filled".
       "rounded-md border border-input bg-[var(--surface,var(--background))]",
       "transition-[border-color,box-shadow] duration-fast ease-out",
-      "focus-within:outline-none focus-within:border-brand focus-within:[box-shadow:0_0_0_3px_var(--ring-brand)]",
+      "focus-within:outline-none focus-within:border-brand focus-within:brand-ring",
     ],
     field: [
       "flex-1 min-w-0 bg-transparent outline-none",
@@ -47,6 +47,27 @@ const inputVariants = tv({
     ],
   },
   variants: {
+    // `variant` is listed first so `hasError` / `disabled` border + bg rules below
+    // win the tailwind-merge conflict and stay visible even in the inline variant.
+    variant: {
+      // Default reproduces the base recipe verbatim: the bordered container is always shown.
+      default: {},
+      // Inline: chromeless at rest, the container only materializes on hover. Focus keeps the
+      // brand border + ring from the base slot (hover is scoped to :not(:focus-within) so the
+      // two never fight). Ideal for inline-edit fields: titles, cells, settings rows.
+      inline: {
+        root: [
+          "border-transparent bg-transparent",
+          // The base only transitions border-color + box-shadow; the inline reveal also
+          // fades the background in, so widen the transition to cover it.
+          "transition-[border-color,box-shadow,background-color] duration-fast ease-out",
+          "[&:not(:focus-within)]:hover:border-input",
+          "[&:not(:focus-within)]:hover:bg-[var(--surface,var(--background))]",
+        ],
+        // Drop the prefix-label divider/fill so it doesn't paint a seam over the bare field.
+        prefixLabel: "border-transparent bg-transparent",
+      },
+    },
     size: {
       sm: {
         root: "h-8 gap-1.5 px-2.5",
@@ -76,7 +97,7 @@ const inputVariants = tv({
       true: {
         root: [
           "border-destructive",
-          "focus-within:border-destructive focus-within:[box-shadow:0_0_0_3px_color-mix(in_oklch,var(--destructive)_20%,transparent)]",
+          "focus-within:border-destructive focus-within:destructive-ring",
         ],
       },
     },
@@ -87,6 +108,7 @@ const inputVariants = tv({
     },
   },
   defaultVariants: {
+    variant: "default",
     size: "md",
   },
 })
@@ -94,9 +116,11 @@ const inputVariants = tv({
 // ─── Context ──────────────────────────────────────────────────────────────────
 
 type Size = NonNullable<VariantProps<typeof inputVariants>["size"]>
+type Variant = NonNullable<VariantProps<typeof inputVariants>["variant"]>
 
 type InputContextValue = {
   size: Size
+  variant: Variant
   disabled: boolean
   hasError: boolean
   slots: ReturnType<typeof inputVariants>
@@ -108,12 +132,14 @@ const [InputProvider, useInputContext] = createContext<InputContextValue>("Input
 
 export interface InputRootProps extends React.ComponentPropsWithoutRef<"div"> {
   size?: Size
+  variant?: Variant
   hasError?: boolean
   disabled?: boolean
 }
 
 function InputRoot({
   size = "md",
+  variant = "default",
   hasError,
   disabled,
   className,
@@ -127,12 +153,14 @@ function InputRoot({
   const resolvedDisabled = disabled ?? field?.disabled ?? false
   const slots = inputVariants({
     size,
+    variant,
     hasError: resolvedError,
     disabled: resolvedDisabled,
   })
   return (
     <InputProvider
       size={size}
+      variant={variant}
       disabled={resolvedDisabled}
       hasError={resolvedError}
       slots={slots}
@@ -152,7 +180,7 @@ function InputRoot({
 
 // ─── InputField ───────────────────────────────────────────────────────────────
 
-// React 19: `ref` is a regular prop — ComponentProps (not …WithoutRef) keeps it in the type
+// React 19: `ref` is a regular prop. ComponentProps (not …WithoutRef) keeps it in the type
 // so callers can grab the underlying <input> (e.g. to focus it when a dialog opens).
 export type InputFieldProps = Omit<React.ComponentProps<"input">, "size">
 
@@ -247,12 +275,14 @@ function InputSuffixButton({ className, ...props }: InputSuffixButtonProps) {
 export interface PasswordInputProps extends InputFieldProps {
   rootClassName?: string
   size?: Size
+  variant?: Variant
   hasError?: boolean
 }
 
 function PasswordInput({
   rootClassName,
   size,
+  variant,
   hasError,
   disabled,
   className,
@@ -263,6 +293,7 @@ function PasswordInput({
   return (
     <InputRoot
       size={size}
+      variant={variant}
       hasError={hasError}
       disabled={disabled}
       className={rootClassName}
@@ -292,7 +323,7 @@ function PasswordInput({
 }
 
 // InputLabel / InputHint are the shared Label / Hint primitives (one label recipe in the DS).
-// Placed *outside* InputRoot, they style identically and — inside a Field — auto-wire ids/aria.
+// Placed *outside* InputRoot, they style identically and, inside a Field, auto-wire ids/aria.
 export {
   InputRoot,
   InputField,

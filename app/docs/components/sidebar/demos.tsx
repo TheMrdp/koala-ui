@@ -25,7 +25,9 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
+  SidebarGroupContent,
   SidebarItem,
+  SidebarCollapsible,
   SidebarSwitcher,
 } from "@/components/ui/sidebar"
 import {
@@ -41,11 +43,13 @@ import { Badge } from "@/components/ui/badge"
 import { Kbd } from "@/components/ui/kbd"
 import type { Density } from "@/lib/density"
 
-type SwitcherVariant = "default" | "minimal"
+type SwitcherVariant = "default" | "full"
 
-// ── Workspace switcher (top) — SidebarSwitcher composed with the DS DropdownMenu ──────
+// ── Workspace switcher (top): SidebarSwitcher composed with the DS DropdownMenu ──────
+// `default` (no prop) is the compact trigger; `full` is the roomier identity row with a
+// subtitle and a larger leading.
 function WorkspaceSwitcher({ variant }: { variant?: SwitcherVariant }) {
-  const minimal = variant === "minimal"
+  const full = variant === "full"
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -54,14 +58,14 @@ function WorkspaceSwitcher({ variant }: { variant?: SwitcherVariant }) {
           leading={
             <span
               className={`grid shrink-0 place-items-center rounded-md bg-primary text-primary-foreground ${
-                minimal ? "size-7" : "size-9"
+                full ? "size-10" : "size-7"
               }`}
             >
-              <Buildings className={minimal ? "size-4" : "size-5"} />
+              <Buildings className={full ? "size-5" : "size-4"} />
             </span>
           }
           title="Acme Inc"
-          subtitle={minimal ? undefined : "Enterprise plan"}
+          subtitle={full ? "Enterprise plan" : undefined}
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-60">
@@ -85,21 +89,21 @@ function WorkspaceSwitcher({ variant }: { variant?: SwitcherVariant }) {
   )
 }
 
-// ── Profile switcher (bottom) — same trigger, menu opens upward ───────────────────────
+// ── Profile switcher (bottom): same trigger, menu opens upward ───────────────────────
 function ProfileSwitcher({ variant }: { variant?: SwitcherVariant }) {
-  const minimal = variant === "minimal"
+  const full = variant === "full"
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <SidebarSwitcher
           variant={variant}
           leading={
-            <AvatarRoot size={minimal ? "xs" : "sm"} className="shrink-0">
+            <AvatarRoot size={full ? "md" : "xs"} className="shrink-0">
               <AvatarFallback>MO</AvatarFallback>
             </AvatarRoot>
           }
           title="Mara Okonkwo"
-          subtitle={minimal ? undefined : "mara@acme.io"}
+          subtitle={full ? "mara@acme.io" : undefined}
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent side="top" align="start" className="w-56">
@@ -135,57 +139,79 @@ function FavDot({ className }: { className: string }) {
   )
 }
 
-// ── The full rail, parameterized by density for the demos ─────────────────────────────
-function AppSidebar({ density }: { density?: Density }) {
+// ── The full rail, parameterized by density / collapsed for the demos ─────────────────
+// Every SidebarItem carries a `label` so the collapsed (icon-only) rail can show a hover
+// tooltip and name the row once the inline text is hidden.
+function AppSidebar({
+  density,
+  collapsed,
+  floating,
+  side,
+  className = "h-[600px]",
+}: {
+  density?: Density
+  collapsed?: boolean
+  floating?: boolean
+  side?: "left" | "right"
+  className?: string
+}) {
   return (
-    <Sidebar density={density} aria-label="Main" className="h-[600px]">
+    <Sidebar
+      density={density}
+      collapsed={collapsed}
+      floating={floating}
+      side={side}
+      aria-label="Main"
+      className={className}
+    >
       <SidebarHeader>
         <WorkspaceSwitcher />
       </SidebarHeader>
 
       <SidebarContent>
-        {/* Primary pages — first, unlabeled, the spine of the app. */}
+        {/* Primary pages: first, unlabeled, the spine of the app. */}
         <SidebarGroup aria-label="Primary">
-          <SidebarItem>
+          <SidebarItem label="Search">
             <MagnifyingGlass />
             Search
             <Kbd size="sm" className="ml-auto">
               ⌘K
             </Kbd>
           </SidebarItem>
-          <SidebarItem active>
+          <SidebarItem active label="Dashboard">
             <SquaresFour />
             Dashboard
           </SidebarItem>
-          <SidebarItem>
+          <SidebarItem label="Inbox">
             <Tray />
             Inbox
             <Badge variant="secondary" size="sm" className="ml-auto tabular-nums">
               8
             </Badge>
           </SidebarItem>
-          <SidebarItem>
+          <SidebarItem label="Projects">
             <Stack />
             Projects
           </SidebarItem>
-          <SidebarItem>
+          <SidebarItem label="Calendar">
             <CalendarBlank />
             Calendar
           </SidebarItem>
         </SidebarGroup>
 
-        {/* Favorites — starred pages, marked with their page color. */}
-        <SidebarGroup aria-label="Favorites">
+        {/* Favorites: starred pages, marked with their page color. A secondary section, so it
+            drops out of the collapsed icon rail rather than reducing to bare dots. */}
+        <SidebarGroup aria-label="Favorites" hideWhenCollapsed>
           <SidebarGroupLabel>Favorites</SidebarGroupLabel>
-          <SidebarItem>
+          <SidebarItem label="Q3 Roadmap">
             <FavDot className="bg-purple" />
             Q3 Roadmap
           </SidebarItem>
-          <SidebarItem>
+          <SidebarItem label="Design System">
             <FavDot className="bg-teal" />
             Design System
           </SidebarItem>
-          <SidebarItem>
+          <SidebarItem label="Hiring Plan">
             <FavDot className="bg-orange" />
             Hiring Plan
           </SidebarItem>
@@ -194,11 +220,11 @@ function AppSidebar({ density }: { density?: Density }) {
         {/* A clearly-labeled workspace section. */}
         <SidebarGroup aria-label="Workspace">
           <SidebarGroupLabel>Workspace</SidebarGroupLabel>
-          <SidebarItem>
+          <SidebarItem label="Members">
             <UsersThree />
             Members
           </SidebarItem>
-          <SidebarItem>
+          <SidebarItem label="Settings">
             <GearSix />
             Settings
           </SidebarItem>
@@ -228,6 +254,23 @@ export function SidebarDensityDemo() {
   )
 }
 
+// ── The two rail variants side by side: the full default rail and the collapsed icon rail.
+// Same markup, only the `collapsed` prop differs (hover a collapsed row for its tooltip).
+export function SidebarVariantsDemo() {
+  return (
+    <div className="flex w-full flex-wrap items-start justify-center gap-10">
+      <div className="flex flex-col items-center gap-2">
+        <span className="px-1 text-xs font-medium text-muted-foreground">default</span>
+        <AppSidebar className="h-[560px]" />
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <span className="px-1 text-xs font-medium text-muted-foreground">collapsed</span>
+        <AppSidebar collapsed className="h-[560px]" />
+      </div>
+    </div>
+  )
+}
+
 // ── Focused: switchers on their own ───────────────────────────────────────────────────
 export function SidebarSwitcherDemo() {
   return (
@@ -242,12 +285,12 @@ export function SidebarSwitcherDemo() {
   )
 }
 
-// ── Focused: default vs minimal switcher, side by side ────────────────────────────────
+// ── Focused: the compact default vs the roomier full switcher, side by side ───────────
 export function SidebarSwitcherVariantDemo() {
   return (
     <div className="flex flex-wrap items-start justify-center gap-6">
       <div className="flex flex-col gap-2">
-        <span className="px-1 text-xs font-medium text-muted-foreground">default</span>
+        <span className="px-1 text-xs font-medium text-muted-foreground">default (compact)</span>
         <Sidebar aria-label="Default switchers" className="h-auto w-60 rounded-xl border">
           <SidebarHeader>
             <WorkspaceSwitcher />
@@ -259,13 +302,13 @@ export function SidebarSwitcherVariantDemo() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <span className="px-1 text-xs font-medium text-muted-foreground">minimal</span>
-        <Sidebar aria-label="Minimal switchers" className="h-auto w-60 rounded-xl border">
+        <span className="px-1 text-xs font-medium text-muted-foreground">full</span>
+        <Sidebar aria-label="Full switchers" className="h-auto w-60 rounded-xl border">
           <SidebarHeader>
-            <WorkspaceSwitcher variant="minimal" />
+            <WorkspaceSwitcher variant="full" />
           </SidebarHeader>
           <SidebarFooter>
-            <ProfileSwitcher variant="minimal" />
+            <ProfileSwitcher variant="full" />
           </SidebarFooter>
         </Sidebar>
       </div>
@@ -307,5 +350,162 @@ export function SidebarItemDemo() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
+  )
+}
+
+// ── Nested navigation: SidebarCollapsible folds a sub-list of routes under a parent row ──
+export function SidebarNestedDemo() {
+  return (
+    <div className="flex w-full justify-center">
+      <Sidebar aria-label="Nested navigation" className="h-[520px] w-64">
+        <SidebarHeader>
+          <WorkspaceSwitcher />
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup aria-label="Primary">
+            <SidebarItem active>
+              <SquaresFour />
+              Dashboard
+            </SidebarItem>
+            <SidebarItem>
+              <Tray />
+              Inbox
+              <Badge variant="secondary" size="sm" className="ml-auto tabular-nums">
+                8
+              </Badge>
+            </SidebarItem>
+            {/* A section that's also the current page: the parent lights up while a child is open. */}
+            <SidebarCollapsible icon={<GearSix />} label="Settings" active defaultOpen>
+              <SidebarItem active asChild>
+                <a href="#">General</a>
+              </SidebarItem>
+              <SidebarItem asChild>
+                <a href="#">Members</a>
+              </SidebarItem>
+              <SidebarItem asChild>
+                <a href="#">Billing</a>
+              </SidebarItem>
+            </SidebarCollapsible>
+            <SidebarCollapsible
+              icon={<Stack />}
+              label="Projects"
+              actions={
+                <Badge variant="secondary" size="sm" className="tabular-nums">
+                  3
+                </Badge>
+              }
+            >
+              <SidebarItem asChild>
+                <a href="#">Koala UI</a>
+              </SidebarItem>
+              <SidebarItem asChild>
+                <a href="#">Marketing site</a>
+              </SidebarItem>
+              <SidebarItem asChild>
+                <a href="#">Mobile app</a>
+              </SidebarItem>
+            </SidebarCollapsible>
+          </SidebarGroup>
+        </SidebarContent>
+        <SidebarFooter>
+          <ProfileSwitcher />
+        </SidebarFooter>
+      </Sidebar>
+    </div>
+  )
+}
+
+// ── Collapsible sections: the SidebarGroupLabel toggles the whole group ──────────────
+export function SidebarCollapsibleGroupDemo() {
+  return (
+    <div className="flex w-full justify-center">
+      <Sidebar aria-label="Collapsible sections" className="h-[520px] w-64">
+        <SidebarContent>
+          {/* Primary pages stay pinned and open. */}
+          <SidebarGroup aria-label="Primary">
+            <SidebarItem active>
+              <SquaresFour />
+              Dashboard
+            </SidebarItem>
+            <SidebarItem>
+              <Tray />
+              Inbox
+            </SidebarItem>
+          </SidebarGroup>
+
+          {/* Favorites: collapsible, starts open. */}
+          <SidebarGroup collapsible defaultOpen aria-label="Favorites">
+            <SidebarGroupLabel>Favorites</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarItem>
+                <FavDot className="bg-purple" />
+                Q3 Roadmap
+              </SidebarItem>
+              <SidebarItem>
+                <FavDot className="bg-teal" />
+                Design System
+              </SidebarItem>
+              <SidebarItem>
+                <FavDot className="bg-orange" />
+                Hiring Plan
+              </SidebarItem>
+            </SidebarGroupContent>
+          </SidebarGroup>
+
+          {/* Workspace: collapsible, starts folded. */}
+          <SidebarGroup collapsible defaultOpen={false} aria-label="Workspace">
+            <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarItem>
+                <UsersThree />
+                Members
+              </SidebarItem>
+              <SidebarItem>
+                <GearSix />
+                Settings
+              </SidebarItem>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+    </div>
+  )
+}
+
+/** A faux content pane so a docked/floating rail reads against an app shell. */
+function FauxContent() {
+  return (
+    <div className="flex min-w-0 flex-1 flex-col gap-3 p-5">
+      <div className="h-6 w-40 rounded-md bg-muted" />
+      <div className="h-24 rounded-lg bg-muted/60" />
+      <div className="grid grid-cols-2 gap-3">
+        <div className="h-20 rounded-lg bg-muted/60" />
+        <div className="h-20 rounded-lg bg-muted/60" />
+      </div>
+    </div>
+  )
+}
+
+// ── Floating (inset) rail: a detached card lifted off the canvas, set in a padded shell ──
+export function SidebarFloatingDemo() {
+  return (
+    <div className="flex w-full justify-center">
+      <div className="flex h-[520px] w-full max-w-2xl rounded-xl border border-border bg-muted/30 p-3">
+        <AppSidebar floating className="h-full w-60" />
+        <FauxContent />
+      </div>
+    </div>
+  )
+}
+
+// ── Right-docked rail: side="right" flips the hairline for an inspector/detail panel ──
+export function SidebarSideDemo() {
+  return (
+    <div className="flex w-full justify-center">
+      <div className="flex h-[520px] w-full max-w-2xl overflow-hidden rounded-xl border border-border bg-card">
+        <FauxContent />
+        <AppSidebar side="right" className="h-full w-60" />
+      </div>
+    </div>
   )
 }

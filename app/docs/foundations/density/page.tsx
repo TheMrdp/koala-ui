@@ -4,6 +4,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { DensityAuthFormDemo } from "@/components/docs/density-demos"
 
 export const metadata = { title: "Density" }
 
@@ -67,6 +68,22 @@ export default function DensityPage() {
         </ComponentPreview>
       </DocSection>
 
+      <DocSection title="On a real block">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          Density isn&rsquo;t a one-component knob. Here it drives a whole{" "}
+          <a href="/docs/components/auth-form" className="underline underline-offset-4">
+            sign-in block
+          </a>
+          : toggle it and the card retunes all at once -{" "}
+          <code className="font-mono text-sm">comfortable</code> opens the padding, gaps and title
+          up for a roomier marketing feel, <code className="font-mono text-sm">compact</code>{" "}
+          tightens everything for dense app UI.
+        </p>
+        <div className="mt-6">
+          <DensityAuthFormDemo />
+        </div>
+      </DocSection>
+
       <DocSection title="Application-UI spec">
         <p className="mt-4 text-pretty text-muted-foreground">
           The compact preset, modelled on a dense dashboard: 16px padding and gaps, 1rem card
@@ -127,11 +144,14 @@ export function Dashboard({ children }) {
 
       <DocSection title="Which components honor density">
         <p className="mt-4 text-pretty text-muted-foreground">
-          <strong>Button</strong>, <strong>Card</strong>, <strong>Dialog</strong> and{" "}
-          <strong>Tabs</strong> retune for density. <strong>Avatar</strong> and{" "}
-          <strong>Badge</strong> skip it - they already own explicit pixel{" "}
-          <code className="font-mono text-sm">size</code> scales, so a spacing axis would be
-          redundant.
+          Density reaches across the library: controls (<strong>Button</strong>,{" "}
+          <strong>Select</strong>, <strong>Tabs</strong>, <strong>Pagination</strong>),
+          surfaces (<strong>Card</strong>, <strong>Dialog</strong>, <strong>Drawer</strong>),
+          data display (<strong>Stat</strong>, <strong>List</strong>,{" "}
+          <strong>Description List</strong>, <strong>Data Table</strong>) and the form blocks
+          all retune. <strong>Avatar</strong> and <strong>Badge</strong> opt out by design -
+          they already own explicit pixel <code className="font-mono text-sm">size</code>{" "}
+          scales, so a spacing axis would be redundant.
         </p>
         <p className="mt-4 text-pretty text-muted-foreground">
           Reading density makes a component a client component. Card, Dialog and Tabs already

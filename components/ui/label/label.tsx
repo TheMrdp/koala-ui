@@ -5,20 +5,20 @@ import * as React from "react"
 import { tv } from "@/lib/tv"
 import { useFieldContext } from "@/lib/field-context"
 
-// ─── Variants ─────────────────────────────────────────────────────────────────
+// === Variants =================================================================
 
 // The single source of truth for form label + helper-text styling across the DS.
 // Input, Field, and OTPInput all compose `Label`/`Hint` instead of carrying their own
 // copies, so the look stays identical everywhere and only drifts on purpose.
 const labelVariants = tv({
   slots: {
-    // Canonical label: weight 400 on `muted-foreground` — a soft, quiet label that sits
+    // Canonical label: weight 400 on `muted-foreground`, a soft, quiet label that sits
     // below the control's own text in emphasis, and softens consistently across all four
     // themes (foreground/secondary-foreground stay full-strength in the dark themes).
     // Opacity transitions so toggling `disabled` dims smoothly instead of snapping.
     root: "flex items-center gap-1 text-sm font-normal text-muted-foreground select-none transition-opacity duration-fast ease-out",
     requiredMark: "text-destructive",
-    // Helper text below the control. `text-pretty` keeps short messages off a lonely last line;
+    // Helper text below the control. `text-pretty` keeps short messages off a lonely last line.
     // the color transition lets the error tone fade in (interruptible) rather than jump.
     hint: "text-sm text-pretty text-muted-foreground transition-colors duration-fast ease-out",
   },
@@ -27,13 +27,13 @@ const labelVariants = tv({
       true: { root: "opacity-50" },
     },
     hasError: {
-      // The hint doubles as the error message — switch it to the destructive tone.
+      // The hint doubles as the error message: switch it to the destructive tone.
       true: { hint: "text-destructive" },
     },
   },
 })
 
-// ─── Label ──────────────────────────────────────────────────────────────────────
+// === Label ====================================================================
 
 export interface LabelProps extends React.ComponentPropsWithoutRef<"label"> {
   /** Appends a destructive asterisk (with an sr-only "(required)") after the label text. */
@@ -78,7 +78,7 @@ function Label({
   )
 }
 
-// ─── Hint ─────────────────────────────────────────────────────────────────────
+// === Hint =====================================================================
 
 export interface HintProps extends React.ComponentPropsWithoutRef<"p"> {
   /** Switches the hint to the destructive tone. Inferred from a surrounding `Field` when omitted. */

@@ -2,6 +2,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 
 import {
   SliderDemo,
@@ -24,7 +25,7 @@ export default function SliderDocsPage() {
     <>
       <DocHeader
         title="Slider"
-        description="Pick a value — or a range — by dragging along a track. Built on Radix Slider: thumbs auto-render from the value array (one for a single value, two for a range), with an optional live value bubble and full keyboard support."
+        description="Pick a value (or a range) by dragging along a track. Built on Radix Slider: thumbs auto-render from the value array (one for a single value, two for a range), with an optional live value bubble and full keyboard support."
       />
 
       <ComponentPreview code={HERO_CODE}>
@@ -49,7 +50,7 @@ export function Example() {
 
       <DocSection title="Sizes">
         <p className="mt-4 text-pretty text-muted-foreground">
-          Three sizes scale the track thickness and thumb diameter together —{" "}
+          Three sizes scale the track thickness and thumb diameter together:{" "}
           <code className="font-mono text-sm">sm</code>,{" "}
           <code className="font-mono text-sm">md</code> (default), and{" "}
           <code className="font-mono text-sm">lg</code>.
@@ -73,7 +74,7 @@ export function Example() {
 
       <DocSection title="Range">
         <p className="mt-4 text-pretty text-muted-foreground">
-          Pass two values and you get a two-thumb range — no extra component. Each thumb drags
+          Pass two values and you get a two-thumb range, no extra component. Each thumb drags
           independently and carries its own value bubble.
         </p>
         <ComponentPreview code={RANGE_CODE}>
@@ -96,7 +97,7 @@ export function Example() {
       <DocSection title="Vertical">
         <p className="mt-4 text-pretty text-muted-foreground">
           Set <code className="font-mono text-sm">orientation=&quot;vertical&quot;</code> and
-          give the root a height — the same recipe styles both axes via{" "}
+          give the root a height. The same recipe styles both axes via{" "}
           <code className="font-mono text-sm">data-orientation</code>.
         </p>
         <ComponentPreview code={VERTICAL_CODE}>
@@ -107,7 +108,7 @@ export function Example() {
       <DocSection title="Square">
         <p className="mt-4 text-pretty text-muted-foreground">
           <code className="font-mono text-sm">shape=&quot;square&quot;</code> squares the rail and
-          gives the thumb a fader-cap profile — corners stay concentric with the rail.
+          gives the thumb a fader-cap profile; corners stay concentric with the rail.
         </p>
         <ComponentPreview code={SQUARE_CODE}>
           <SquareDemo />
@@ -117,7 +118,7 @@ export function Example() {
       <DocSection title="Equalizer">
         <p className="mt-4 text-pretty text-muted-foreground">
           Square + vertical turns the slider into a fader. A row of them reads as an
-          equalizer — each is an independent control.
+          equalizer; each is an independent control.
         </p>
         <ComponentPreview code={EQUALIZER_CODE}>
           <EqualizerDemo />
@@ -153,6 +154,19 @@ export function Example() {
         <ComponentPreview previewClassName="block" code={SETTINGS_CODE}>
           <SettingsRowDemo />
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "How do I make a two-thumb range slider?", a: "There is no separate component: pass two values like `defaultValue={[25, 75]}` and the thumbs auto-render from the array, each dragging independently with its own value bubble." },
+            { q: "What does the tooltip prop do, and how do I format the value?", a: "`tooltip` shows a value bubble above each thumb on hover, focus, and while dragging. Pass `formatValue`, for example `(v) => \`$${v}\``, to format the number that appears." },
+            { q: "Controlled or uncontrolled: which props drive the value?", a: "For controlled use `value` and `onValueChange` (both arrays); for uncontrolled use `defaultValue`. Mixing a `value` without `onValueChange` will freeze the thumb." },
+            { q: "How do I render a vertical slider or an equalizer fader?", a: "Set `orientation=\"vertical\"` and give the root an explicit height like `className=\"h-40\"`. Add `shape=\"square\"` for a fader-cap profile, and a row of those reads as an equalizer." },
+            { q: "What does the variant prop control?", a: "`variant` tints the filled range, the thumb border, and the tooltip together as one accent: `default` is the form-control primary, `brand` is the active accent, and `success`/`warning`/`destructive` carry status meaning. The focus ring stays the brand accent regardless." },
+            { q: "How is accessibility handled, and what about the small thumb hit area?", a: "Radix Slider provides full arrow-key support and ARIA, so always pass an `aria-label`. The thumb also carries a centered 40x40 pseudo-element so the small visual still hits a comfortable drag target." },
+          ]}
+        />
       </DocSection>
 
     </>

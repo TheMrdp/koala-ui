@@ -2,6 +2,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 
 import {
   SwitchDemo,
@@ -17,7 +18,7 @@ export default function SwitchDocsPage() {
     <>
       <DocHeader
         title="Switch"
-        description="A toggle for an instant, self-applying boolean — built on Radix Switch. Use it for settings that take effect immediately (notifications, airplane mode); reach for a Checkbox when the choice is submitted with a form."
+        description="A toggle for an instant, self-applying boolean, built on Radix Switch. Use it for settings that take effect immediately (notifications, airplane mode); reach for a Checkbox when the choice is submitted with a form."
       />
 
       <ComponentPreview code={HERO_CODE}>
@@ -48,7 +49,7 @@ export function Example() {
       <DocSection title="States">
         <p className="mt-4 text-pretty text-muted-foreground">
           Off rests on the <code className="font-mono text-sm">input</code> fill; on slides the
-          thumb across a <code className="font-mono text-sm">primary</code> track. The thumb
+          thumb across a <code className="font-mono text-sm">brand</code> (accent) track. The thumb
           carries a shadow so it reads on both states in every theme.
         </p>
         <ComponentPreview code={STATES_CODE}>
@@ -76,6 +77,18 @@ export function Example() {
         <ComponentPreview previewClassName="block" code={SETTINGS_CODE}>
           <SettingsRowDemo />
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "When should I use a Switch instead of a Checkbox?", a: "Use a Switch for an instant, self-applying boolean that takes effect immediately, like notifications or airplane mode. Reach for a Checkbox when the choice is only submitted later with a form." },
+            { q: "How do I control a Switch from state?", a: "Drive it with `checked` and `onCheckedChange`, both passed straight through to Radix Switch. Leave it uncontrolled with `defaultChecked` if you do not need to own the value." },
+            { q: "The Switch renders no label. How do I give it an accessible name?", a: "It deliberately renders only the control, so wrap it in a `<label htmlFor>` matching the switch's `id`. That also makes the whole row a hit target, which is the pattern used in the settings list example." },
+            { q: "What does the static prop do?", a: "It neutralizes the tactile scale-on-press animation (the `active:scale-[0.96]`) for places where that motion would distract. The visual track and thumb are unchanged." },
+            { q: "The track is only 20px tall. Is the tap target really that small?", a: "No. A transparent pseudo-element extends the vertical click area to 40px without changing the visual, so the control stays comfortably tappable while looking compact." },
+          ]}
+        />
       </DocSection>
 
     </>

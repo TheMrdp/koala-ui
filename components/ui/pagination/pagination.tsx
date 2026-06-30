@@ -17,13 +17,13 @@ import {
 } from "@/components/ui/select"
 
 /**
- * Pagination — a multi-part toolbar for navigating a paged dataset. Pattern: one `tv`
+ * Pagination: a multi-part toolbar for navigating a paged dataset. Pattern: one `tv`
  * recipe with `slots`, shared state (current page, total pages, rows-per-page) flowing
  * to every part through React Context (never prop-drilled). See docs/ARCHITECTURE.md §2.
  *
  * The heavy lifting (control styling, focus, a11y) is delegated to the existing Button,
  * Input, and Select primitives so Pagination stays a thin, token-consistent assembler.
- * Every addon is its own named export, so a consumer can compose a custom layout — and
+ * Every addon is its own named export, so a consumer can compose a custom layout, and
  * the `<Pagination>` convenience wrapper toggles each one with a `show*` boolean.
  */
 export const paginationVariants = tv({
@@ -36,7 +36,7 @@ export const paginationVariants = tv({
     // polish: tabular-nums so the counter never reflows as digits change.
     info: "text-muted-foreground tabular-nums whitespace-nowrap select-none",
     current: "font-medium text-foreground",
-    // The go-to field is a fixed, centered numeric box. Hide the native number spinners —
+    // The go-to field is a fixed, centered numeric box. Hide the native number spinners:
     // they crowd a narrow centered field and break its optical balance.
     goToField:
       "w-14 text-center tabular-nums [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
@@ -44,7 +44,7 @@ export const paginationVariants = tv({
   variants: {
     // Density is Koala's cross-cutting spacing axis (lib/density.tsx). For Pagination it
     // retunes the label/info type scale and (via `controlSizes` below) the sub-control
-    // heights — compact lands an h-8 toolbar, comfortable an h-10 one.
+    // heights: compact lands an h-8 toolbar, comfortable an h-10 one.
     density: {
       comfortable: { label: "text-sm", info: "text-sm" },
       compact: { label: "text-xs", info: "text-xs" },
@@ -162,7 +162,7 @@ export function PaginationRoot({
   )
 }
 
-// ─── PaginationInfo — "Página en la que estoy / cuántas páginas hay" ──────────────
+// ─── PaginationInfo: "Página en la que estoy / cuántas páginas hay" ──────────────
 
 export type PaginationInfoProps = React.ComponentProps<"p">
 
@@ -192,7 +192,7 @@ export function PaginationInfo({ className, children, ...props }: PaginationInfo
   )
 }
 
-// ─── PaginationPrevButton / PaginationNextButton — "avanzar, retroceder" ──────────
+// ─── PaginationPrevButton / PaginationNextButton: "avanzar, retroceder" ──────────
 
 export type PaginationNavButtonProps = Omit<
   React.ComponentProps<typeof Button>,
@@ -246,7 +246,7 @@ export function PaginationNextButton({
   )
 }
 
-// ─── PaginationControls — prev + next as one group ───────────────────────────────
+// ─── PaginationControls: prev + next as one group ───────────────────────────────
 
 export type PaginationControlsProps = React.ComponentProps<"div">
 
@@ -263,7 +263,7 @@ export function PaginationControls({ className, ...props }: PaginationControlsPr
   )
 }
 
-// ─── PaginationGoTo — "escribir número e irme a la página X" ──────────────────────
+// ─── PaginationGoTo: "escribir número e irme a la página X" ──────────────────────
 
 export interface PaginationGoToProps
   extends Omit<React.ComponentProps<"div">, "onChange"> {
@@ -283,7 +283,7 @@ export function PaginationGoTo({ label = "Go to", className, ...props }: Paginat
   const [value, setValue] = React.useState(String(page))
 
   // Re-sync the field whenever the page changes from anywhere (prev/next, external state…).
-  // Adjusting state during render — React's recommended alternative to a setState effect.
+  // Adjusting state during render: React's recommended alternative to a setState effect.
   const [lastPage, setLastPage] = React.useState(page)
   if (page !== lastPage) {
     setLastPage(page)
@@ -334,7 +334,7 @@ export function PaginationGoTo({ label = "Go to", className, ...props }: Paginat
   )
 }
 
-// ─── PaginationRowsPerPage — "cuántas rows cargar" ───────────────────────────────
+// ─── PaginationRowsPerPage: "cuántas rows cargar" ───────────────────────────────
 
 export interface PaginationRowsPerPageProps extends React.ComponentProps<"div"> {
   /** Label rendered before the select. Pass `null`/`false` to hide it. @default "Rows per page" */
@@ -387,7 +387,7 @@ export function PaginationRowsPerPage({
   )
 }
 
-// ─── Pagination — the convenience toolbar with `show*` addon toggles ─────────────
+// ─── Pagination: the convenience toolbar with `show*` addon toggles ─────────────
 
 export interface PaginationProps extends PaginationRootProps {
   /** Show the "Page X of Y" readout. @default true */

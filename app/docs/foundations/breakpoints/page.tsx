@@ -22,7 +22,7 @@ export default function BreakpointsPage() {
     <>
       <DocHeader
         title="Breakpoints"
-        description="The five responsive thresholds Koala builds on — Tailwind v4 defaults, used verbatim. Styles are mobile-first: an unprefixed utility applies everywhere, a prefixed one applies from that width up."
+        description="The five responsive thresholds Koala builds on: Tailwind v4 defaults, used verbatim. Styles are mobile-first: an unprefixed utility applies everywhere, a prefixed one applies from that width up."
       />
 
       <DocSection title="The scale">
@@ -47,7 +47,7 @@ export default function BreakpointsPage() {
       <DocSection title="Mobile-first">
         <p className="mt-4 text-pretty text-muted-foreground">
           Write the small-screen layout with unprefixed utilities, then layer overrides at
-          each breakpoint and up. Don&apos;t use <code>sm:</code> to target only mobile — it
+          each breakpoint and up. Don&apos;t use <code>sm:</code> to target only mobile: it
           means <em>640px and wider</em>.
         </p>
         <div className="mt-4">
@@ -81,11 +81,11 @@ export default function BreakpointsPage() {
         <p className="mt-4 text-pretty text-muted-foreground">
           Media queries respond to the <em>viewport</em>, so you can&apos;t see a layout
           reflow just by resizing a column. The{" "}
-          <Link href="/docs/sections/hero" className="font-medium text-foreground underline underline-offset-4">
+          <Link href="/marketing/sections/hero" className="font-medium text-foreground underline underline-offset-4">
             Marketing Sections
           </Link>{" "}
           preview renders each section inside an iframe, so its own breakpoints respond to the
-          frame width — switch between Mobile (375px), Tablet (768px) and Desktop, or drag the
+          frame width, so switch between Mobile (375px), Tablet (768px) and Desktop, or drag the
           handle to any width in between.
         </p>
       </DocSection>

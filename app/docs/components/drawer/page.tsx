@@ -14,6 +14,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 import {
   DrawerSidesShowcase,
   MobileSheetDemo,
@@ -122,7 +123,7 @@ export function Example() {
         <p className="mt-4 text-pretty text-muted-foreground">
           <code className="font-mono text-sm">side</code> on{" "}
           <code className="font-mono text-sm">DrawerContent</code> picks the edge the panel
-          slides from — <code className="font-mono text-sm">top</code>,{" "}
+          slides from: <code className="font-mono text-sm">top</code>,{" "}
           <code className="font-mono text-sm">right</code> (default),{" "}
           <code className="font-mono text-sm">bottom</code>, or{" "}
           <code className="font-mono text-sm">left</code>. Top and bottom render as sheets
@@ -139,14 +140,14 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
-      <DocSection title="Mobile — bottom sheet">
+      <DocSection title="Mobile: bottom sheet">
         <p className="mt-4 text-pretty text-muted-foreground">
           On touch devices the bottom sheet is the native pattern. It rounds its top corners,
           shows a grab handle, and pads past the home-indicator safe area. It is{" "}
-          <strong className="text-foreground">swipe-to-dismiss</strong> by default — drag the
+          <strong className="text-foreground">swipe-to-dismiss</strong> by default. Drag the
           handle or header down and release past ~45% (or flick) to close, handing the exit
           animation back to Radix. The drag only arms after a few pixels, so taps on the rows
-          still register, and it never starts on the scrollable body — so a drag and a scroll
+          still register, and it never starts on the scrollable body, so a drag and a scroll
           never fight. Disable it with{" "}
           <code className="font-mono text-sm">swipeToClose=&#123;false&#125;</code>.
         </p>
@@ -171,8 +172,8 @@ export function Example() {
 
       <DocSection title="Navigate inside the sheet">
         <p className="mt-4 text-pretty text-muted-foreground">
-          A bottom sheet often needs to drill into nested views — an action sheet that opens
-          a sub-panel, a settings menu, a multi-step filter — without ever leaving the sheet.
+          A bottom sheet often needs to drill into nested views (an action sheet that opens
+          a sub-panel, a settings menu, a multi-step filter) without ever leaving the sheet.
           Wrap the pages in <code className="font-mono text-sm">DrawerNav</code> and give each a{" "}
           <code className="font-mono text-sm">DrawerView</code>: only the active view renders,
           it enters with a native horizontal push (from the right going forward, the left on
@@ -213,7 +214,7 @@ export function Example() {
 
       <DocSection title="Form panel">
         <p className="mt-4 text-pretty text-muted-foreground">
-          A right-side panel is the desktop home for an edit form — it keeps the underlying
+          A right-side panel is the desktop home for an edit form; it keeps the underlying
           page visible for context. Compose labelled{" "}
           <a href="/docs/components/input" className="underline underline-offset-4">Input</a>{" "}
           parts in the <code className="font-mono text-sm">DrawerBody</code> and land focus on
@@ -281,7 +282,7 @@ export function Example() {
       <DocSection title="Sizes">
         <p className="mt-4 text-pretty text-muted-foreground">
           <code className="font-mono text-sm">size</code> caps the panel&apos;s cross-axis
-          extent — the <em>width</em> of left/right panels and the <em>height</em> of
+          extent: the <em>width</em> of left/right panels and the <em>height</em> of
           top/bottom sheets. Panels stay full-bleed below the cap, so on a phone they fill the
           screen and on desktop they settle into a panel. Four steps:{" "}
           <code className="font-mono text-sm">sm</code>,{" "}
@@ -326,7 +327,7 @@ export function Example() {
           <code className="font-mono text-sm">density</code> tightens padding, gaps and the
           title for application UI; it re-provides itself to the header, body and footer so
           every part stays in sync. Best driven once via{" "}
-          <code className="font-mono text-sm">DensityProvider</code> — see{" "}
+          <code className="font-mono text-sm">DensityProvider</code>. See{" "}
           <a href="/docs/foundations/density" className="underline underline-offset-4">Density</a>.
         </p>
         <ComponentPreview
@@ -351,6 +352,37 @@ export function Example() {
             </DrawerContent>
           </Drawer>
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            {
+              q: "When should I use a Drawer instead of a Dialog?",
+              a: "Both are built on Radix Dialog, but reach for a Drawer when the panel should slide in from a screen edge: a right-side edit form that keeps the page visible, a left off-canvas nav, or a mobile bottom sheet. Use Dialog for a centered, modal confirmation or focused task that does not belong to an edge.",
+            },
+            {
+              q: "What does the side prop on DrawerContent control?",
+              a: "It picks the edge the panel slides from: `top`, `right` (the default), `bottom`, or `left`. Left and right render as full-height panels, while top and bottom render as sheets with a grab handle and rounded inner corners.",
+            },
+            {
+              q: "How does swipe-to-dismiss work and can I turn it off?",
+              a: "Swipe-to-dismiss is on by default: drag the handle or header toward the closing edge and release past about 45 percent (or flick) to close, which hands the exit animation back to Radix. The drag only arms after a few pixels of slop and never starts on the scrollable DrawerBody, so taps and scrolling still work. Disable it with `swipeToClose={false}`.",
+            },
+            {
+              q: "How do I land focus on a specific field when the drawer opens?",
+              a: "DrawerContent forwards Radix's `onOpenAutoFocus`, so call `e.preventDefault()` and focus your own element, for example the first Input via a ref. This keeps focus management accessible while overriding the default landing spot.",
+            },
+            {
+              q: "How do I build nested views inside a bottom sheet?",
+              a: "Wrap your pages in `DrawerNav` with a `defaultView`, give each page a `DrawerView` keyed by `view`, then drill in with a `DrawerNavTrigger` and pop with a `DrawerNavBack`. Only the active view renders, it enters with a horizontal push, the sheet height animates to fit, and the stack resets when the drawer closes.",
+            },
+            {
+              q: "What is the difference between the size and density props?",
+              a: "`size` caps the panel's cross-axis extent: the width of left and right panels and the height of top and bottom sheets, across four steps (`sm`, `md` default, `lg`, `xl`). `density` instead tightens padding, gaps, and the title for application UI and re-provides itself to the header, body, and footer; drive it once via DensityProvider.",
+            },
+          ]}
+        />
       </DocSection>
 
     </>

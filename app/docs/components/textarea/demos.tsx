@@ -13,7 +13,7 @@ import {
 
 export function AutoResizeDemo() {
   const [value, setValue] = React.useState(
-    "This textarea grows as you type — try adding a few more lines and watch it expand to fit.",
+    "This textarea grows as you type. Try adding a few more lines and watch it expand to fit.",
   )
   return (
     <div className="flex w-full max-w-sm flex-col gap-1.5">
@@ -27,7 +27,23 @@ export function AutoResizeDemo() {
           placeholder="Start typing…"
         />
       </TextareaRoot>
-      <TextareaHint>No scrollbar — the field resizes to its content.</TextareaHint>
+      <TextareaHint>No scrollbar: the field resizes to its content.</TextareaHint>
+    </div>
+  )
+}
+
+export function AddonCounterDemo() {
+  return (
+    <div className="flex w-full max-w-sm flex-col gap-1.5">
+      <TextareaLabel htmlFor="addon-bio">Bio</TextareaLabel>
+      <TextareaRoot resize="none">
+        <TextareaField
+          id="addon-bio"
+          showCount
+          maxLength={180}
+          placeholder="Tell us about yourself…"
+        />
+      </TextareaRoot>
     </div>
   )
 }

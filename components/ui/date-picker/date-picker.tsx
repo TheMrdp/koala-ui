@@ -10,18 +10,18 @@ import { useDensity, type Density } from "@/lib/density"
 import { useFieldContext } from "@/lib/field-context"
 
 /**
- * DatePicker — a calendar surface plus two ready pickers (single date + date range),
+ * DatePicker: a calendar surface plus two ready pickers (single date + date range),
  * built over Radix Popover (focus, dismiss, positioning) with a hand-rolled calendar
  * grid (no date dependency: native `Date` math + `Intl` for locale-aware labels).
  *
  * Three exports compose the surface:
- *   • `Calendar`        — the standalone month grid (single | range, keyboard nav,
- *                          day/month/year views). Controlled or uncontrolled.
- *   • `DatePicker`      — a trigger + Calendar in a Popover for one date.
- *   • `DateRangePicker` — the same for a {from,to} range, with a presets rail.
+ *   • `Calendar`: the standalone month grid (single | range, keyboard nav,
+ *     day/month/year views). Controlled or uncontrolled.
+ *   • `DatePicker`: a trigger + Calendar in a Popover for one date.
+ *   • `DateRangePicker`: the same for a {from,to} range, with a presets rail.
  *
  * The selected day reads the brand accent; the in-range fill is the neutral `accent`
- * surface so the two never compete. Tokens only — see docs/ARCHITECTURE.md.
+ * surface so the two never compete. Tokens only, see docs/ARCHITECTURE.md.
  */
 
 // ─── Types ──────────────────────────────────────────────────────────────────────
@@ -80,7 +80,7 @@ function getMonthMatrix(month: Date, weekStartsOn: WeekStart): Date[] {
 /** Localized short weekday headers, rotated to the configured first day. */
 function getWeekdayLabels(weekStartsOn: WeekStart, locale?: string): string[] {
   const fmt = new Intl.DateTimeFormat(locale, { weekday: "short" })
-  // 2023-01-01 is a Sunday — a reliable anchor for getDay()===0.
+  // 2023-01-01 is a Sunday, a reliable anchor for getDay()===0.
   const sunday = new Date(2023, 0, 1)
   return Array.from({ length: 7 }, (_, i) => fmt.format(addDays(sunday, (weekStartsOn + i) % 7)))
 }
@@ -124,7 +124,7 @@ export function getDateRangePresets(now: Date = new Date(), weekStartsOn: WeekSt
 
 /**
  * Controlled-or-uncontrolled value. Controlled-ness is captured once on mount (so
- * clearing a controlled value to `undefined` stays controlled — the Radix pattern).
+ * clearing a controlled value to `undefined` stays controlled, the Radix pattern).
  */
 function useControllableState<T>({
   value,
@@ -236,11 +236,11 @@ export const datePickerTriggerVariants = tv({
     "bg-[var(--surface,var(--background))] shadow-xs cursor-pointer min-w-40",
     "transition-[border-color,box-shadow,scale] duration-fast ease-out",
     "hover:border-ring/50",
-    "outline-none focus-visible:border-brand focus-visible:[box-shadow:0_0_0_3px_var(--ring-brand)]",
-    "data-[state=open]:border-brand data-[state=open]:[box-shadow:0_0_0_3px_var(--ring-brand)]",
+    "outline-none focus-visible:border-brand focus-visible:brand-ring",
+    "data-[state=open]:border-brand data-[state=open]:brand-ring",
     "active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50",
     "data-[placeholder]:text-muted-foreground",
-    "aria-[invalid=true]:border-destructive aria-[invalid=true]:focus-visible:[box-shadow:0_0_0_3px_color-mix(in_oklch,var(--destructive)_20%,transparent)]",
+    "aria-[invalid=true]:border-destructive aria-[invalid=true]:focus-visible:destructive-ring",
   ],
   variants: {
     size: {
@@ -313,7 +313,7 @@ export function Calendar(props: CalendarProps) {
   const slots = calendarVariants({ density: d })
   const today = React.useMemo(() => startOfDay(new Date()), [])
 
-  // Selection — single date or {from,to} range, controlled or uncontrolled.
+  // Selection: single date or {from,to} range, controlled or uncontrolled.
   const [selection, setSelection] = useControllableState<Date | DateRange | undefined>({
     value: props.selected as Date | DateRange | undefined,
     defaultValue: (props as CalendarSingleProps).defaultSelected ?? (props as CalendarRangeProps).defaultSelected,
@@ -323,7 +323,7 @@ export function Calendar(props: CalendarProps) {
   const single = mode === "single" ? (selection as Date | undefined) : undefined
   const range = mode === "range" ? (selection as DateRange | undefined) : undefined
 
-  // Display month — seeded from the current selection so the picker opens in context.
+  // Display month: seeded from the current selection so the picker opens in context.
   const seedMonth =
     defaultMonth ?? single ?? range?.from ?? today
   const [month, setMonth] = useControllableState<Date>({
@@ -332,7 +332,7 @@ export function Calendar(props: CalendarProps) {
     onChange: onMonthChange,
   })
 
-  // View state — day grid by default; the caption cycles to month / year pickers
+  // View state: day grid by default; the caption cycles to month / year pickers
   // (only when a single month is shown, to keep the navigation legible).
   const canSwitchView = numberOfMonths === 1
   const [view, setView] = React.useState<"days" | "months" | "years">("days")
@@ -357,7 +357,7 @@ export function Calendar(props: CalendarProps) {
   const firstDisplayed = startOfMonth(displayedMonths[0])
   const lastDisplayed = endOfMonth(displayedMonths[displayedMonths.length - 1])
 
-  // The single tab stop in the grid (roving tabindex). Falls back to selection → today → 1st.
+  // The single tab stop in the grid (roving tabindex). Falls back to selection, then today, then 1st.
   const tabbable = React.useMemo(() => {
     const anchor = focusedDate ?? single ?? range?.from ?? today
     if (anchor >= firstDisplayed && anchor <= lastDisplayed) return anchor
@@ -417,7 +417,7 @@ export function Calendar(props: CalendarProps) {
     else if (next > lastDisplayed) setMonth(addMonths(month, 1))
   }
 
-  // Header navigation — step depends on the active view.
+  // Header navigation: step depends on the active view.
   function shiftView(dir: 1 | -1) {
     if (view === "days") setMonth(addMonths(month, dir))
     else if (view === "months") setMonth(new Date(month.getFullYear() + dir, month.getMonth(), 1))
@@ -555,73 +555,85 @@ export function Calendar(props: CalendarProps) {
           )}
         </div>
 
-        <div className={slots.weekRow()} role="row">
+        <div className={slots.weekRow()} aria-hidden>
           {weekdays.map((w, i) => (
-            <span key={i} className={slots.weekday()} aria-hidden>
+            <span key={i} className={slots.weekday()}>
               {w}
             </span>
           ))}
         </div>
 
         <div className={slots.grid()} role="grid">
-          {matrix.map((day, cellIndex) => {
-            const col = cellIndex % 7
-            const outside = !isSameMonth(day, monthDate)
-            const disabled = isDisabled(day)
-            const isToday = isSameDay(day, today)
+          {Array.from({ length: Math.ceil(matrix.length / 7) }, (_, week) => (
+            // role="row" with display:contents keeps the single 7-col grid layout while giving
+            // role="grid" the row > gridcell structure that assistive tech requires.
+            <div role="row" className="contents" key={week}>
+              {matrix.slice(week * 7, week * 7 + 7).map((day, col) => {
+                const outside = !isSameMonth(day, monthDate)
+                const disabled = isDisabled(day)
+                const isToday = isSameDay(day, today)
 
-            // Selection flags.
-            const isStart = mode === "range" && isSameDay(day, rFrom)
-            const isEnd = mode === "range" && isSameDay(day, rTo)
-            const inRange = mode === "range" && !!rFrom && !!rTo && day >= rFrom && day <= rTo
-            const selected =
-              mode === "single" ? isSameDay(day, single) : isStart || isEnd
+                // Selection flags.
+                const isStart = mode === "range" && isSameDay(day, rFrom)
+                const isEnd = mode === "range" && isSameDay(day, rTo)
+                const inRange = mode === "range" && !!rFrom && !!rTo && day >= rFrom && day <= rTo
+                const selected =
+                  mode === "single" ? isSameDay(day, single) : isStart || isEnd
 
-            // Range fill lives on the cell; compute its rounding so the bar reads as one
-            // continuous shape with rounded outer ends (and rounded row edges).
-            let cellRange = ""
-            if (inRange) {
-              const roundLeft = isStart || col === 0
-              const roundRight = isEnd || col === 6
-              const rounding =
-                roundLeft && roundRight ? "rounded-md" : roundLeft ? "rounded-l-md" : roundRight ? "rounded-r-md" : "rounded-none"
-              cellRange = cn("bg-accent", rounding)
-            }
+                // Range fill lives on the cell; compute its rounding so the bar reads as one
+                // continuous shape with rounded outer ends (and rounded row edges).
+                let cellRange = ""
+                if (inRange) {
+                  const roundLeft = isStart || col === 0
+                  const roundRight = isEnd || col === 6
+                  const rounding =
+                    roundLeft && roundRight ? "rounded-md" : roundLeft ? "rounded-l-md" : roundRight ? "rounded-r-md" : "rounded-none"
+                  cellRange = cn("bg-accent", rounding)
+                }
 
-            return (
-              <div
-                className={cn(slots.cell(), cellRange)}
-                key={isoKey(day)}
-                role="gridcell"
-                aria-selected={selected || undefined}
-              >
-                <button
-                  type="button"
-                  ref={(el) => {
-                    if (el) dayRefs.current.set(isoKey(day), el)
-                    else dayRefs.current.delete(isoKey(day))
-                  }}
-                  tabIndex={isSameDay(day, tabbable) ? 0 : -1}
-                  disabled={disabled}
-                  aria-label={new Intl.DateTimeFormat(locale, { dateStyle: "full" }).format(day)}
-                  data-today={isToday || undefined}
-                  data-outside={outside || undefined}
-                  data-disabled={disabled || undefined}
-                  data-selected={selected || undefined}
-                  className={slots.day()}
-                  onClick={() => handleDayClick(day)}
-                  onKeyDown={(e) => handleDayKeyDown(e, day)}
-                  onMouseEnter={() => mode === "range" && rFrom && !range?.to && setHovered(day)}
-                >
-                  {day.getDate()}
-                </button>
-              </div>
-            )
-          })}
+                return (
+                  <div
+                    className={cn(slots.cell(), cellRange)}
+                    key={isoKey(day)}
+                    role="gridcell"
+                    // Every day inside the range is exposed as selected, not only the endpoints.
+                    aria-selected={selected || inRange || undefined}
+                  >
+                    <button
+                      type="button"
+                      ref={(el) => {
+                        if (el) dayRefs.current.set(isoKey(day), el)
+                        else dayRefs.current.delete(isoKey(day))
+                      }}
+                      tabIndex={isSameDay(day, tabbable) ? 0 : -1}
+                      disabled={disabled}
+                      aria-label={new Intl.DateTimeFormat(locale, { dateStyle: "full" }).format(day)}
+                      data-today={isToday || undefined}
+                      data-outside={outside || undefined}
+                      data-disabled={disabled || undefined}
+                      data-selected={selected || undefined}
+                      className={slots.day()}
+                      onClick={() => handleDayClick(day)}
+                      onKeyDown={(e) => handleDayKeyDown(e, day)}
+                      onMouseEnter={() => mode === "range" && rFrom && !range?.to && setHovered(day)}
+                    >
+                      {day.getDate()}
+                    </button>
+                  </div>
+                )
+              })}
+            </div>
+          ))}
         </div>
       </div>
     )
   }
+
+  // Polite live region so changing month via the chevrons (which keeps focus on the button, not a
+  // day) is announced. Keyboard day-nav is already announced through the newly focused day's label.
+  const liveMonthLabel = displayedMonths
+    .map((m) => new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" }).format(m))
+    .join(", ")
 
   return (
     <div
@@ -629,6 +641,9 @@ export function Calendar(props: CalendarProps) {
       data-slot="calendar"
       onMouseLeave={() => setHovered(null)}
     >
+      <div role="status" aria-live="polite" className="sr-only">
+        {liveMonthLabel}
+      </div>
       <div className={slots.months()}>{displayedMonths.map((m, i) => renderMonth(m, i))}</div>
     </div>
   )

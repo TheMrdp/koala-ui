@@ -66,20 +66,28 @@ export default function TypographyPage() {
     <>
       <DocHeader
         title="Typography"
-        description="Inter for everything - UI, headings and body - with the system monospace as the code fallback. The full type scale, weights, tracking and leading come straight from Tailwind v4; we don't redefine them. The numbers below are the resolved token values."
+        description="Two typefaces: Inter carries UI and body, DM Sans is reserved for headings and titles, with the system monospace as the code fallback. DM Sans loads with an optical-size axis, so its display letterfit self-tunes by size. The full type scale, weights, tracking and leading come straight from Tailwind v4; we don't redefine them. The numbers below are the resolved token values."
       />
 
       <DocSection title="Font families">
         <p className="mt-2 text-sm text-pretty text-muted-foreground">
-          One bundled typeface. Inter loads as a variable font via{" "}
-          <code className="font-mono text-sm">next/font</code>, so 400–700 are a single
-          axis, not four files. <code className="font-mono text-sm">font-mono</code> falls
-          back to the platform UI monospace - nothing to download.
+          Two bundled typefaces, both variable fonts loaded via{" "}
+          <code className="font-mono text-sm">next/font</code>.{" "}
+          <code className="font-mono text-sm">font-sans</code> (Inter) is the workhorse for
+          UI and body; <code className="font-mono text-sm">font-heading</code> (DM Sans, with
+          an optical-size axis) is applied to every <code className="font-mono text-sm">h1</code>–
+          <code className="font-mono text-sm">h6</code>.{" "}
+          <code className="font-mono text-sm">font-mono</code> falls back to the platform UI
+          monospace - nothing to download.
         </p>
         <div className="mt-6 flex flex-col divide-y divide-border">
           <div className="flex items-baseline gap-4 py-4">
             <span className="w-32 shrink-0 font-mono text-xs text-muted-foreground">font-sans</span>
             <span className="font-sans text-2xl">The quick brown fox</span>
+          </div>
+          <div className="flex items-baseline gap-4 py-4">
+            <span className="w-32 shrink-0 font-mono text-xs text-muted-foreground">font-heading</span>
+            <span className="font-heading text-2xl">The quick brown fox</span>
           </div>
           <div className="flex items-baseline gap-4 py-4">
             <span className="w-32 shrink-0 font-mono text-xs text-muted-foreground">font-mono</span>
@@ -106,12 +114,26 @@ export default function TypographyPage() {
             </ScaleRow>
           ))}
         </div>
+        <p className="mt-4 text-sm text-pretty text-muted-foreground">
+          These are raw sizes, not heading roles. A bare{" "}
+          <code className="font-mono text-sm">h1</code>–<code className="font-mono text-sm">h6</code>{" "}
+          carries the heading face and tracking (see Font families) but no intrinsic size, so each
+          context steps off this scale on its own. For the document scale the{" "}
+          <a
+            href="/docs/components/rich-text-editor#prose-scale"
+            className="font-medium text-foreground underline underline-offset-4"
+          >
+            Rich Text Editor
+          </a>{" "}
+          maps onto <code className="font-mono text-sm">H1</code>–
+          <code className="font-mono text-sm">H4</code> and body copy, see its Prose scale.
+        </p>
       </DocSection>
 
       <DocSection title="Weights">
         <p className="mt-2 text-sm text-pretty text-muted-foreground">
-          Four stops off Inter's variable weight axis. We skip 100–300 (too fragile at text
-          sizes) and 800–900 (heavier than the brand needs).
+          Four stops off the variable weight axis, shared by both faces. We skip 100–300
+          (too fragile at text sizes) and everything above 700 (heavier than the brand needs).
         </p>
         <div className="mt-4">
           {WEIGHTS.map((w) => (
@@ -143,7 +165,7 @@ export default function TypographyPage() {
         <p className="mt-2 text-sm text-pretty text-muted-foreground">
           Unitless <code className="font-mono text-sm">line-height</code>, multiplied by the
           font-size. The px column is resolved at this 16px sample. Most components inherit the
-          type scale's paired leading; reach for these only to override it.
+          type scale’s paired leading; reach for these only to override it.
         </p>
         <div className="mt-4">
           {LEADING.map((l) => (

@@ -45,7 +45,7 @@ import {
   type DrawerSide,
 } from "@/components/ui/drawer"
 
-/** One trigger per edge — the same drawer recipe, four `side` values. */
+/** One trigger per edge: the same drawer recipe, four `side` values. */
 export function DrawerSidesShowcase() {
   const sides: { side: DrawerSide; label: string; icon: React.ReactNode }[] = [
     { side: "top", label: "Top", icon: <ArrowLineUp /> },
@@ -136,7 +136,7 @@ export function MobileSheetDemo() {
   )
 }
 
-/** A right-side drawer carrying a form — the desktop "edit panel" pattern. */
+/** A right-side drawer carrying a form: the desktop "edit panel" pattern. */
 export function DrawerFormDemo() {
   const nameRef = React.useRef<HTMLInputElement>(null)
   const [name, setName] = React.useState("Ada Lovelace")
@@ -199,7 +199,7 @@ export function DrawerFormDemo() {
   )
 }
 
-/** A left drawer as a mobile navigation menu — long, scrollable body. */
+/** A left drawer as a mobile navigation menu: long, scrollable body. */
 export function NavigationDrawerDemo() {
   const items = [
     { icon: <House />, label: "Dashboard" },
@@ -336,7 +336,7 @@ export function NestedSheetDemo() {
             <ViewHeader title="Region & language" />
             <DrawerBody className="pb-4">
               <p className="px-3 py-2 text-sm text-muted-foreground">
-                Two levels deep — back returns to Privacy, then to Settings. The sheet height
+                Two levels deep. Back returns to Privacy, then to Settings. The sheet height
                 animates to each view.
               </p>
             </DrawerBody>

@@ -2,8 +2,11 @@
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 import {
   AccountMenuDemo,
+  UserMenuDemo,
+  MoreActionsMenuDemo,
   EditMenuDemo,
   CheckboxMenuDemo,
   ThemeMenuDemo,
@@ -76,7 +79,7 @@ export default function DropdownMenuDocsPage() {
       </DropdownMenuSub>
     </DropdownMenuGroup>
     <DropdownMenuSeparator />
-    <DropdownMenuItem className="text-destructive focus:text-destructive">
+    <DropdownMenuItem variant="destructive">
       <SignOut /> Log out
       <DropdownMenuShortcut>⌘Q</DropdownMenuShortcut>
     </DropdownMenuItem>
@@ -120,7 +123,7 @@ export function Example() {
           <DropdownMenuShortcut>⌘,</DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-destructive focus:text-destructive">
+        <DropdownMenuItem variant="destructive">
           <SignOut /> Log out
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -128,6 +131,98 @@ export function Example() {
   )
 }`}
         />
+      </DocSection>
+
+      {/* ── Avatar trigger (user menu) ───────────────────────────────── */}
+      <DocSection title="Avatar trigger">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          Any element can be the trigger via <code className="font-mono text-sm">asChild</code>. A
+          common pattern is a header avatar that opens an account menu, with the signed-in
+          identity repeated as a non-interactive label at the top.
+        </p>
+        <ComponentPreview
+          code={`<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <button
+      aria-label="Open user menu"
+      className="cursor-pointer rounded-full outline-none ring-ring ring-offset-2 ring-offset-background transition-transform duration-fast ease-out focus-visible:ring-2 active:scale-[0.96]"
+    >
+      <Avatar size="md">
+        <AvatarImage src="/avatar.jpg" alt="Esteban Alonso" />
+        <AvatarFallback>EA</AvatarFallback>
+        <AvatarStatus variant="online" />
+      </Avatar>
+    </button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent align="end" className="w-60">
+    <DropdownMenuLabel className="flex items-center gap-3 py-2 font-normal">
+      <Avatar size="sm">
+        <AvatarImage src="/avatar.jpg" alt="Esteban Alonso" />
+        <AvatarFallback>EA</AvatarFallback>
+      </Avatar>
+      <div className="min-w-0">
+        <p className="truncate text-sm font-medium leading-none text-foreground">
+          Esteban Alonso
+        </p>
+        <p className="mt-1 truncate text-xs text-muted-foreground">esteban@koala.ui</p>
+      </div>
+    </DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    <DropdownMenuGroup>
+      <DropdownMenuItem>
+        <UserCircle /> Profile
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <CreditCard /> Billing
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <Gear /> Settings
+      </DropdownMenuItem>
+    </DropdownMenuGroup>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem variant="destructive">
+      <SignOut /> Log out
+    </DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>`}
+        >
+          <UserMenuDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      {/* ── Icon button trigger (more actions) ───────────────────────── */}
+      <DocSection title="Icon button trigger">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          A ghost <code className="font-mono text-sm">iconOnly</code> button makes a compact
+          “more actions” menu for table rows and card headers. Align the content to the trigger
+          edge with <code className="font-mono text-sm">align=&quot;end&quot;</code>.
+        </p>
+        <ComponentPreview
+          code={`<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="ghost" iconOnly aria-label="More actions">
+      <DotsThree />
+    </Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent align="end" className="w-44">
+    <DropdownMenuItem>
+      <PencilSimple /> Edit
+    </DropdownMenuItem>
+    <DropdownMenuItem>
+      <Copy /> Duplicate
+    </DropdownMenuItem>
+    <DropdownMenuItem>
+      <ShareNetwork /> Share
+    </DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem variant="destructive">
+      <Trash /> Delete
+    </DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>`}
+        >
+          <MoreActionsMenuDemo />
+        </ComponentPreview>
       </DocSection>
 
       {/* ── Editor / keyboard shortcuts ──────────────────────────────── */}
@@ -173,7 +268,7 @@ export function Example() {
       </DropdownMenuSubContent>
     </DropdownMenuSub>
     <DropdownMenuSeparator />
-    <DropdownMenuItem className="text-destructive focus:text-destructive">
+    <DropdownMenuItem variant="destructive">
       <Trash /> Delete
       <DropdownMenuShortcut>⌫</DropdownMenuShortcut>
     </DropdownMenuItem>
@@ -235,6 +330,41 @@ export function Example() {
         >
           <ThemeMenuDemo />
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            {
+              q: "When should I use a Dropdown Menu versus a Select?",
+              a: "Use DropdownMenu for a list of actions or commands fired from a trigger, like a row's more-actions menu or an account menu. Reach for Select when the user is choosing a value to submit in a form; the menu's items run callbacks rather than holding a form value.",
+            },
+            {
+              q: "How do I make an arbitrary element the trigger?",
+              a: "Pass `asChild` to DropdownMenuTrigger and render your own element inside it, such as an Avatar button or a ghost iconOnly Button. Radix merges the trigger behavior and ARIA onto your element instead of rendering its own button.",
+            },
+            {
+              q: "What is the difference between DropdownMenuCheckboxItem and DropdownMenuRadioItem?",
+              a: "DropdownMenuCheckboxItem is an independent toggle driven by its own `checked` state, while DropdownMenuRadioItem is one mutually exclusive choice inside a DropdownMenuRadioGroup with a shared `value`. Both render the same Check indicator, since the exclusive-versus-toggle semantics live in the ARIA role and grouping, not the glyph.",
+            },
+            {
+              q: "Does DropdownMenuShortcut actually bind the keyboard shortcut?",
+              a: "No. DropdownMenuShortcut is purely decorative right-aligned text rendered through the shared Kbd primitive, so it just displays the hint like ⌘P. Wire up the real key binding in your app with a global listener.",
+            },
+            {
+              q: "How do I keep items aligned when some have leading icons and others do not?",
+              a: "Pass the `inset` prop to DropdownMenuItem (or DropdownMenuLabel and DropdownMenuSubTrigger) to add left padding that lines text up with icon-bearing siblings. This keeps a mixed list visually aligned without adding a placeholder icon.",
+            },
+            {
+              q: "How do I style a destructive action like Delete or Log out?",
+              a: "Pass `variant=\"destructive\"` to DropdownMenuItem. It colors the label red and, unlike the default muted leading icon, colors that icon red too so the whole row reads as one destructive unit; the hover background tints red to match. The check indicator on checkbox and radio items is never affected.",
+            },
+            {
+              q: "How do I tighten the menu for dense application UI?",
+              a: "Set `density=\"compact\"` on DropdownMenuContent, or drive it globally with DensityProvider since every part reads the density context. Compact reduces item padding and keeps the inner radius concentric with the content's rounded border.",
+            },
+          ]}
+        />
       </DocSection>
 
     </>

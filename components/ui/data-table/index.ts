@@ -20,10 +20,24 @@ export {
   DataTable,
   type DataTableProps,
   type ColumnDef,
+  type ColumnFiltersState,
+  type PaginationState,
   type SortingState,
   type GroupingState,
   type RowSelectionState,
 } from "./data-table"
+
+export {
+  DataTableFacetedFilter,
+  DataTableActiveFilters,
+  type DataTableFilterOption,
+  type DataTableFilterField,
+} from "./data-table-faceted-filter"
+
+export {
+  DataTableSelectionBar,
+  type DataTableSelectionBarProps,
+} from "./data-table-selection-bar"
 
 export {
   DataTableToolbar,

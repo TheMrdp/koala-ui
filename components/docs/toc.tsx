@@ -14,8 +14,14 @@ interface TocItem {
  * On-this-page navigation for docs. Scans the rendered `<h2 id>` headings (emitted by
  * DocSection), then scroll-spies them with an IntersectionObserver to highlight the
  * active section. Re-scans on route change since the docs layout persists.
+ *
+ * It owns its own sticky right rail (the column + width). When the page has no sections it
+ * still reserves that column (an empty spacer) instead of vanishing, so the content column
+ * keeps the exact same measure and position on every page: without it, heading-less pages
+ * (introduction, catalog) would widen and recenter, making the content "jump" on navigation.
+ * The rail only paints at `xl` and up.
  */
-export function TableOfContents() {
+export function TableOfContents({ className }: { className?: string }) {
   const pathname = usePathname()
   const [items, setItems] = React.useState<TocItem[]>([])
   const [activeId, setActiveId] = React.useState<string>("")
@@ -96,10 +102,24 @@ export function TableOfContents() {
     setIndicator({ top: elRect.top - listRect.top, height: elRect.height })
   }, [activeId, items])
 
-  if (items.length === 0) return null
+  // No headings: keep the rail's footprint (width + gap) so the content column doesn't widen
+  // or recenter on this page. Matches the TOC nav's `w-56`, xl-only, shrink-0 footprint.
+  if (items.length === 0) {
+    return <div aria-hidden className={cn("hidden w-56 shrink-0 xl:block", className)} />
+  }
 
   return (
-    <nav aria-label="On this page" className="flex flex-col gap-3 text-sm">
+    <nav
+      aria-label="On this page"
+      className={cn(
+        // The rail: a sticky column pinned below the h-14 header, shown only at `xl` and up
+        // (below that it's display:none, so the shell reads as two columns). `shrink-0` holds
+        // its width against the flex-1 content; when there are no headings the whole component
+        // returns null above, so neither this column nor the layout gap is rendered at all.
+        "sticky top-14 hidden h-[calc(100vh-3.5rem)] w-56 shrink-0 flex-col gap-3 overflow-y-auto py-10 text-sm xl:flex",
+        className,
+      )}
+    >
       <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
         On this page
       </p>

@@ -10,7 +10,7 @@ import {
   PaginationGoTo,
 } from "@/components/ui/pagination"
 
-/** Hero — every addon on, the full toolbar. */
+/** Hero: every addon on, the full toolbar. */
 export function FullDemo() {
   const [page, setPage] = React.useState(1)
   const [rowsPerPage, setRowsPerPage] = React.useState(20)

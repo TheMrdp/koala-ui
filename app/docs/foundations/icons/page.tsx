@@ -2,7 +2,6 @@
   Bell,
   Star,
   Info,
-  ArrowRight,
   Check,
   X,
   Warning,
@@ -10,7 +9,7 @@
 
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
 import { ScaleRow, Specimen } from "@/components/docs/foundation"
-import { CodeBlock } from "@/components/docs/code-block"
+import { CodeSnippet } from "@/components/ui/code-snippet"
 
 export const metadata = { title: "Icons" }
 
@@ -37,10 +36,10 @@ export default function IconsPage() {
           Edge, Node. The bare <code className="font-mono text-sm">@phosphor-icons/react</code>{" "}
           import registers a React context for the default weight, which requires a client
           boundary. Default to <code className="font-mono text-sm">/ssr</code> everywhere and
-          only switch to the bare import inside <code className="font-mono text-sm">"use client"</code>{" "}
+          only switch to the bare import inside <code className="font-mono text-sm">&quot;use client&quot;</code>{" "}
           files that need the context API.
         </p>
-        <CodeBlock
+        <CodeSnippet
           filename="example.tsx"
           className="mt-4"
           code={`// ✓ Server Components and most files - default to this
@@ -57,7 +56,7 @@ import * as Icons from "@phosphor-icons/react"`}
 
       <DocSection title="Sizes">
         <p className="mt-2 text-sm text-pretty text-muted-foreground">
-          Icons use Tailwind's <code className="font-mono text-sm">size-*</code> utility
+          Icons use Tailwind’s <code className="font-mono text-sm">size-*</code> utility
           (shorthand for <code className="font-mono text-sm">width</code> +{" "}
           <code className="font-mono text-sm">height</code>). Components apply a default of{" "}
           <code className="font-mono text-sm">size-4</code> to any unclassed{" "}
@@ -104,7 +103,7 @@ import * as Icons from "@phosphor-icons/react"`}
             <Star weight="duotone" className="size-8 text-foreground" />
           </Specimen>
         </div>
-        <CodeBlock
+        <CodeSnippet
           filename="example.tsx"
           className="mt-6"
           code={`// Pass weight directly - no separate import
@@ -153,7 +152,7 @@ import * as Icons from "@phosphor-icons/react"`}
           buttons, links) need an accessible label so a keyboard or AT user knows what
           they do.
         </p>
-        <CodeBlock
+        <CodeSnippet
           filename="a11y.tsx"
           className="mt-4"
           code={`// ✓ Decorative icon alongside text - silence it
@@ -186,7 +185,7 @@ import * as Icons from "@phosphor-icons/react"`}
           <code className="font-mono text-sm">[&_svg]</code> selectors - you rarely need
           to pass a size class when composing with those components.
         </p>
-        <CodeBlock
+        <CodeSnippet
           filename="usage.tsx"
           className="mt-4"
           code={`import { ArrowRight, Plus, Check } from "@phosphor-icons/react/ssr"

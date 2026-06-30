@@ -5,7 +5,7 @@ import { BellSimple, Moon } from "@phosphor-icons/react"
 
 import { Switch } from "@/components/ui/switch"
 
-/** Hero — a switch paired with a label (the label is the larger hit target). */
+/** Hero: a switch paired with a label (the label is the larger hit target). */
 export function SwitchDemo() {
   return (
     <label htmlFor="airplane" className="flex cursor-pointer items-center gap-2.5 text-sm font-medium">
@@ -34,7 +34,7 @@ export function StatesDemo() {
   )
 }
 
-/** A settings row — leading icon + label/description on the left, switch trailing right. */
+/** A settings row: leading icon + label/description on the left, switch trailing right. */
 export function SettingsRowDemo() {
   const rows = [
     {
@@ -72,7 +72,7 @@ export function SettingsRowDemo() {
   )
 }
 
-/** Controlled — the switch drives a piece of state you can read elsewhere. */
+/** Controlled: the switch drives a piece of state you can read elsewhere. */
 export function ControlledDemo() {
   const [enabled, setEnabled] = React.useState(true)
   return (

@@ -9,7 +9,7 @@ import { FieldContextProvider } from "@/lib/field-context"
 
 // Field is now a pure wiring + layout layer: it generates the ids/aria the control, label,
 // and hint share, and stacks them. The label/hint *styling* lives in `Label`/`Hint`, which
-// Field re-exports below — so a field reads identically whether you compose it with the
+// Field re-exports below, so a field reads identically whether you compose it with the
 // shared primitives or the input-local parts.
 const fieldVariants = tv({
   base: "flex w-full flex-col gap-1.5",
@@ -41,7 +41,7 @@ function Field({
 
   // Only advertise `aria-describedby` when a Hint is actually present, so the control never
   // points at a missing node. A child's `type` can't be inspected reliably across the
-  // Server→Client boundary, so the hint registers itself on mount instead — SSR and the first
+  // Server→Client boundary, so the hint registers itself on mount instead. SSR and the first
   // client render agree (no hint → no attr), avoiding a hydration mismatch.
   const [hasHint, setHasHint] = React.useState(false)
   const registerHint = React.useCallback(() => {
@@ -73,7 +73,7 @@ function Field({
 // ─── FieldRow ─────────────────────────────────────────────────────────────────
 
 // Lays sibling fields side by side on a single row, stacking on narrow viewports. Pure
-// layout — no context — so it composes with anything (two Fields, a Field + a button…).
+// layout, no context, so it composes with anything (two Fields, a Field + a button…).
 export type FieldRowProps = React.ComponentPropsWithoutRef<"div">
 
 function FieldRow({ className, ...props }: FieldRowProps) {

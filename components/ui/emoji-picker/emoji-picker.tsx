@@ -37,12 +37,12 @@ import {
 } from "./data"
 
 /**
- * EmojiPicker — a complete, self-contained picker: search, a scroll-spy category nav,
+ * EmojiPicker: a complete, self-contained picker: search, a scroll-spy category nav,
  * a pinned "frequently used" preset row, a persisted "recently used" row, a hovered/focused
  * preview footer, and **lazy category pagination** so a large emoji set never paints all at
  * once (categories mount in batches as you scroll; search results stream the same way).
  *
- * It's a cohesive widget rather than a kit of recompose-able parts — the search, nav,
+ * It's a cohesive widget rather than a kit of recompose-able parts: the search, nav,
  * viewport and footer are too tightly coupled (shared scroll position, active section,
  * roving focus) to hand to a consumer as loose parts. So the public surface is the
  * configured `EmojiPicker` plus a thin Radix-Popover trio (`EmojiPickerPopover`,
@@ -54,7 +54,7 @@ import {
 
 // ─── Constants ──────────────────────────────────────────────────────────────────
 
-/** Fixed grid width — keeps roving-focus arithmetic (±COLUMNS) deterministic. */
+/** Fixed grid width: keeps roving-focus arithmetic (±COLUMNS) deterministic. */
 const COLUMNS = 8
 
 /**
@@ -98,10 +98,14 @@ export const emojiPickerVariants = tv({
     // `min-h-0` lets the viewport shrink inside a height-constrained popover; the per-density
     // `max-h-*` caps it so a large emoji set scrolls instead of growing the panel unbounded.
     // (A plain `h-*` here is silently overridden by `flex-1`'s `flex-basis: 0%` when the parent
-    // height is indefinite — which is why the grid used to overflow with no scroll.)
+    // height is indefinite, which is why the grid used to overflow with no scroll.)
     // No top padding: a `pt-*` here leaves a sliver above the sticky header where the previous
     // section's rows peek through. The header's own padding supplies the top breathing room.
-    viewport: "relative flex-1 min-h-0 overflow-y-auto overscroll-contain px-2 pb-1",
+    // `scroll-fade-b` (bottom edge only, never the top) softens the last row into the footer
+    // without touching the sticky section header up top; `scroll-pb-10` matches the fade depth so
+    // an arrow-focused emoji near the bottom scrolls in clear of the fade.
+    viewport:
+      "relative flex-1 min-h-0 overflow-y-auto overscroll-contain px-2 pb-1 scroll-fade-b scroll-pb-10",
     section: "scroll-mt-1",
     // Sticky header. Must be FULLY OPAQUE (no /opacity, no blur) so emojis scrolling beneath it
     // never show through; `-mx-2` bleeds it over the viewport's side padding so nothing peeks at
@@ -124,7 +128,7 @@ export const emojiPickerVariants = tv({
   },
   variants: {
     // Density is Koala's cross-cutting spacing axis (see lib/density.tsx). For the picker it
-    // tunes the panel width, viewport max-height, grid gap, and emoji size — never color/radius.
+    // tunes the panel width, viewport max-height, grid gap, and emoji size, never color/radius.
     density: {
       comfortable: {
         root: "w-[352px]",
@@ -234,7 +238,7 @@ export function EmojiPicker({
   const [preview, setPreview] = React.useState<EmojiDatum | null>(null)
   const [activeCategory, setActiveCategory] = React.useState<string>("")
 
-  // Lazy pagination — only `mountedCount` categories are in the DOM; a bottom sentinel bumps
+  // Lazy pagination: only `mountedCount` categories are in the DOM; a bottom sentinel bumps
   // it as you scroll. Counts only ever grow, so scroll height never jitters.
   const [mountedCount, setMountedCount] = React.useState(categoriesPerPage)
   const [visibleResults, setVisibleResults] = React.useState(categoriesPerPage * COLUMNS * 2)
@@ -276,7 +280,7 @@ export function EmojiPicker({
         const raw = window.localStorage.getItem(storageKey)
         if (raw) setRecentState(JSON.parse(raw) as string[])
       } catch {
-        /* storage unavailable / malformed — ignore */
+        /* storage unavailable / malformed, ignore */
       }
     }
     hydrate()
@@ -341,7 +345,7 @@ export function EmojiPicker({
     return items
   }, [data, showRecent, showPresets, recentData.length, presetData.length, recentLabel, presetsLabel])
 
-  // Reset pagination the instant the query changes — the React-recommended "adjust state
+  // Reset pagination the instant the query changes: the React-recommended "adjust state
   // during render on input change" pattern (no effect, so no cascading-render lint flag).
   const [prevQuery, setPrevQuery] = React.useState(query)
   if (prevQuery !== query) {
@@ -628,7 +632,7 @@ const EmojiPickerPopoverContext = React.createContext<((open: boolean) => void) 
 
 export type EmojiPickerPopoverProps = React.ComponentProps<typeof PopoverPrimitive.Root>
 
-/** Root — manages open state and lets the content close itself on select. */
+/** Root: manages open state and lets the content close itself on select. */
 export function EmojiPickerPopover({
   open,
   defaultOpen,
@@ -646,7 +650,7 @@ export function EmojiPickerPopover({
   )
 }
 
-/** Trigger — wrap any element with `asChild` to open the picker. */
+/** Trigger: wrap any element with `asChild` to open the picker. */
 export const EmojiPickerTrigger = PopoverPrimitive.Trigger
 
 export interface EmojiPickerContentProps
@@ -658,7 +662,7 @@ export interface EmojiPickerContentProps
   closeOnSelect?: boolean
 }
 
-/** Content — portals the picker into a positioned, animated popover. */
+/** Content: portals the picker into a positioned, animated popover. */
 export function EmojiPickerContent({
   className,
   sideOffset = 8,

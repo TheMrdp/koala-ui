@@ -1,13 +1,66 @@
-﻿import { ArrowRight, Plus } from "@phosphor-icons/react/ssr"
+﻿import {
+  ArrowRight,
+  ArrowUpRight,
+  CaretDown,
+  DownloadSimple,
+  MagnifyingGlass,
+  Plus,
+  Trash,
+} from "@phosphor-icons/react/ssr"
 
-import { Button } from "@/components/ui/button"
+import { Button, SocialButton, SOCIAL_PROVIDER_IDS } from "@/components/ui/button"
 import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
+import { cn } from "@/lib/utils"
 
 export const metadata = {
   title: "Button",
+}
+
+function IconSideCard({
+  verdict,
+  label,
+  caption,
+  children,
+}: {
+  verdict: "do" | "dont"
+  label: string
+  caption: string
+  children: React.ReactNode
+}) {
+  const isDo = verdict === "do"
+  return (
+    <div
+      className={cn(
+        "rounded-2xl border",
+        isDo ? "border-border" : "border-destructive/30",
+      )}
+    >
+      <div className="flex items-center gap-2.5 px-4 pb-2.5 pt-3.5">
+        <span
+          className={cn(
+            "size-2 shrink-0 rounded-full",
+            isDo ? "bg-emerald-500" : "bg-destructive",
+          )}
+        />
+        <span className="text-sm font-medium">{label}</span>
+      </div>
+      <div
+        className={cn(
+          "mx-2 flex min-h-40 items-center justify-center overflow-hidden rounded-lg p-8 shadow-inner",
+          isDo ? "bg-muted/50" : "bg-destructive/5",
+        )}
+      >
+        {children}
+      </div>
+      <p className="px-4 py-3 text-pretty text-sm text-muted-foreground">
+        {caption}
+      </p>
+    </div>
+  )
 }
 
 export default function ButtonDocsPage() {
@@ -123,6 +176,73 @@ export function Example() {
           there is no visible text. Koala warns in development if an{" "}
           <code className="font-mono text-sm">iconOnly</code> button has no accessible name.
         </p>
+
+        <h3 className="mt-8 text-lg font-semibold tracking-tight">Left or right: a UX rule</h3>
+        <p className="mt-3 text-pretty text-muted-foreground">
+          Placement is not decorative. In left-to-right reading the eye lands on the start of the
+          button and leaves at the end, so each side has a different job: a{" "}
+          <strong className="text-foreground">leading</strong> icon identifies the action, a{" "}
+          <strong className="text-foreground">trailing</strong> icon signals where it goes.
+        </p>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <IconSideCard
+            verdict="do"
+            label="Leading - identifies the action"
+            caption="Read before the label, the icon says what kind of action this is and doubles as a scannable anchor. The default, and right for actions that operate on something: add, download, delete, search."
+          >
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Button>
+                <Plus /> New project
+              </Button>
+              <Button variant="outline">
+                <DownloadSimple /> Download
+              </Button>
+              <Button variant="destructive">
+                <Trash /> Delete
+              </Button>
+              <Button variant="secondary">
+                <MagnifyingGlass /> Search
+              </Button>
+            </div>
+          </IconSideCard>
+
+          <IconSideCard
+            verdict="do"
+            label="Trailing - signals what comes next"
+            caption="Sitting where the eye exits the label, a trailing icon should point onward rather than name the action. Reserve it for forward navigation, disclosure chevrons, and links that leave the page."
+          >
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Button>
+                Continue <ArrowRight />
+              </Button>
+              <Button variant="outline">
+                Sort by <CaretDown />
+              </Button>
+              <Button variant="ghost">
+                Open docs <ArrowUpRight />
+              </Button>
+            </div>
+          </IconSideCard>
+        </div>
+
+        <div className="mt-4">
+          <IconSideCard
+            verdict="dont"
+            label="Don't - an icon on both sides"
+            caption="Flanking the label with two icons splits the focal point: the leading glyph names the action, the trailing one points elsewhere, and the button reads as two competing ideas. Pick the single side that matches the intent."
+          >
+            <Button>
+              <Plus /> Add item <ArrowRight />
+            </Button>
+          </IconSideCard>
+        </div>
+
+        <p className="mt-5 text-pretty text-muted-foreground">
+          One nuance overrides the default: keep the icon on the side that matches its{" "}
+          <em>meaning</em>. A back-arrow belongs on the left because it points the way the action
+          travels, even though most icons lead. When unsure, lead with the icon.
+        </p>
         <ComponentPreview
           code={`{/* Icon left */}
 <Button>
@@ -152,6 +272,64 @@ export function Example() {
           <Button iconOnly aria-label="Add">
             <Plus />
           </Button>
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Social buttons">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          <code className="font-mono text-sm">SocialButton</code> is a sign-in button carrying a
+          real brand logo - the authentic marks, not icon-style approximations. It wraps{" "}
+          <code className="font-mono text-sm">Button</code>, so every size, density, the press
+          scale, loading, and the icon-only tooltip all carry over. Pass a{" "}
+          <code className="font-mono text-sm">provider</code> and it supplies the logo and the
+          default <em>Continue with…</em> label.
+        </p>
+        <ComponentPreview
+          code={`<SocialButton provider="google" />
+<SocialButton provider="apple" />
+<SocialButton provider="github" />
+<SocialButton provider="figma" />
+<SocialButton provider="x" />`}
+        >
+          <SocialButton provider="google" />
+          <SocialButton provider="apple" />
+          <SocialButton provider="github" />
+          <SocialButton provider="figma" />
+          <SocialButton provider="x" />
+        </ComponentPreview>
+
+        <h3 className="mt-8 text-lg font-semibold tracking-tight">Solid</h3>
+        <p className="mt-3 text-pretty text-muted-foreground">
+          <code className="font-mono text-sm">appearance=&quot;solid&quot;</code> fills the button
+          with the provider&apos;s official color and flattens the logo to white - for a single
+          dominant choice or a brand-forward row.
+        </p>
+        <ComponentPreview
+          code={`<SocialButton provider="discord" appearance="solid" />
+<SocialButton provider="google" appearance="solid" />
+<SocialButton provider="slack" appearance="solid" />
+<SocialButton provider="spotify" appearance="solid" />`}
+        >
+          <SocialButton provider="discord" appearance="solid" />
+          <SocialButton provider="google" appearance="solid" />
+          <SocialButton provider="slack" appearance="solid" />
+          <SocialButton provider="spotify" appearance="solid" />
+        </ComponentPreview>
+
+        <h3 className="mt-8 text-lg font-semibold tracking-tight">Icon only</h3>
+        <p className="mt-3 text-pretty text-muted-foreground">
+          Set <code className="font-mono text-sm">iconOnly</code> for a square logo button - the
+          provider name becomes the <code className="font-mono text-sm">aria-label</code> and the
+          hover tooltip. Every supported provider:
+        </p>
+        <ComponentPreview
+          code={`{SOCIAL_PROVIDER_IDS.map((id) => (
+  <SocialButton key={id} provider={id} iconOnly />
+))}`}
+        >
+          {SOCIAL_PROVIDER_IDS.map((id) => (
+            <SocialButton key={id} provider={id} iconOnly />
+          ))}
         </ComponentPreview>
       </DocSection>
 
@@ -204,6 +382,19 @@ export function Example() {
             <a href="/docs">Documentation</a>
           </Button>
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "When should I use variant=\"link\" instead of a plain anchor?", a: "Reach for variant=\"link\" when a text action lives inline among other buttons and should share their focus ring and press behavior. For real navigation, pair it with asChild so the styles wrap an actual `<a>` or Next.js Link and the element stays a link." },
+            { q: "What does iconOnly do beyond hiding the label?", a: "It collapses the button to a square that tracks the active size and zeroes the label padding and gap so the glyph optically centers. It also auto-wraps the button in a Tooltip from your `aria-label`, and Koala warns in development if no accessible name is present." },
+            { q: "How is loading different from disabled?", a: "loading shows a centered spinner, sets `aria-busy`, and disables the button so it cannot be re-triggered, while reserving the label's space so the width never reflows. Plain disabled just greys it out with no spinner or busy state." },
+            { q: "Why does my asChild button ignore the loading prop?", a: "Radix Slot expects a single child, so a sibling spinner would break it. Under asChild the rendered child owns its content, and loading is intentionally a no-op there." },
+            { q: "How do I tighten buttons for a dense app shell without setting density on each one?", a: "Wrap the subtree in a DensityProvider set to compact. Button reads the density context, so every button shrinks one tier while a pseudo-element keeps the hit target at least 40px." },
+            { q: "How do I opt out of the press animation?", a: "Pass the `static` prop, which neutralizes the active:scale press effect for places where the motion would distract." },
+          ]}
+        />
       </DocSection>
 
     </>

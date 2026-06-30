@@ -4,7 +4,7 @@ import * as React from "react"
 
 /**
  * Optional context published by `Field` so any control nested inside it can pick up the
- * generated `id`, the hint's `aria-describedby`, and the field's error/disabled state —
+ * generated `id`, the hint's `aria-describedby`, and the field's error/disabled state,
  * without the consumer wiring those by hand. Deliberately NOT built on `createContext`
  * (which throws when missing): this returns `null` outside a Field, so every control stays
  * fully usable on its own. A control reads it and treats the values as defaults its own
@@ -13,7 +13,7 @@ import * as React from "react"
 export interface FieldContextValue {
   /** Generated id wired to the control and to the label's `htmlFor`. */
   id: string
-  /** The hint's id, or `undefined` when no hint is rendered — spread as `aria-describedby`. */
+  /** The hint's id, or `undefined` when no hint is rendered. Spread as `aria-describedby`. */
   describedBy: string | undefined
   /** Stable id a `Hint` adopts so it matches what the control's `aria-describedby` points at. */
   hintId: string

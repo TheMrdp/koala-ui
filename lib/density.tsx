@@ -3,7 +3,7 @@
 import * as React from "react"
 
 /**
- * Density — Koala's cross-cutting spacing axis. Koala serves both application UI (tight,
+ * Density: Koala's cross-cutting spacing axis. Koala serves both application UI (tight,
  * information-dense) and marketing (generous), the way Tailwind serves both. `density`
  * is the knob that retunes padding, gaps, and control heights without touching color or
  * radius. `compact` is the Koala default (16px padding/gaps, smaller titles, shorter
@@ -18,7 +18,7 @@ const DensityContext = React.createContext<Density>("compact")
 DensityContext.displayName = "DensityContext"
 
 /**
- * Set the density for a subtree — e.g. wrap an app shell in `density="compact"` and every
+ * Set the density for a subtree, e.g. wrap an app shell in `density="compact"` and every
  * nested Koala component tightens up, with no per-instance props. A `data-density`
  * attribute is stamped on the wrapper as a CSS/debug escape hatch. The wrapper is
  * `display: contents`, so it never introduces a box into the layout.

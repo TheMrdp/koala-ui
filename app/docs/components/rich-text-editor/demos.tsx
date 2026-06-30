@@ -24,7 +24,7 @@ import { DensityProvider } from "@/lib/density"
 
 const seeded = `<h2>Release notes</h2><p>We shipped a <strong>rich text editor</strong> built on Tiptap. Try <em>formatting</em> this text, or <a href="https://koala.ui">add a link</a>.</p><ul><li>Headings, bold, italic, underline</li><li>Links and lists</li></ul>`
 
-// Hero — the default essential toolbar over a seeded document.
+// Hero: the default essential toolbar over a seeded document.
 export function RichTextEditorDemo() {
   return (
     <RichTextEditor defaultValue={seeded} className="w-full max-w-xl">
@@ -34,7 +34,7 @@ export function RichTextEditorDemo() {
   )
 }
 
-// Empty — shows the placeholder ghost text.
+// Empty: shows the placeholder ghost text.
 export function RichTextEditorEmptyDemo() {
   return (
     <RichTextEditor placeholder="Write a description…" className="w-full max-w-xl">
@@ -44,8 +44,8 @@ export function RichTextEditorEmptyDemo() {
   )
 }
 
-// Selection bubble — double-click a word (or drag-select) and a floating toolbar appears.
-const bubbleSeed = `<p>Select any of this text — double-click a word, or drag across a phrase — and a formatting toolbar floats in above it. Try adding a <strong>bold</strong> emphasis or a link.</p>`
+// Selection bubble: double-click a word (or drag-select) and a floating toolbar appears.
+const bubbleSeed = `<p>Select any of this text, double-click a word, or drag across a phrase, and a formatting toolbar floats in above it. Try adding a <strong>bold</strong> emphasis or a link.</p>`
 
 export function RichTextEditorBubbleMenuDemo() {
   return (
@@ -57,7 +57,7 @@ export function RichTextEditorBubbleMenuDemo() {
   )
 }
 
-// Bubble-only — no top toolbar; formatting lives entirely in the on-selection bubble.
+// Bubble-only: no top toolbar; formatting lives entirely in the on-selection bubble.
 export function RichTextEditorBubbleOnlyDemo() {
   return (
     <RichTextEditor
@@ -70,7 +70,7 @@ export function RichTextEditorBubbleOnlyDemo() {
   )
 }
 
-// Compact density — tighter toolbar and writing area for dense app surfaces.
+// Compact density: tighter toolbar and writing area for dense app surfaces.
 export function RichTextEditorCompactDemo() {
   return (
     <DensityProvider density="compact">
@@ -82,7 +82,7 @@ export function RichTextEditorCompactDemo() {
   )
 }
 
-// Read-only — omit the toolbar and pass `editable={false}` to render content as prose.
+// Read-only: omit the toolbar and pass `editable={false}` to render content as prose.
 export function RichTextEditorReadOnlyDemo() {
   return (
     <RichTextEditor
@@ -95,7 +95,7 @@ export function RichTextEditorReadOnlyDemo() {
   )
 }
 
-// A custom toolbar — reach the live editor with useRichTextEditor + Tiptap's useEditorState.
+// A custom toolbar: reach the live editor with useRichTextEditor + Tiptap's useEditorState.
 function CustomToolbar() {
   const editor = useRichTextEditor()
   const state = useEditorState({
@@ -147,11 +147,11 @@ export function RichTextEditorCustomToolbarDemo() {
 // ─── Elaborate example: a document composer with a live status bar ────────────────
 
 const composerSeed = `<h1>Launching Koala UI 1.0</h1>
-<p>After months of polish, the design system is <strong>ready</strong>. This release brings a complete set of <em>production-grade</em> components — read the full write-up on the <a href="https://koala.ui/blog">blog</a>.</p>
+<p>After months of polish, the design system is <strong>ready</strong>. This release brings a complete set of <em>production-grade</em> components. Read the full write-up on the <a href="https://koala.ui/blog">blog</a>.</p>
 <h2>What's inside</h2>
 <ul>
   <li>30+ components built on Radix &amp; Tiptap</li>
-  <li>Four themes and a one-knob accent system</li>
+  <li>Three themes and a one-knob accent system</li>
   <li>A density axis for marketing <em>and</em> dense app UI</li>
 </ul>
 <h2>Getting started</h2>
@@ -162,7 +162,7 @@ const composerSeed = `<h1>Launching Koala UI 1.0</h1>
   <li>Compose your first screen</li>
 </ol>
 <h4>A note on theming</h4>
-<p>Body copy uses the <strong>secondary</strong> text color, so only headings and emphasis sit in the strong foreground — the page never reads as a wall of bright white.</p>
+<p>Body copy uses the <strong>secondary</strong> text color, so only headings and emphasis sit in the strong foreground, and the page never reads as a wall of bright white.</p>
 <p>Select any line above to format it from the floating bubble, or use the toolbar.</p>`
 
 // A status bar that lives *inside* the editor surface (below the content), reading the live

@@ -13,6 +13,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 import {
   BreadcrumbDropdownDemo,
   BreadcrumbGroupedDemo,
@@ -345,6 +346,37 @@ export function Example() {
     </Breadcrumb>
   )
 }`}
+        />
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            {
+              q: "What is the difference between BreadcrumbLink and BreadcrumbPage?",
+              a: "`BreadcrumbLink` renders an `<a>` for ancestor crumbs the user can navigate to. `BreadcrumbPage` renders a non-link `<span>` with `aria-current=\"page\"` for the current location, so it should be the last crumb and is not clickable.",
+            },
+            {
+              q: "How do I wire this up with a Next.js Link?",
+              a: "Set `asChild` on `BreadcrumbLink` and pass a `<Link>` as the only child. Radix Slot merges the crumb styles onto your link with no extra wrapper, so routing stays with Next.js.",
+            },
+            {
+              q: "How do I change the separator between crumbs?",
+              a: "Pass any content as children to `BreadcrumbSeparator` and it replaces the default `CaretRight` icon, for example `<BreadcrumbSeparator>/</BreadcrumbSeparator>`. The separator is an `aria-hidden` `<li>`, so it stays out of the accessibility tree.",
+            },
+            {
+              q: "When should I use BreadcrumbEllipsis versus a dropdown?",
+              a: "Use `BreadcrumbEllipsis` as a static indicator that ancestors are hidden when there is nowhere to take the user. If the collapsed segment should be openable, drop a `DropdownMenu` into the `BreadcrumbItem` instead, which adds keyboard navigation and focus management from the underlying Radix primitive.",
+            },
+            {
+              q: "Why is the breadcrumb a nav and do I need to label it?",
+              a: "`Breadcrumb` renders a `<nav>` with `aria-label=\"breadcrumb\"` built in, so it is announced as a navigation landmark with no extra wiring. The structure is plain semantic HTML, an `<ol>` from `BreadcrumbList` with `<li>` items, so there is no shared state between parts.",
+            },
+            {
+              q: "The links look short but feel easy to tap. How is the hit area handled?",
+              a: "`BreadcrumbLink` and `BreadcrumbEllipsis` keep a tight visual footprint but extend their tap target to about 40px with an inert `before` pseudo-element, so small crumbs stay comfortable to click without changing the layout.",
+            },
+          ]}
         />
       </DocSection>
 

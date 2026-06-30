@@ -17,6 +17,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 
 export const metadata = {
   title: "Field",
@@ -27,7 +28,7 @@ export default function FieldDocsPage() {
     <>
       <DocHeader
         title="Field"
-        description="The wrapper that turns any control into a labelled form field. Field generates the id, htmlFor, and aria-describedby wiring for you and cascades error/disabled state to the control inside — so a field is a label, a control, and an optional hint, with nothing to wire by hand."
+        description="The wrapper that turns any control into a labelled form field. Field generates the id, htmlFor, and aria-describedby wiring for you and cascades error/disabled state to the control inside, so a field is a label, a control, and an optional hint, with nothing to wire by hand."
       />
 
       <ComponentPreview
@@ -85,7 +86,7 @@ export function Example() {
         <p className="mt-4 text-pretty text-muted-foreground">
           Set <code>required</code> to append a destructive asterisk to the label.
           Set <code>hasError</code> on the <code>Field</code> - it cascades to the
-          control's border, sets <code>aria-invalid</code>, and turns the hint into
+          control’s border, sets <code>aria-invalid</code>, and turns the hint into
           the destructive error message. You set it in one place, not on every part.
         </p>
         <ComponentPreview
@@ -405,6 +406,41 @@ export function Example() {
             </InputRoot>
           </Field>
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            {
+              q: "What wiring does Field actually generate for me?",
+              a: "Field calls useId to mint stable ids and hands them through context to its parts: FieldLabel gets the matching htmlFor, the control gets the id, and FieldHint gets pointed at by aria-describedby. You never set id, htmlFor, or aria-describedby yourself.",
+            },
+            {
+              q: "How does a control opt into the Field context?",
+              a: "Controls read the Field context to receive their id, aria, and error or disabled state, which is why Input, Select, and PasswordInput just work inside a Field. Field never inspects child types across the server to client boundary, so any control that consumes the context picks up the wiring automatically.",
+            },
+            {
+              q: "Where do I set the error state, on the Field or on each part?",
+              a: "Set `hasError` once on the Field. It cascades to the control's border, sets aria-invalid on the control, and turns the FieldHint into a destructive error message, so you never repeat the flag on every part.",
+            },
+            {
+              q: "What do the required and disabled props do?",
+              a: "`required` appends a destructive asterisk to the FieldLabel. `disabled` dims the label and disables the control inside, again set in one place on the Field rather than on each part.",
+            },
+            {
+              q: "Why is aria-describedby only present when there is a hint?",
+              a: "FieldHint registers itself on mount, so Field only advertises aria-describedby when a hint is actually rendered and never points the control at a missing node. Because it registers on mount rather than by inspecting child types, SSR and the first client render agree and there is no hydration mismatch.",
+            },
+            {
+              q: "Does Field still wire correctly inside a Dialog or other portal?",
+              a: "Yes. React context follows the component tree, not the DOM, so htmlFor, aria-describedby, and the hasError cascade all keep working through Radix's Portal. The dialog's own accessible name comes from DialogTitle and DialogDescription, independent of the per-field labels.",
+            },
+            {
+              q: "How do I place two fields side by side?",
+              a: "Wrap sibling Fields in FieldRow. It is pure layout with no context, laying fields out in a grid that stacks to one column on narrow viewports, so it composes with any number of fields.",
+            },
+          ]}
+        />
       </DocSection>
 
     </>

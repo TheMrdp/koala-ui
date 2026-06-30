@@ -1,57 +1,52 @@
-﻿"use client";
+import { DensityProvider } from "@/lib/density"
+import { LandingHeader } from "@/components/landing/landing-header"
+import { LandingFooter } from "@/components/landing/landing-footer"
+import { Section } from "@/components/landing/section"
+import { SECTIONS } from "@/components/docs/sections-registry"
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
-
-import { THEMES } from "@/components/theme-provider";
-import { Button } from "@/components/ui/button";
+/**
+ * Marketing landing page. Composed straight from the **canonical sections** (the same slabs
+ * documented at /marketing/sections/*), pulled in as-is via the sections registry, so the home
+ * stays in lockstep with the catalog with no parallel custom implementation to drift. Each slab is
+ * wrapped in the shared `Section` band for the page rhythm; the registry component owns the lede +
+ * content. Anchor ids preserve the header/footer in-page links (#pricing, #faq, …). The chrome
+ * (LandingHeader/LandingFooter) stays the functional landing nav.
+ */
+const HOME_SECTIONS: { slug: string; id?: string }[] = [
+  { slug: "hero-section-1" },
+  { slug: "hero-section-2" },
+  { slug: "feature-section-1", id: "components" },
+  { slug: "feature-section-2", id: "video-showcase" },
+  { slug: "gallery-section-1", id: "concepts" },
+  { slug: "feature-section-3" },
+  { slug: "feature-section-4", id: "features" },
+  { slug: "cta-section-1", id: "install" },
+  { slug: "testimonials-section-1", id: "testimonials" },
+  { slug: "stats-section-1" },
+  { slug: "pricing-section-1", id: "pricing" },
+  { slug: "faq-section-1", id: "faq" },
+  { slug: "changelog-section-1", id: "changelog" },
+  { slug: "cta-section-2" },
+]
 
 export default function Home() {
-  const { theme, setTheme } = useTheme();
-
-  // next-themes can't know the active theme during SSR, so the active state must
-  // only be applied after mount - otherwise server/client HTML disagree (hydration).
-  const [mounted, setMounted] = useState(false);
-  // Mount guard for next-themes: the active theme is unknown during SSR, so we only
-  // reflect it after hydration. Setting state once on mount is the intended use here.
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => setMounted(true), []);
-
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col items-center justify-center gap-8 px-6 py-24 text-center">
-      <span
-        aria-hidden
-        className="inline-flex size-10 items-center justify-center rounded-xl bg-primary text-base font-semibold text-primary-foreground shadow-md"
-      >
-        K
-      </span>
-
-      <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-        Koala UI
-      </h1>
-
-      <p className="max-w-md text-pretty text-muted-foreground">
-        Clean Next.js + Tailwind v4 base. Custom component library - starting from
-        scratch.
-      </p>
-
-      <div className="flex flex-wrap items-center justify-center gap-2">
-        {THEMES.map((t) => (
-          <Button
-            key={t}
-            variant={mounted && theme === t ? "primary" : "outline"}
-            onClick={() => setTheme(t)}
-            className="capitalize"
-          >
-            {t}
-          </Button>
-        ))}
-      </div>
-
-      <Button asChild variant="link">
-        <Link href="/docs">View the docs →</Link>
-      </Button>
-    </main>
-  );
+    <DensityProvider density="comfortable">
+      <LandingHeader />
+      <main>
+        {HOME_SECTIONS.map(({ slug, id }) => {
+          const entry = SECTIONS[slug]
+          const SectionSlab = entry.component
+          // A self-padded slab (a Hero) is already its own band: render the wrapping band with
+          // `padding="none"` so the page rhythm has a single owner and the slab is not double-padded.
+          return (
+            <Section key={slug} id={id} padding={entry.ownsPadding ? "none" : undefined}>
+              <SectionSlab />
+            </Section>
+          )
+        })}
+      </main>
+      <LandingFooter />
+    </DensityProvider>
+  )
 }

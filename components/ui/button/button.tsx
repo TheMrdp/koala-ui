@@ -10,7 +10,7 @@ import { tv, type VariantProps } from "@/lib/tv"
 import { Tooltip, type TooltipProps } from "@/components/ui/tooltip/tooltip"
 
 /**
- * Button — the reference single-element component. Pattern: one `tv` recipe, Radix
+ * Button: the reference single-element component. Pattern: one `tv` recipe, Radix
  * `Slot` for `asChild`, semantic tokens only, `className` merged last. See
  * docs/ARCHITECTURE.md.
  *
@@ -41,11 +41,15 @@ export const buttonVariants = tv({
   ],
   variants: {
     variant: {
-      primary: "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
+      // The primary action carries the brand accent (--brand): every CTA across the library
+      // (dialogs, forms, marketing) is brand-colored without per-call-site changes. White label
+      // holds AA on the deep/saturated accent across all four themes (see globals.css). The focus
+      // ring is already brand (base), so a primary button reads as a brand halo on focus.
+      primary: "bg-brand text-white shadow-xs hover:bg-brand/90",
       secondary:
         "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
       // `bg-transparent` (not `bg-background`) so the button blends with whatever surface
-      // it sits on — page, card, or popover. With `bg-background` it rendered as a darker
+      // it sits on, whether page, card, or popover. With `bg-background` it rendered as a darker
       // filled rectangle on lighter surfaces (card/popover in dark themes).
       outline:
         "border border-border bg-transparent shadow-xs hover:bg-accent hover:text-accent-foreground",
@@ -54,7 +58,7 @@ export const buttonVariants = tv({
         "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/40",
       link: "text-primary underline-offset-4 hover:underline",
     },
-    // Three sizes — sm 32px, md 36px, lg 40px; label stays text-sm across
+    // Three sizes: sm 32px, md 36px, lg 40px; label stays text-sm across
     // the scale. Polish (optical over geometric): an icon reads
     // lighter than a text edge, so a button carrying a direct `<svg>` trims its horizontal
     // padding one step (`has-[>svg]:px-*`) to stay optically balanced.
@@ -80,7 +84,7 @@ export const buttonVariants = tv({
     },
   },
   compoundVariants: [
-    // — Comfortable, icon-only — collapse to a square that tracks the size's height
+    // Comfortable, icon-only: collapse to a square that tracks the size's height
     //   (sm 32 · md 36 · lg 40), zeroing label padding/gap so the glyph optically centers.
     //   `has-[>svg]:px-0` overrides the size's icon-padding step (an icon-only button always
     //   has a direct svg, so it would otherwise inherit px-2.5/3/4).
@@ -88,14 +92,14 @@ export const buttonVariants = tv({
     { size: "md", iconOnly: true, density: "comfortable", className: "w-9 gap-0 px-0 has-[>svg]:px-0" },
     { size: "lg", iconOnly: true, density: "comfortable", className: "w-10 gap-0 px-0 has-[>svg]:px-0" },
 
-    // — Compact, text — one tier tighter than the same-named comfortable size, keeping the
+    // Compact, text: one tier tighter than the same-named comfortable size, keeping the
     //   icon-padding step. Every row lands under 40px, so each adds a vertical-only hit
     //   extender (polish).
     { size: "sm", iconOnly: false, density: "compact", className: `h-7 px-2.5 text-xs has-[>svg]:px-2 ${hitX}` },
     { size: "md", iconOnly: false, density: "compact", className: `h-8 px-3 has-[>svg]:px-2.5 ${hitX}` },
     { size: "lg", iconOnly: false, density: "compact", className: `h-9 px-4 has-[>svg]:px-3 ${hitX}` },
 
-    // — Compact, icon-only — square + centered box extender (all under 40px).
+    // Compact, icon-only: square + centered box extender (all under 40px).
     { size: "sm", iconOnly: true, density: "compact", className: `size-7 gap-0 px-0 has-[>svg]:px-0 ${hitBox}` },
     { size: "md", iconOnly: true, density: "compact", className: `size-8 gap-0 px-0 has-[>svg]:px-0 ${hitBox}` },
     { size: "lg", iconOnly: true, density: "compact", className: `size-9 gap-0 px-0 has-[>svg]:px-0 ${hitBox}` },
@@ -148,7 +152,7 @@ export function Button({
 }: ButtonProps) {
   const Comp = asChild ? Slot.Root : "button"
 
-  // `loading` only drives the spinner overlay on a native button — with `asChild`, Slot
+  // `loading` only drives the spinner overlay on a native button. With `asChild`, Slot
   // expects a single child, so a sibling spinner would break it; the child owns its content.
   const isLoading = loading && !asChild
 

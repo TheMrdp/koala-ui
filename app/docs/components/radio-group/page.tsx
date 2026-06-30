@@ -2,6 +2,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 
 import {
   RadioGroupDemo,
@@ -94,6 +95,19 @@ export function Example() {
         </ComponentPreview>
       </DocSection>
 
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "When should I use a RadioGroup instead of a Select?", a: "Use RadioGroup for a single choice from a small, visible set so every option is in view. Reach for a Select once the options grow long enough to want a dropdown." },
+            { q: "How do I set the size, and why does it match Checkbox?", a: "Set `size` on the RadioGroup (`sm` is 16px, `md` is 20px) and each RadioGroupItem inherits it through context. The sizes mirror Checkbox exactly so radios and checkboxes line up pixel-for-pixel in the same form." },
+            { q: "RadioGroupItem renders only a circle. How do I give it a label and a bigger hit target?", a: "Pair each item with a `<label htmlFor>` matching the item's `id`. The label supplies the accessible name and extends the clickable area, since the item itself renders only the control." },
+            { q: "How do the keyboard and disabled states behave?", a: "It is built on Radix RadioGroup, so arrow keys move roving focus and select. Disable a single RadioGroupItem and roving focus skips it, or set `disabled` on the whole RadioGroup at once." },
+            { q: "How do I make the whole option card highlight when selected, without JavaScript?", a: "Wrap each item in a bordered label and use the `has-[[data-state=checked]]` selector to restyle the card. The checked item exposes `data-state=checked`, so CSS lights the selected card up on its own." },
+            { q: "Is RadioGroup controlled or uncontrolled?", a: "Both. Use `defaultValue` to let it manage its own selection, or pass `value` with `onValueChange` to own the state. These props forward straight to Radix." },
+          ]}
+        />
+      </DocSection>
+
     </>
   )
 }
@@ -137,7 +151,7 @@ const WITH_DESCRIPTION_CODE = `const SHIPPING = [
     <label
       key={value}
       htmlFor={\`ship-\${value}\`}
-      className="flex cursor-pointer items-start gap-3 rounded-lg border border-border p-3.5 transition-colors duration-fast ease-out has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-accent"
+      className="flex cursor-pointer items-start gap-3 rounded-lg border border-border p-3.5 transition-colors duration-fast ease-out has-[[data-state=checked]]:border-brand has-[[data-state=checked]]:bg-accent"
     >
       <RadioGroupItem id={\`ship-\${value}\`} value={value} className="mt-0.5" />
       <span className="flex flex-col gap-0.5">

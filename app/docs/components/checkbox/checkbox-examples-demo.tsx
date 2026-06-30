@@ -4,7 +4,7 @@ import * as React from "react"
 
 import { Checkbox } from "@/components/ui/checkbox"
 
-/** Hero — a checkbox paired with a label (the label is the larger hit target). */
+/** Hero: a checkbox paired with a label (the label is the larger hit target). */
 export function CheckboxDemo() {
   return (
     <label htmlFor="terms" className="flex cursor-pointer items-center gap-2.5 text-sm font-medium">
@@ -34,7 +34,7 @@ export function StatesDemo() {
   )
 }
 
-/** Two sizes — sm (used inside dense tables) and md (the default). */
+/** Two sizes: sm (used inside dense tables) and md (the default). */
 export function SizesDemo() {
   return (
     <div className="flex items-center gap-8">
@@ -48,7 +48,7 @@ export function SizesDemo() {
   )
 }
 
-/** A label with supporting text — the box optically aligns to the first line. */
+/** A label with supporting text: the box optically aligns to the first line. */
 export function WithLabelDemo() {
   return (
     <div className="flex items-start gap-3">
@@ -63,7 +63,7 @@ export function WithLabelDemo() {
   )
 }
 
-/** A parent "select all" that goes indeterminate on a partial selection — the same pattern the
+/** A parent "select all" that goes indeterminate on a partial selection: the same pattern the
  *  DataTable's header checkbox uses. */
 const ITEMS = ["Engineering", "Design", "Marketing"] as const
 

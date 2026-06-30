@@ -28,4 +28,6 @@ export {
   type PhoneChangePayload,
 } from "./phone-input"
 
+export { CountrySelect, type CountrySelectProps } from "./country-select"
+
 export { COUNTRIES, COUNTRY_BY_ISO2, type Country } from "./countries"

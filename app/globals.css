@@ -20,17 +20,23 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
-  /* Status roles — soft badges derive their tint via opacity (bg-success/10 + text-success). */
+  /* Status roles: soft badges derive their tint via opacity (bg-success/10 + text-success). */
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-info: var(--info);
-  /* Categorical hues — for labels, tags, and category badges. */
+  /* Categorical hues: for labels, tags, and category badges. */
   --color-purple: var(--purple);
   --color-pink: var(--pink);
   --color-teal: var(--teal);
   --color-orange: var(--orange);
+  /* Rating fills: a vivid decorative gold for stars and a love-red for hearts. These are
+     intentionally brighter/more saturated than the --warning status hue (which must stay dark
+     enough for legible warning text on light surfaces); a star/heart glyph is a saturated fill,
+     not text, so it reads clearly on any background. Theme-agnostic (see --brand). */
+  --color-rating: var(--rating);
+  --color-rating-red: var(--rating-red);
   --color-border: var(--border);
-  /* Soft border — a subtler stroke for large surfaces (dialogs, sheets) where the
+  /* Soft border: a subtler stroke for large surfaces (dialogs, sheets) where the
    * standard --border reads too heavy. Derived per theme from each theme's own --border
    * (see the theme blocks below), so it tracks every palette automatically. */
   --color-border-soft: var(--border-soft);
@@ -38,28 +44,40 @@
   --color-ring: var(--ring);
   --color-brand: var(--brand);
 
-  /* Syntax tokens — consumed by CodeSnippet's highlighter, themed per theme below. */
+  /* Syntax tokens: consumed by CodeSnippet's highlighter, themed per theme below. */
   --color-syntax-keyword: var(--syntax-keyword);
   --color-syntax-string: var(--syntax-string);
   --color-syntax-comment: var(--syntax-comment);
   --color-syntax-function: var(--syntax-function);
   --color-syntax-number: var(--syntax-number);
   --color-syntax-tag: var(--syntax-tag);
+  --color-syntax-attribute: var(--syntax-attribute);
+  --color-syntax-punctuation: var(--syntax-punctuation);
 
+  /* Inter carries UI + body; DM Sans is reserved for headings (--font-heading, applied to
+     h1–h6 in @layer base). Both are wired via next/font in layout.tsx; code/labels fall back
+     to the platform monospace. */
   --font-sans: var(--font-sans);
-  /* Inter is Koala's only bundled font; code/labels fall back to the platform monospace. */
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-heading);
 
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.9);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  /* Marketing container: one step past Tailwind's `7xl` (80rem/1280px) — the full-width
+     gutter that marketing/page sections center their content in. Extends the `--container-*`
+     namespace, so it generates the `max-w-8xl` utility used by SectionContainer (width="xlarge").
+     90rem = 1440px, the canonical marketing container width. */
+  --container-8xl: 90rem; /* 1440px */
 
-  /* Shadow tokens — per-theme values, so dark surfaces stay legible. */
+  /* Quarter-step multipliers off a 1rem (16px) --radius land every step on the 4px grid:
+     sm 8 · md 12 · lg 16 · xl 20 · 2xl 24 · 3xl 28 · 4xl 32. */
+  --radius-sm: calc(var(--radius) * 0.5); /* 8px */
+  --radius-md: calc(var(--radius) * 0.75); /* 12px */
+  --radius-lg: var(--radius); /* 16px */
+  --radius-xl: calc(var(--radius) * 1.25); /* 20px */
+  --radius-2xl: calc(var(--radius) * 1.5); /* 24px */
+  --radius-3xl: calc(var(--radius) * 1.75); /* 28px */
+  --radius-4xl: calc(var(--radius) * 2); /* 32px */
+
+  /* Shadow tokens: per-theme values, so dark surfaces stay legible. */
   --shadow-xs: var(--shadow-xs);
   --shadow-sm: var(--shadow-sm);
   --shadow-md: var(--shadow-md);
@@ -67,40 +85,123 @@
   --shadow-xl: var(--shadow-xl);
 
   /*
-   * Motion tokens — expose easing/durations as Tailwind utilities (ease-out, duration-base, …).
+   * Motion tokens: expose easing/durations as Tailwind utilities (ease-out, duration-base, …).
    * NOTE: Tailwind v4's namespaces are `--ease-*` and `--transition-duration-*` (NOT `--duration-*`,
    * which generates no utilities). The raw values live in `:root` below and in lib/motion.ts.
    */
   --ease-out: var(--ease-out);
   --ease-in-out: var(--ease-in-out);
   --ease-drawer: var(--ease-drawer);
+  --ease-spring: var(--ease-spring);
   --transition-duration-fast: var(--duration-fast);
   --transition-duration-base: var(--duration-base);
   --transition-duration-slow: var(--duration-slow);
 
   /*
-   * Check-draw — the Checkbox indicator's stroked glyph draws itself on check. The path is
+   * Check-draw: the Checkbox indicator's stroked glyph draws itself on check. The path is
    * normalized to length 1 (`pathLength={1}`) with `stroke-dasharray: 1`, so sweeping the dash
    * offset 1→0 reveals the stroke end-to-end. One-shot enter on mount, so a keyframe (#4), not a
-   * transition. Backed by the motion tokens — no raw duration/easing in the component.
+   * transition. Backed by the motion tokens: no raw duration/easing in the component.
    */
   --animate-check-draw: check-draw var(--duration-base) var(--ease-out);
 
   /*
-   * Shimmer — the Skeleton's optional sweeping highlight. A translucent gradient overlay
+   * Shimmer: the Skeleton's optional sweeping highlight. A translucent gradient overlay
    * is swept across the placeholder via a one-axis transform. Unlike the fast/base/slow
    * scale (built for one-shot UI transitions), an ambient infinite loop wants a longer,
-   * calmer cadence — hence 1.6s, defined here in the token layer rather than a component.
+   * calmer cadence, hence 1.6s, defined here in the token layer rather than a component.
    */
   --animate-shimmer: shimmer 1.6s var(--ease-in-out) infinite;
 
   /*
-   * Stagger-in — the entrance each item plays inside a <Stagger> list/grid (lib/stagger.tsx). A
+   * Stagger-in: the entrance each item plays inside a <Stagger> list/grid (lib/stagger.tsx). A
    * small rise + fade; the cascade comes from the per-item `animation-delay` (index × step), not
    * the keyframe. `both` fill holds a not-yet-started item at the `from` state so nothing flashes
    * in before its turn. One-shot on mount, so a keyframe (#4), not a transition.
    */
   --animate-stagger-in: stagger-in var(--duration-base) var(--ease-out) both;
+
+  /*
+   * Stagger-in (blur): the same rise + fade entrance as stagger-in, plus a 4px → 0 defocus so each
+   * unit resolves into focus as it arrives (the icon-swap blur value from the polish skill, applied
+   * to text). The opt-in `blur` flavor of a SectionHeader/Stagger cascade; same one-shot-on-mount
+   * `both` fill so a not-yet-started unit holds the blurred `from` state. Reduced-motion drops it.
+   */
+  --animate-stagger-in-blur: stagger-in-blur var(--duration-base) var(--ease-out) both;
+
+  /*
+   * Table-reveal: the expandable detail panel a DataTable renders under a row (renderSubRow).
+   * A grid wrapper tweens its single track 0fr→1fr (a real height expand with no fixed value to
+   * guess) while the panel fades in. One-shot on mount when the row expands, so a keyframe (#4),
+   * not a transition. Backed by the motion tokens: no raw duration/easing in the component.
+   */
+  --animate-table-reveal: table-reveal var(--duration-base) var(--ease-out);
+
+  /*
+   * Banner-festive: the slow color drift behind a festive Banner (appearance="festive"). An
+   * oversized, palindromic multi-stop gradient is swept left↔right by animating background-position,
+   * so the loop has no seam. An ambient infinite loop like shimmer, so its calmer cadence lives here
+   * in the token layer, not inline in the component. Honored by reduced-motion in the base layer.
+   */
+  --animate-banner-festive: banner-festive 9s var(--ease-in-out) infinite;
+
+  /*
+   * Banner-confetti: one piece's flight for the festive Banner's `confetti` burst. Each piece is
+   * spawned imperatively with randomized end vectors (`--cx`/`--cy`/`--cr`) and self-removes on
+   * animationend, so this is a one-shot enter (a keyframe, #4), not a transition. A bespoke 900ms
+   * cadence (longer than the base scale) lives here in the token layer like shimmer/typing.
+   */
+  --animate-banner-confetti: banner-confetti 900ms var(--ease-out) forwards;
+
+  /*
+   * Banner-pop: the quick squash-and-wiggle the BannerIcon plays on each confetti burst. Re-armed
+   * imperatively (remove → reflow → add the class), so a one-shot keyframe on a spring ease.
+   */
+  --animate-banner-pop: banner-pop var(--duration-base) var(--ease-spring);
+
+  /*
+   * Marquee: the seamless horizontal drift behind a marquee row (e.g. the Gallery marquee
+   * section). The track holds its tile set twice and is translated by -50% so the loop returns to
+   * its start with no seam; a second row adds `[animation-direction:reverse]` to drift the other
+   * way. An ambient infinite loop like shimmer/banner-festive, so it lives here in the token layer,
+   * not inline. The cadence is overridable per row via `--marquee-duration`. Linear (not eased) so
+   * the scroll reads as a constant glide, never accelerating between loops.
+   */
+  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+
+  /*
+   * Logo swap (social-proof walls): the rotating "trusted by" logos cross-fade with a vertical roll.
+   * `roll-out` lifts the outgoing wordmark up and blurs it away; `roll-in` rises the incoming one from
+   * below into focus. Two directional keyframes (not a symmetric transition) keep the motion identical
+   * regardless of a layer's prior state; the consumer alternates them each swap and the `both` fill
+   * holds each end state between swaps. Backed by the motion tokens (no raw duration/easing in the
+   * component); decorative, so held static under reduced-motion.
+   */
+  --animate-logo-roll-in: logo-roll-in var(--duration-slow) var(--ease-out) both;
+  --animate-logo-roll-out: logo-roll-out var(--duration-slow) var(--ease-out) both;
+
+  /*
+   * Chart load reveals: the one-shot intro a Chart's data layers play when they first mount (the
+   * parts only render once the box is measured, so this fires exactly as the chart appears). Four
+   * coordinated keyframes, one per data part, all backed by the motion tokens:
+   *
+   *  - chart-draw  the ChartLine self-draws left→right. The path is normalized to length 1
+   *                (pathLength={1}) with stroke-dasharray:1, so sweeping stroke-dashoffset 1→0
+   *                reveals the trend end-to-end, the same technique as the Checkbox check-draw,
+   *                slowed to --duration-slow for the longer path.
+   *  - chart-area  the ChartArea fill fades + rises a hair from the plot floor, so it grows up
+   *                under the line as it draws (scaleY origin at the bottom, set at the call site).
+   *  - chart-bar   each ChartBar column grows up from the 0-anchored baseline; the left→right
+   *                cascade comes from a per-index animation-delay at the call site (like stagger-in),
+   *                not the keyframe.
+   *
+   * Bars use `both` fill so a not-yet-started (delayed) column holds its `from` state instead of
+   * flashing the final frame; honored by reduced-motion at the call site (motion-reduce:animate-none),
+   * which leaves every layer at its drawn/visible end state.
+   */
+  --animate-chart-draw: chart-draw var(--duration-slow) var(--ease-out) both;
+  --animate-chart-area: chart-area var(--duration-slow) var(--ease-out) both;
+  --animate-chart-bar: chart-bar var(--duration-base) var(--ease-out) both;
 }
 
 @keyframes check-draw {
@@ -113,10 +214,23 @@
 }
 
 @keyframes shimmer {
-  /* Start (0%) is the element's own value — the overlay sits at -100% (off the left edge);
+  /* Start (0%) is the element's own value: the overlay sits at -100% (off the left edge);
    * sweep it fully across to +100% (off the right edge). */
   100% {
     transform: translateX(100%);
+  }
+}
+
+@keyframes stagger-in-blur {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
   }
 }
 
@@ -131,21 +245,235 @@
   }
 }
 
+@keyframes table-reveal {
+  from {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+  to {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+/* Marquee: shift the duplicated track by half its width for a seamless horizontal loop. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Logo swap roll: outgoing rises up + blurs out; incoming rises from below into focus. Directional
+ * (absolute from→to), so the consumer just alternates the two each swap to get a clean vertical roll. */
+@keyframes logo-roll-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes logo-roll-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    filter: blur(4px);
+  }
+}
+
+/* Chart load reveals. See the --animate-chart-* tokens above for how the four compose on mount. */
+@keyframes chart-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes chart-area {
+  from {
+    opacity: 0;
+    /* scaleY origin sits at the plot floor (origin-bottom at the call site), so the fill grows up. */
+    transform: scaleY(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes chart-bar {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
 /*
- * Motion tokens — single source of truth for animation. Mirror these in lib/motion.ts
+ * Suggestion apply: an accepted inline edit (Suggestions) lands under a soft, category-tinted
+ * flash that settles to transparent, confirming the swap. The width tween + cross-fade are driven
+ * inline by the component (measured old → new width); this only owns the flash hue, keyed off
+ * data-variant like the festive confetti colors so the optimizer keeps the tokens and the tint
+ * mirrors each mark's underline. The component flips data-settled to ride the same transition.
+ */
+[data-slot="suggestion-applied"] [data-cell="new"] {
+  background-color: color-mix(in oklab, var(--suggestion-tint, var(--brand)) 20%, transparent);
+}
+[data-slot="suggestion-applied"][data-settled="true"] [data-cell="new"] {
+  background-color: transparent;
+}
+[data-slot="suggestion-applied"][data-variant="default"] {
+  --suggestion-tint: var(--brand);
+}
+[data-slot="suggestion-applied"][data-variant="grammar"] {
+  --suggestion-tint: var(--destructive);
+}
+[data-slot="suggestion-applied"][data-variant="clarity"] {
+  --suggestion-tint: var(--info);
+}
+[data-slot="suggestion-applied"][data-variant="tone"] {
+  --suggestion-tint: var(--purple);
+}
+
+/*
+ * Banner-festive: sweep an oversized (200%) gradient back and forth so its colors drift behind a
+ * festive Banner. The gradient is palindromic (its stop list returns to the first color), so the
+ * 0%↔100% position loop never jumps. Position-based (not transform) because it's the *fill* that
+ * should flow, not the bar; at this 9s cadence the cost is negligible.
+ */
+@keyframes banner-festive {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/*
+ * Banner-confetti: a piece launches from its origin (left/top set inline) toward a randomized
+ * vector, tumbling and shrinking as it fades. The vars carry fallbacks so the rule stays valid for
+ * a piece that never received them. transform + opacity only, so the GPU composites the swarm.
+ */
+@keyframes banner-confetti {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--cx, 0), var(--cy, 0), 0) rotate(var(--cr, 0deg)) scale(0.6);
+  }
+}
+
+/* Banner-pop: a brief overshoot + counter-wiggle for the icon when confetti fires. */
+@keyframes banner-pop {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  35% {
+    transform: scale(1.18) rotate(-8deg);
+  }
+  70% {
+    transform: scale(0.96) rotate(6deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/*
+ * Festive confetti piece colors, assigned by a stable per-piece index (data-c 0..2) rather than
+ * inline style. Two wins: the --banner-confetti-* tokens are referenced in real CSS so the optimizer
+ * keeps them (a var() set only from JS gets pruned as unused), and a piece's color never shifts as
+ * its siblings finish and unmount. The pieces themselves are spawned by the Banner's confetti burst.
+ */
+[data-slot="banner-confetti"] > [data-c="0"] {
+  background-color: var(--banner-confetti-1);
+}
+[data-slot="banner-confetti"] > [data-c="1"] {
+  background-color: var(--banner-confetti-2);
+}
+[data-slot="banner-confetti"] > [data-c="2"] {
+  background-color: var(--banner-confetti-3);
+}
+
+/*
+ * Festive Banner palette: the default gradient stops for appearance="festive". Theme-independent
+ * (like --brand) and deliberately deep/saturated so white text holds AA across all four themes -
+ * the semantic hue tokens (--purple, --pink ...) lighten in dark themes and would lose contrast.
+ * Override these per-banner (a className or inline style) to theme the bar with brand or flag colors.
+ */
+:root {
+  --banner-festive-from: oklch(0.52 0.22 286); /* violet */
+  --banner-festive-via: oklch(0.53 0.24 349); /* fuchsia */
+  --banner-festive-to: oklch(0.56 0.2 25); /* coral */
+
+  /*
+   * Festive confetti pieces. Lightened toward white so they pop against the saturated gradient
+   * bed, and derived from the same --banner-festive-* stops, so overriding the palette (brand or
+   * flag colors) re-tints the confetti with it. One piece is pure white for sparkle.
+   */
+  --banner-confetti-1: white;
+  --banner-confetti-2: color-mix(in oklab, var(--banner-festive-via) 55%, white);
+  --banner-confetti-3: color-mix(in oklab, var(--banner-festive-to) 55%, white);
+}
+
+/*
+ * Typing: the assistant "is typing" dots in a Chat MessageTyping. Three dots share one
+ * keyframe (a soft fade + rise), staggered per dot below so the bounce ripples left→right.
+ * An ambient infinite loop, so its timing lives here in the token layer (like shimmer),
+ * not inline in the component. Backed by the --ease-in-out motion token.
+ */
+@keyframes typing {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-25%);
+  }
+}
+
+/*
+ * Motion tokens: single source of truth for animation. Mirror these in lib/motion.ts
  * for JS-driven animation. Never inline raw cubic-bezier()/durations in components.
  */
 :root {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  /* Soft spring overshoot for "settle into place" enters (e.g. the gallery/lightbox hover pill):
+   * the value passes a touch beyond its target then settles, reading as a small bounce. */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --duration-fast: 160ms;
   --duration-base: 300ms;
   --duration-slow: 450ms;
 }
 
 /* ─── Light (default) ──────────────────────────────────────────────────────── */
-:root {
+/* `.light` mirrors the bare `:root` so a light surface can be scoped *inside* a
+   dark ancestor (e.g. the theme playground preview) and override the inherited
+   dark tokens. Without it, `light` = no class = inherits whatever theme wraps it. */
+:root,
+.light {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -168,28 +496,36 @@
   --pink: oklch(0.54 0.21 350);
   --teal: oklch(0.5 0.15 192);
   --orange: oklch(0.56 0.18 45);
-  --syntax-keyword: oklch(0.5 0.2 295);
-  --syntax-string: oklch(0.52 0.13 150);
-  --syntax-comment: oklch(0.62 0.02 260);
-  --syntax-function: oklch(0.5 0.18 255);
-  --syntax-number: oklch(0.55 0.15 50);
-  --syntax-tag: oklch(0.55 0.18 25);
+  /* Rating fills (theme-agnostic, like --brand: defined once, inherited by dark/moonlight). A
+     saturated gold star and a love-red heart read clearly on light AND dark surfaces, so they
+     are NOT redefined per theme. Brighter than --warning by design (see @theme note above). */
+  --rating: oklch(0.8 0.17 82);
+  --rating-red: oklch(0.64 0.22 25);
+  --syntax-keyword: oklch(0.52 0.24 295);
+  --syntax-string: oklch(0.52 0.17 150);
+  --syntax-comment: oklch(0.6 0.03 260);
+  --syntax-function: oklch(0.52 0.21 262);
+  --syntax-number: oklch(0.58 0.18 50);
+  --syntax-tag: oklch(0.56 0.22 25);
+  --syntax-attribute: oklch(0.54 0.14 205);
+  --syntax-punctuation: oklch(0.5 0.04 260);
   --border: oklch(0.922 0 0);
-  /* Half-strength stroke for large surfaces — softens toward the surface beneath. */
+  /* Half-strength stroke for large surfaces: softens toward the surface beneath. */
   --border-soft: color-mix(in oklch, var(--border) 50%, transparent);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
   /*
-   * Accent — the single knob. This is the DEFAULT accent (#F84416, "orange"); switch the
+   * Accent: the single knob. This is the DEFAULT accent (#F84416, "orange"); switch the
    * whole accent palette by setting `data-accent="…"` on <html> (see "Accent presets" below).
-   * Themes (dark/cream/moonlight) deliberately DON'T redefine --brand, so accent and theme
-   * are orthogonal axes: any accent works under any of the four themes.
+   * Themes (dark/moonlight) deliberately DON'T redefine --brand, so accent and theme
+   * are orthogonal axes: any accent works under any of the three themes.
    */
   --brand: oklch(0.648 0.222 34.2);
-  /* Focus ring derives from the accent — same hue at 10% opacity. Set --brand, get this free. */
+  /* Focus ring derives from the accent: same hue at 10% opacity. Set --brand, get this free. */
   --ring-brand: color-mix(in oklch, var(--brand) 10%, transparent);
-  /* Roundy by brand: base tuned so the xl step (radius × 1.4) lands cards at exactly 16px. */
-  --radius: 0.7143rem;
+  /* The single radius knob. 1rem (16px) anchors the lg step; the quarter-step scale above
+     keeps every rounded-* utility on the 4px grid as this value re-rounds the whole system. */
+  --radius: 1rem;
   --shadow-xs: 0 1px 2px oklch(0 0 0 / 0.05);
   --shadow-sm: 0 1px 3px oklch(0 0 0 / 0.1), 0 1px 2px -1px oklch(0 0 0 / 0.1);
   --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.1), 0 2px 4px -2px oklch(0 0 0 / 0.1);
@@ -221,17 +557,19 @@
   --pink: oklch(0.8 0.17 350);
   --teal: oklch(0.78 0.13 192);
   --orange: oklch(0.83 0.15 50);
-  --syntax-keyword: oklch(0.78 0.13 300);
-  --syntax-string: oklch(0.8 0.13 150);
-  --syntax-comment: oklch(0.6 0.025 260);
-  --syntax-function: oklch(0.78 0.12 250);
-  --syntax-number: oklch(0.8 0.12 60);
-  --syntax-tag: oklch(0.78 0.13 20);
+  --syntax-keyword: oklch(0.8 0.17 300);
+  --syntax-string: oklch(0.82 0.16 150);
+  --syntax-comment: oklch(0.6 0.03 260);
+  --syntax-function: oklch(0.8 0.15 258);
+  --syntax-number: oklch(0.83 0.15 60);
+  --syntax-tag: oklch(0.8 0.16 22);
+  --syntax-attribute: oklch(0.82 0.13 205);
+  --syntax-punctuation: oklch(0.72 0.04 260);
   --border: oklch(1 0 0 / 10%);
   --border-soft: color-mix(in oklch, var(--border) 50%, transparent);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
-  /* --brand / --ring-brand are accent tokens (theme-agnostic) — see :root and "Accent presets". */
+  /* --brand / --ring-brand are accent tokens (theme-agnostic): see :root and "Accent presets". */
   --shadow-xs: 0 1px 2px oklch(0 0 0 / 0.25);
   --shadow-sm: 0 1px 3px oklch(0 0 0 / 0.35), 0 1px 2px -1px oklch(0 0 0 / 0.3);
   --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.4), 0 2px 4px -2px oklch(0 0 0 / 0.3);
@@ -240,69 +578,24 @@
 }
 
 /*
- * Cream — Koala's warm light theme. PLACEHOLDER values approximating the public site;
- * replace with exact Figma "Cream" variable export. Hue ≈ 85 (warm), low chroma.
- */
-.cream {
-  --background: oklch(0.971 0.012 85);
-  --foreground: oklch(0.255 0.022 64);
-  --card: oklch(0.985 0.009 85);
-  --card-foreground: oklch(0.255 0.022 64);
-  --popover: oklch(0.985 0.009 85);
-  --popover-foreground: oklch(0.255 0.022 64);
-  --primary: oklch(0.305 0.03 62);
-  --primary-foreground: oklch(0.975 0.012 85);
-  --secondary: oklch(0.931 0.018 85);
-  --secondary-foreground: oklch(0.305 0.03 62);
-  --muted: oklch(0.931 0.018 85);
-  --muted-foreground: oklch(0.522 0.025 66);
-  --accent: oklch(0.918 0.024 80);
-  --accent-foreground: oklch(0.305 0.03 62);
-  --destructive: oklch(0.577 0.245 27.325);
-  --success: oklch(0.5 0.14 148);
-  --warning: oklch(0.53 0.13 68);
-  --info: oklch(0.5 0.18 252);
-  --purple: oklch(0.5 0.2 308);
-  --pink: oklch(0.52 0.19 348);
-  --teal: oklch(0.48 0.14 190);
-  --orange: oklch(0.54 0.16 43);
-  --syntax-keyword: oklch(0.48 0.19 295);
-  --syntax-string: oklch(0.5 0.12 148);
-  --syntax-comment: oklch(0.6 0.025 64);
-  --syntax-function: oklch(0.48 0.17 255);
-  --syntax-number: oklch(0.53 0.14 50);
-  --syntax-tag: oklch(0.54 0.17 25);
-  --border: oklch(0.892 0.02 80);
-  --border-soft: color-mix(in oklch, var(--border) 50%, transparent);
-  --input: oklch(0.892 0.02 80);
-  --ring: oklch(0.702 0.03 75);
-  /* --brand / --ring-brand are accent tokens (theme-agnostic) — see :root and "Accent presets". */
-  --shadow-xs: 0 1px 2px oklch(0.15 0.02 64 / 0.06);
-  --shadow-sm: 0 1px 3px oklch(0.15 0.02 64 / 0.1), 0 1px 2px -1px oklch(0.15 0.02 64 / 0.08);
-  --shadow-md: 0 4px 6px -1px oklch(0.15 0.02 64 / 0.1), 0 2px 4px -2px oklch(0.15 0.02 64 / 0.08);
-  --shadow-lg: 0 10px 15px -3px oklch(0.15 0.02 64 / 0.1), 0 4px 6px -4px oklch(0.15 0.02 64 / 0.08);
-  --shadow-xl: 0 20px 25px -5px oklch(0.15 0.02 64 / 0.12), 0 8px 10px -6px oklch(0.15 0.02 64 / 0.08);
-}
-
-/*
- * Moonlight — Koala's blue-tinted dark theme. PLACEHOLDER values approximating the public
+ * Moonlight: Koala's blue-tinted dark theme. PLACEHOLDER values approximating the public
  * site; replace with exact Figma "Moonlight" variable export. Hue ≈ 265 (blue).
  */
 .moonlight {
-  --background: oklch(0.211 0.04 265);
-  --foreground: oklch(0.962 0.01 265);
-  --card: oklch(0.262 0.045 265);
-  --card-foreground: oklch(0.962 0.01 265);
-  --popover: oklch(0.262 0.045 265);
-  --popover-foreground: oklch(0.962 0.01 265);
+  --background: oklch(0.15 0.022 265);
+  --foreground: oklch(0.97 0.006 265);
+  --card: oklch(0.21 0.024 265);
+  --card-foreground: oklch(0.97 0.006 265);
+  --popover: oklch(0.21 0.024 265);
+  --popover-foreground: oklch(0.97 0.006 265);
   --primary: oklch(0.704 0.14 264);
-  --primary-foreground: oklch(0.211 0.04 265);
-  --secondary: oklch(0.321 0.045 265);
-  --secondary-foreground: oklch(0.962 0.01 265);
-  --muted: oklch(0.321 0.045 265);
-  --muted-foreground: oklch(0.722 0.03 265);
-  --accent: oklch(0.339 0.05 265);
-  --accent-foreground: oklch(0.962 0.01 265);
+  --primary-foreground: oklch(0.15 0.022 265);
+  --secondary: oklch(0.27 0.026 265);
+  --secondary-foreground: oklch(0.97 0.006 265);
+  --muted: oklch(0.27 0.026 265);
+  --muted-foreground: oklch(0.71 0.022 265);
+  --accent: oklch(0.285 0.028 265);
+  --accent-foreground: oklch(0.97 0.006 265);
   --destructive: oklch(0.704 0.191 22.216);
   --success: oklch(0.8 0.16 158);
   --warning: oklch(0.84 0.14 88);
@@ -311,17 +604,19 @@
   --pink: oklch(0.8 0.18 348);
   --teal: oklch(0.78 0.14 190);
   --orange: oklch(0.83 0.16 50);
-  --syntax-keyword: oklch(0.8 0.13 300);
-  --syntax-string: oklch(0.82 0.13 158);
-  --syntax-comment: oklch(0.62 0.04 265);
-  --syntax-function: oklch(0.8 0.12 255);
-  --syntax-number: oklch(0.82 0.12 65);
-  --syntax-tag: oklch(0.8 0.13 20);
-  --border: oklch(0.85 0.05 265 / 12%);
+  --syntax-keyword: oklch(0.82 0.17 300);
+  --syntax-string: oklch(0.83 0.16 158);
+  --syntax-comment: oklch(0.62 0.045 265);
+  --syntax-function: oklch(0.82 0.15 258);
+  --syntax-number: oklch(0.84 0.15 65);
+  --syntax-tag: oklch(0.82 0.16 22);
+  --syntax-attribute: oklch(0.83 0.13 205);
+  --syntax-punctuation: oklch(0.74 0.045 265);
+  --border: oklch(0.85 0.03 265 / 12%);
   --border-soft: color-mix(in oklch, var(--border) 50%, transparent);
-  --input: oklch(0.85 0.05 265 / 16%);
-  --ring: oklch(0.6 0.1 264);
-  /* --brand / --ring-brand are accent tokens (theme-agnostic) — see :root and "Accent presets". */
+  --input: oklch(0.85 0.03 265 / 16%);
+  --ring: oklch(0.55 0.07 264);
+  /* --brand / --ring-brand are accent tokens (theme-agnostic): see :root and "Accent presets". */
   --shadow-xs: 0 1px 2px oklch(0.1 0.04 265 / 0.35);
   --shadow-sm: 0 1px 3px oklch(0.1 0.04 265 / 0.45), 0 1px 2px -1px oklch(0.1 0.04 265 / 0.35);
   --shadow-md: 0 4px 6px -1px oklch(0.1 0.04 265 / 0.5), 0 2px 4px -2px oklch(0.1 0.04 265 / 0.4);
@@ -338,7 +633,7 @@
  * accessible lightness (~L 0.6) so each reads well on light AND dark surfaces.
  * To add an accent: append a preset here and a name to ACCENTS in lib/accent.tsx.
  * ──────────────────────────────────────────────────────────────────────────── */
-[data-accent="orange"] { --brand: oklch(0.648 0.222 34.2); } /* #F84416 — default */
+[data-accent="orange"] { --brand: oklch(0.648 0.222 34.2); } /* #F84416, default */
 [data-accent="red"]    { --brand: oklch(0.585 0.222 27); }
 [data-accent="amber"]  { --brand: oklch(0.705 0.165 70); }
 [data-accent="green"]  { --brand: oklch(0.62 0.17 150); }
@@ -346,6 +641,323 @@
 [data-accent="blue"]   { --brand: oklch(0.55 0.2 255); }
 [data-accent="violet"] { --brand: oklch(0.52 0.23 285); }
 [data-accent="pink"]   { --brand: oklch(0.59 0.23 354); }
+
+/* ─── Ring: the canonical accent halo ─────────────────────────────────────────
+ * One definition for the soft ring shared across the system instead of repeating the
+ * box-shadow at every call site: form controls on focus (Input/Textarea/Select/OTP/
+ * Date Picker/Input Group/editors) and the featured Pricing tier. A 3px halo hugging
+ * the border with NO gap (not a ring-offset), derived from the accent tokens, so it
+ * re-themes and re-accents for free:
+ *   - `brand-ring`       : the accent at 10% (--ring-brand). The default focus/emphasis ring.
+ *   - `destructive-ring` : the error counterpart at 20%, for invalid controls.
+ * Each is a single `box-shadow`, so don't pair it with a Tailwind `shadow-*` on the SAME
+ * element (both write box-shadow); keep them in mutually exclusive states. The two are a
+ * conflict group in lib/utils.ts, so the error ring still overrides the brand ring via
+ * tailwind-merge. Apply on whatever state owns the ring (`focus-within:brand-ring`,
+ * `data-[state=open]:brand-ring`, or always-on for an emphasized surface). */
+@utility brand-ring {
+  box-shadow: 0 0 0 3px var(--ring-brand);
+}
+@utility destructive-ring {
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--destructive) 20%, transparent);
+}
+
+/* The canonical section-heading SIZE scale: the SectionHeader `md` default (36 → 48px). One source
+ * of truth so the SectionHeader recipe, Gallery, and FAQs share the exact section-H2 size and never
+ * drift when it is tuned (change it here and every section lede follows). Weight/tracking/balance
+ * stay on each call site; only the responsive size lives here. Registered as a font-size group in
+ * lib/utils.ts so a `text-*` on the same element still overrides it via tailwind-merge. */
+@utility section-heading {
+  @apply text-4xl sm:text-5xl;
+}
+
+/* ─── Fade: a soft, static edge mask that dissolves a box into its surface ──────────
+ * The general primitive. `scroll-fade` below is its scroll-aware sibling: same fade band, but each
+ * edge's depth tracks scroll progress instead of being constant. Reach for `fade-*` whenever the
+ * bleed is constant (a marquee row, a masonry that clips at the section edges, a preview that peeks
+ * up from the bottom), and `scroll-fade-*` when the hint should follow the scroll position.
+ *
+ * Depth per edge is the `--fade-size` knob (default min(2.5rem, 12%) - 40px, but never more than 12%
+ * of the box, so short boxes don't over-fade); override per element with an arbitrary property, e.g.
+ * `[--fade-size:6%]`. Both the unprefixed and -webkit- properties are written so the mask holds in
+ * Safari. Registered in the same lib/utils.ts conflict group as scroll-fade, so any two fade/
+ * scroll-fade utilities (each writes mask-image) dedupe, last wins. */
+@utility fade {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black var(--fade-size, min(2.5rem, 12%)), black calc(100% - var(--fade-size, min(2.5rem, 12%))), transparent);
+  mask-image: linear-gradient(to bottom, transparent, black var(--fade-size, min(2.5rem, 12%)), black calc(100% - var(--fade-size, min(2.5rem, 12%))), transparent);
+}
+
+@utility fade-x {
+  -webkit-mask-image: linear-gradient(to right, transparent, black var(--fade-size, min(2.5rem, 12%)), black calc(100% - var(--fade-size, min(2.5rem, 12%))), transparent);
+  mask-image: linear-gradient(to right, transparent, black var(--fade-size, min(2.5rem, 12%)), black calc(100% - var(--fade-size, min(2.5rem, 12%))), transparent);
+}
+
+@utility fade-t {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black var(--fade-size, min(2.5rem, 12%)));
+  mask-image: linear-gradient(to bottom, transparent, black var(--fade-size, min(2.5rem, 12%)));
+}
+
+@utility fade-b {
+  -webkit-mask-image: linear-gradient(to bottom, black calc(100% - var(--fade-size, min(2.5rem, 12%))), transparent);
+  mask-image: linear-gradient(to bottom, black calc(100% - var(--fade-size, min(2.5rem, 12%))), transparent);
+}
+
+@utility fade-l {
+  -webkit-mask-image: linear-gradient(to right, transparent, black var(--fade-size, min(2.5rem, 12%)));
+  mask-image: linear-gradient(to right, transparent, black var(--fade-size, min(2.5rem, 12%)));
+}
+
+@utility fade-r {
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - var(--fade-size, min(2.5rem, 12%))), transparent);
+  mask-image: linear-gradient(to right, black calc(100% - var(--fade-size, min(2.5rem, 12%))), transparent);
+}
+
+/* ─── Scroll Fade: the scroll-aware sibling of `fade` above ──────────────────────
+ * Same edge mask, but each edge's depth tracks scroll progress instead of being constant.
+ * Hints that more content lies past the fold by fading the leading/trailing edge of a
+ * scroll container into its surface - the only edge cue left once our scrollbars are hidden
+ * site-wide. Pure CSS, no JS: the fade is a `mask-image` gradient whose two stops are driven
+ * by scroll-progress animations (`animation-timeline: scroll(self …)`), so the edge nearest
+ * unseen content fades and the edge you've reached sharpens. At rest the top is crisp and the
+ * bottom fades; mid-scroll both fade; at the end the bottom sharpens back to a clean line.
+ *
+ * Token knobs (override per-element with an arbitrary property, e.g. `[--scroll-fade-size:4rem]`):
+ *   --scroll-fade-size   : fade-band depth per edge. Default min(2.5rem, 12%) - 40px, but never
+ *                          more than 12% of the box, so short containers don't over-fade.
+ *   --scroll-fade-reveal : the scroll distance an edge fades in / sharpens over. Default 6rem (96px).
+ *
+ * Each edge's depth is a registered <number> 0..1 (crisp..faded) so it can interpolate along the
+ * scroll timeline; the gradient multiplies it by --scroll-fade-size. Browsers without scroll-driven
+ * animations fall back (via @supports) to a static fade on the utility's edges. Registered as a
+ * conflict group in lib/utils.ts so two scroll-fade-* dedupe (last wins). Mask sits on a CSS var so
+ * the unprefixed and -webkit- properties share one definition. */
+@property --scroll-fade-t { syntax: "<number>"; inherits: false; initial-value: 0; }
+@property --scroll-fade-b { syntax: "<number>"; inherits: false; initial-value: 0; }
+@property --scroll-fade-l { syntax: "<number>"; inherits: false; initial-value: 0; }
+@property --scroll-fade-r { syntax: "<number>"; inherits: false; initial-value: 0; }
+
+/* One keyframe per edge/direction: an edge fades IN (enter, 0→1) as content scrolls under it, or
+ * sharpens (exit, 1→0) as that edge is reached. Each @utility picks the pair and the scroll range. */
+@keyframes scroll-fade-enter-t { from { --scroll-fade-t: 0; } to { --scroll-fade-t: 1; } }
+@keyframes scroll-fade-exit-b  { from { --scroll-fade-b: 1; } to { --scroll-fade-b: 0; } }
+@keyframes scroll-fade-enter-l { from { --scroll-fade-l: 0; } to { --scroll-fade-l: 1; } }
+@keyframes scroll-fade-exit-r  { from { --scroll-fade-r: 1; } to { --scroll-fade-r: 0; } }
+
+/* Vertical, both edges. `scroll-fade` is the common case (lists, menus, dialog bodies). */
+@utility scroll-fade {
+  --scroll-fade-mask: linear-gradient(
+    to bottom,
+    transparent 0,
+    black calc(var(--scroll-fade-size, min(2.5rem, 12%)) * var(--scroll-fade-t)),
+    black calc(100% - var(--scroll-fade-size, min(2.5rem, 12%)) * var(--scroll-fade-b)),
+    transparent 100%
+  );
+  -webkit-mask-image: var(--scroll-fade-mask);
+  mask-image: var(--scroll-fade-mask);
+  @supports (animation-timeline: scroll()) {
+    animation-name: scroll-fade-enter-t, scroll-fade-exit-b;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: scroll(self block), scroll(self block);
+    animation-range:
+      0 var(--scroll-fade-reveal, 6rem),
+      calc(100% - var(--scroll-fade-reveal, 6rem)) 100%;
+  }
+  @supports not (animation-timeline: scroll()) {
+    --scroll-fade-t: 1;
+    --scroll-fade-b: 1;
+  }
+}
+
+/* Horizontal, both edges (chip rows, segmented bars, wide tables). */
+@utility scroll-fade-x {
+  --scroll-fade-mask: linear-gradient(
+    to right,
+    transparent 0,
+    black calc(var(--scroll-fade-size, min(2.5rem, 12%)) * var(--scroll-fade-l)),
+    black calc(100% - var(--scroll-fade-size, min(2.5rem, 12%)) * var(--scroll-fade-r)),
+    transparent 100%
+  );
+  -webkit-mask-image: var(--scroll-fade-mask);
+  mask-image: var(--scroll-fade-mask);
+  @supports (animation-timeline: scroll()) {
+    animation-name: scroll-fade-enter-l, scroll-fade-exit-r;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: scroll(self inline), scroll(self inline);
+    animation-range:
+      0 var(--scroll-fade-reveal, 6rem),
+      calc(100% - var(--scroll-fade-reveal, 6rem)) 100%;
+  }
+  @supports not (animation-timeline: scroll()) {
+    --scroll-fade-l: 1;
+    --scroll-fade-r: 1;
+  }
+}
+
+/* Single edge: fade only the top (e.g. a chat log that should bleed into its header). */
+@utility scroll-fade-t {
+  --scroll-fade-mask: linear-gradient(
+    to bottom,
+    transparent 0,
+    black calc(var(--scroll-fade-size, min(2.5rem, 12%)) * var(--scroll-fade-t)),
+    black 100%
+  );
+  -webkit-mask-image: var(--scroll-fade-mask);
+  mask-image: var(--scroll-fade-mask);
+  @supports (animation-timeline: scroll()) {
+    animation-name: scroll-fade-enter-t;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: scroll(self block);
+    animation-range: 0 var(--scroll-fade-reveal, 6rem);
+  }
+  @supports not (animation-timeline: scroll()) {
+    --scroll-fade-t: 1;
+  }
+}
+
+/* Single edge: fade only the bottom (hint that more rows sit below the fold). */
+@utility scroll-fade-b {
+  --scroll-fade-mask: linear-gradient(
+    to bottom,
+    black 0,
+    black calc(100% - var(--scroll-fade-size, min(2.5rem, 12%)) * var(--scroll-fade-b)),
+    transparent 100%
+  );
+  -webkit-mask-image: var(--scroll-fade-mask);
+  mask-image: var(--scroll-fade-mask);
+  @supports (animation-timeline: scroll()) {
+    animation-name: scroll-fade-exit-b;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: scroll(self block);
+    animation-range: calc(100% - var(--scroll-fade-reveal, 6rem)) 100%;
+  }
+  @supports not (animation-timeline: scroll()) {
+    --scroll-fade-b: 1;
+  }
+}
+
+/* Single edge: fade only the left. */
+@utility scroll-fade-l {
+  --scroll-fade-mask: linear-gradient(
+    to right,
+    transparent 0,
+    black calc(var(--scroll-fade-size, min(2.5rem, 12%)) * var(--scroll-fade-l)),
+    black 100%
+  );
+  -webkit-mask-image: var(--scroll-fade-mask);
+  mask-image: var(--scroll-fade-mask);
+  @supports (animation-timeline: scroll()) {
+    animation-name: scroll-fade-enter-l;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: scroll(self inline);
+    animation-range: 0 var(--scroll-fade-reveal, 6rem);
+  }
+  @supports not (animation-timeline: scroll()) {
+    --scroll-fade-l: 1;
+  }
+}
+
+/* Single edge: fade only the right. */
+@utility scroll-fade-r {
+  --scroll-fade-mask: linear-gradient(
+    to right,
+    black 0,
+    black calc(100% - var(--scroll-fade-size, min(2.5rem, 12%)) * var(--scroll-fade-r)),
+    transparent 100%
+  );
+  -webkit-mask-image: var(--scroll-fade-mask);
+  mask-image: var(--scroll-fade-mask);
+  @supports (animation-timeline: scroll()) {
+    animation-name: scroll-fade-exit-r;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: scroll(self inline);
+    animation-range: calc(100% - var(--scroll-fade-reveal, 6rem)) 100%;
+  }
+  @supports not (animation-timeline: scroll()) {
+    --scroll-fade-r: 1;
+  }
+}
+
+/*
+ * ring-orbit: a scroll-driven slow rotation for a ring (or cluster) of elements, the engine behind
+ * the Gallery "floating ring" section (gallery-section-4). As the band travels through the viewport,
+ * the ring rotates from --ring-orbit-from to --ring-orbit-to, passing through ~0° while the band is
+ * centered, so the framed photos orbit the centered lede as the reader scrolls. Pure CSS
+ * scroll-driven animation, the same family as `scroll-fade` (an `animation-timeline`, no JS and no
+ * scroll listener). Browsers without scroll-driven animations, and reduced-motion users, hold the
+ * ring at its neutral resting angle (no motion). Override the sweep per element with the arbitrary
+ * properties `[--ring-orbit-from:…]` / `[--ring-orbit-to:…]`.
+ *
+ * Note: the docs PreviewFrame sizes its iframe to the slab's own height, so the embedded preview
+ * never scrolls internally and holds the ring at its neutral angle; the orbit plays on a real
+ * scrolling page (and via the frame's open-in-new-tab when the page is taller than the viewport).
+ */
+@keyframes gallery-orbit {
+  from {
+    rotate: var(--ring-orbit-from, -11deg);
+  }
+  to {
+    rotate: var(--ring-orbit-to, 11deg);
+  }
+}
+
+@utility ring-orbit {
+  /* Neutral resting angle: the value held by no-scroll-timeline browsers and reduced-motion users,
+     and the angle the band passes through when it is centered in the viewport. */
+  rotate: 0deg;
+  @supports (animation-timeline: view()) {
+    animation-name: gallery-orbit;
+    animation-fill-mode: both;
+    animation-timing-function: linear;
+    animation-timeline: view();
+    /* From the band first entering the bottom of the viewport to fully leaving the top: one long,
+       smooth sweep that reads as a gentle orbit, never a spin. */
+    animation-range: entry 0% exit 100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    animation-name: none;
+    rotate: 0deg;
+  }
+}
+
+/* ─── Smart dividers: a rule only earns its space when it separates two things ──────────
+ * A `Divider` is smart by default (it carries `data-smart`; `static` drops it). These rules
+ * hide it in every orphaned case so a list never shows a rule that separates nothing:
+ *   1. it's the first or last element of its group (a leading / trailing rule), or
+ *   2. it sits directly after another divider (a doubled rule: keep one, drop the rest), or
+ *   3. nothing visible follows it (trailing content filtered or rendered away).
+ *
+ * The contract is the idiomatic React one: absent content leaves NO node (renders `null`) or
+ * carries the `hidden` attribute, so a neighbour that is gone is gone from the box too. Content
+ * merely `display:none`'d via a class is invisible to `:has`, so collapse it by not rendering
+ * it, or mark the divider `static`. There is no backward sibling combinator in CSS, so the
+ * "nothing before me" side is covered by `:first-child` (rule 1) under the null contract.
+ *
+ * Unlayered (not inside `@layer`) so the `display:none` reliably beats a utility-layer
+ * `block`/`flex` a consumer might add via `className`, with no `!important` needed. */
+[data-slot="divider"][data-smart]:first-child,
+[data-slot="divider"][data-smart]:last-child,
+[data-slot="divider"] + [data-slot="divider"][data-smart],
+[data-slot="divider"][data-smart]:not(:has(~ :not([data-slot="divider"]):not([hidden]))) {
+  display: none;
+}
+
+/* The Command palette's separator gets the same guarantee, keyed on its own structure.
+ * Filtering collapses an empty group to `display:none` (a class, invisible to `:has`), so we
+ * test the real signal instead: a group that still owns a `command-item`. The separator shows
+ * only when a row-bearing group survives on the side that would otherwise strand it: this is
+ * what stops a separator floating beside a collapsed group or over the empty state. */
+[data-slot="command-separator"]:first-child,
+[data-slot="command-separator"]:last-child,
+[data-slot="command-group"]:not(:has([data-slot="command-item"])) + [data-slot="command-separator"],
+[data-slot="command-separator"]:not(:has(~ [data-slot="command-group"]:has([data-slot="command-item"]))) {
+  display: none;
+}
 
 @layer base {
   * {
@@ -356,6 +968,15 @@
     /* polish: crisper text on macOS. */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Kerning + common/contextual ligatures sitewide for clean letterfit. Inter
+       (body) has no extra axis here, but `font-optical-sizing: auto` is inherited by
+       the DM Sans headings below (opsz 9–40, loaded in layout.tsx) so their letterfit
+       self-tunes by size. `font-variant-ligatures` is used over low-level
+       `font-feature-settings` so it never clobbers the `tabular-nums`
+       (`font-variant-numeric`) we set on dynamic figures. */
+    font-optical-sizing: auto;
+    font-kerning: normal;
+    font-variant-ligatures: common-ligatures contextual;
   }
   html {
     @apply font-sans;
@@ -366,13 +987,13 @@
       scroll-behavior: smooth;
     }
   }
-  /* The check draw is decorative — honor reduced-motion by showing the full stroke instantly. */
+  /* The check draw is decorative: honor reduced-motion by showing the full stroke instantly. */
   @media (prefers-reduced-motion: reduce) {
     [data-slot="checkbox-indicator"] path {
       animation: none;
     }
   }
-  /* Skeleton animation is purely decorative — hold a static placeholder under reduced-motion
+  /* Skeleton animation is purely decorative: hold a static placeholder under reduced-motion
    * (neither the pulse nor the shimmer overlay should run). */
   @media (prefers-reduced-motion: reduce) {
     [data-slot="skeleton"],
@@ -383,16 +1004,47 @@
       display: none;
     }
   }
+  /* Typing dots: one shared keyframe, staggered per dot so the bounce ripples left→right.
+   * Decorative, so honor reduced-motion by holding them static. */
+  [data-slot="message-typing-dot"] {
+    animation: typing 1.4s var(--ease-in-out) infinite;
+  }
+  [data-slot="message-typing-dot"]:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  [data-slot="message-typing-dot"]:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-slot="message-typing-dot"] {
+      animation: none;
+    }
+  }
+  /* Festive Banner drift is purely decorative: hold the gradient static under reduced-motion.
+   * `animation: none` is a no-op on the soft/solid bars (they never animate). */
+  @media (prefers-reduced-motion: reduce) {
+    [data-slot="banner"] {
+      animation: none;
+    }
+  }
   /* polish: balanced headings, no orphans in body copy. */
   h1, h2, h3, h4, h5, h6 {
+    /* Headings/titles are set in DM Sans (body stays Inter). A bare element rule,
+       so a call site can still swap the family with a `font-*` utility if needed. */
+    @apply font-heading;
     text-wrap: balance;
+    /* DM Sans sets a touch wider than Inter, so headings want a hair of negative
+       tracking to hold together (optical sizing tightens display sizes further on
+       top of this). Element-level, so any call site that sets an explicit
+       `tracking-*` utility still wins on specificity (class > element). */
+    letter-spacing: -0.015em;
   }
   p {
     text-wrap: pretty;
   }
   /*
    * Inline code mentions (`data-mounted`, `text-sm`, …) get a subtle chip so they read as
-   * code, not prose — one canonical treatment for the whole docs. Scoped to
+   * code, not prose. One canonical treatment for the whole docs. Scoped to
    * `:not(pre) > code` so fenced blocks keep the highlighter's bare styling. `text-foreground`
    * lifts the mention out of muted body copy; `text-sm` is the single inline-code size, so
    * call sites don't set their own (any that still do just match this).
@@ -401,7 +1053,7 @@
     @apply rounded-sm bg-muted px-1.5 py-0.5 font-mono text-sm text-foreground;
   }
   /*
-   * Hidden scrollbars site-wide — surfaces stay clean (sidebar, TOC, the page itself, and
+   * Hidden scrollbars site-wide: surfaces stay clean (sidebar, TOC, the page itself, and
    * any overflow region) while everything is still scrollable by wheel, trackpad, drag, or
    * keyboard. `scrollbar-width` covers Firefox; the `::-webkit-scrollbar` rule covers
    * Chrome/Safari/Edge.

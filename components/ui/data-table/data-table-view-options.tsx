@@ -22,7 +22,7 @@ export type DataTableLayout = "rows" | "cards"
 /**
  * The display name a column shows in the view-options menu and as a card field label. Prefers an
  * explicit `meta.label`, falls back to a string `header`. Columns with neither (the selection
- * column, an icon-only actions column) return `undefined` — they're not user-toggleable and don't
+ * column, an icon-only actions column) return `undefined`; they're not user-toggleable and don't
  * caption a card field, so callers filter them out.
  */
 export function columnLabel<TData>(column: Column<TData, unknown>): string | undefined {
@@ -45,7 +45,7 @@ export interface DataTableViewOptionsProps<TData> {
 }
 
 /**
- * View options — a `SlidersHorizontal` dropdown that switches the table's layout (rows ⟷ cards)
+ * View options: a `SlidersHorizontal` dropdown that switches the table's layout (rows ⟷ cards)
  * and shows/hides columns. Built from the shared `DropdownMenu`: a radio group for the mutually
  * exclusive layout, checkbox items for the independent column toggles. `DataTable` renders this
  * for you when `viewOptions`/`enableCardLayout` is set; it's exported for hand-composed toolbars
@@ -58,7 +58,7 @@ export function DataTableViewOptions<TData>({
   enableLayout = false,
   label = "View options",
 }: DataTableViewOptionsProps<TData>) {
-  // Only real, labelled columns are toggleable — the selection and icon-only action columns have
+  // Only real, labelled columns are toggleable; the selection and icon-only action columns have
   // no label and aren't things a user hides.
   const hideableColumns = table
     .getAllColumns()

@@ -2,25 +2,31 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 
 import {
   ShowcaseDemo,
   ToolbarDemo,
   CustomToolbarDemo,
   ViewOptionsDemo,
+  FacetedFilterDemo,
   PersistenceDemo,
   InfiniteScrollDemo,
   CellTypesDemo,
+  ColumnTooltipsDemo,
   ContainerDemo,
   DefaultInSectionDemo,
   StripedDemo,
   DensityDemo,
   SortingDemo,
   GroupingDemo,
+  ExpandableRowDemo,
   SelectionDemo,
+  BulkActionsDemo,
   StickyHeaderDemo,
   StickyColumnDemo,
   PaginationDemo,
+  ServerSideDemo,
   LoadingDemo,
   EmptyDemo,
   NoResultsDemo,
@@ -35,7 +41,7 @@ export default function DataTableDocsPage() {
     <>
       <DocHeader
         title="Data Table"
-        description="A data grid built on TanStack Table for behavior — sorting, grouping, row selection, column pinning — with Koala styling on top. Use the DataTable to drive features from column defs, or compose the styled primitives directly for static tables."
+        description="A data grid built on TanStack Table for behavior (sorting, grouping, row selection, column pinning) with Koala styling on top. Use the DataTable to drive features from column defs, or compose the styled primitives directly for static tables."
       />
 
       <ComponentPreview previewClassName="block" code={SHOWCASE_CODE}>
@@ -54,7 +60,7 @@ export default function DataTableDocsPage() {
           Koala splits the two concerns the way TanStack does. The{" "}
           <code className="font-mono text-sm">Table</code> primitives own the look; TanStack
           owns the behavior. <code className="font-mono text-sm">DataTable</code> wires them
-          together — hand it <code className="font-mono text-sm">columns</code> and{" "}
+          together: hand it <code className="font-mono text-sm">columns</code> and{" "}
           <code className="font-mono text-sm">data</code>, flip on the features you want, and
           ride alignment and pinning along on each column&rsquo;s{" "}
           <code className="font-mono text-sm">meta</code>.
@@ -64,8 +70,8 @@ export default function DataTableDocsPage() {
 
       <DocSection title="Container">
         <p className="mt-4 text-pretty text-muted-foreground">
-          The table is chromeless by default — no border, radius, or fill, with the edge cells
-          pulled flush — so it reads as lined records and drops into whatever already frames it.
+          The table is chromeless by default (no border, radius, or fill, with the edge cells
+          pulled flush) so it reads as lined records and drops into whatever already frames it.
           That is the <code className="font-mono text-sm">minimal</code> surface you see throughout
           this page. When the table needs to stand on its own, set{" "}
           <code className="font-mono text-sm">variant=&quot;container&quot;</code> to wrap it in the
@@ -76,8 +82,8 @@ export default function DataTableDocsPage() {
           <ContainerDemo />
         </ComponentPreview>
         <p className="mt-6 text-pretty text-muted-foreground">
-          Left at its default, the table drops straight into the page section it belongs to — a
-          settings panel, a dashboard block — sitting on the page surface with only its own row
+          Left at its default, the table drops straight into the page section it belongs to (a
+          settings panel, a dashboard block) sitting on the page surface with only its own row
           rules, no box stacked around content that&rsquo;s already laid out. The minimal surface
           renders on the page background; for a distinct surface, reach for{" "}
           <code className="font-mono text-sm">variant=&quot;container&quot;</code>.
@@ -89,23 +95,23 @@ export default function DataTableDocsPage() {
 
       <DocSection title="Toolbar">
         <p className="mt-4 text-pretty text-muted-foreground">
-          The control rail above the table is built in and toggled with simple booleans — no
+          The control rail above the table is built in and toggled with simple booleans, no
           wiring. <code className="font-mono text-sm">searchable</code> adds a search box that
           filters every column (TanStack&rsquo;s global filter), and{" "}
           <code className="font-mono text-sm">toolbarActions</code> is a right-side slot for your
           own buttons (filter, export, a primary action). The search and any icon buttons are Koala
-          natives — <a href="/docs/components/input" className="underline underline-offset-4">Input</a>{" "}
-          and <a href="/docs/components/button" className="underline underline-offset-4">Button</a> —
+          natives (<a href="/docs/components/input" className="underline underline-offset-4">Input</a>{" "}
+          and <a href="/docs/components/button" className="underline underline-offset-4">Button</a>),
           so they share the system&rsquo;s focus rings, density, and press feedback.
         </p>
         <ComponentPreview previewClassName="block" code={TOOLBAR_CODE}>
           <ToolbarDemo />
         </ComponentPreview>
         <p className="mt-6 text-pretty text-muted-foreground">
-          Need a layout the toggles don&rsquo;t cover? The parts —{" "}
+          Need a layout the toggles don&rsquo;t cover? The parts:{" "}
           <code className="font-mono text-sm">DataTableToolbar</code>,{" "}
           <code className="font-mono text-sm">DataTableToolbarSection</code>, and{" "}
-          <code className="font-mono text-sm">DataTableSearch</code> — are exported, so you can
+          <code className="font-mono text-sm">DataTableSearch</code> are exported, so you can
           compose your own rail and drop it above a plain <code className="font-mono text-sm">DataTable</code>.
         </p>
         <ComponentPreview previewClassName="block" code={CUSTOM_TOOLBAR_CODE}>
@@ -117,7 +123,7 @@ export default function DataTableDocsPage() {
         <p className="mt-4 text-pretty text-muted-foreground">
           <code className="font-mono text-sm">viewOptions</code> adds a{" "}
           <code className="font-mono text-sm">SlidersHorizontal</code> dropdown to the toolbar for
-          showing and hiding columns. Every column with a label appears as a checkbox — the menu
+          showing and hiding columns. Every column with a label appears as a checkbox, and the menu
           stays open so you can toggle several at once. Give a column a{" "}
           <code className="font-mono text-sm">meta.label</code> for its name there (a string{" "}
           <code className="font-mono text-sm">header</code> is used as the fallback); the selection
@@ -125,7 +131,7 @@ export default function DataTableDocsPage() {
         </p>
         <p className="mt-4 text-pretty text-muted-foreground">
           <code className="font-mono text-sm">enableCardLayout</code> adds a Rows/Cards switch to the
-          same dropdown and renders the rows as a responsive card grid when chosen — the first
+          same dropdown and renders the rows as a responsive card grid when chosen: the first
           column becomes the card title, the rest stack as labelled fields, and an icon-only action
           rides along top-right. Pass <code className="font-mono text-sm">renderCard</code> to take
           over the card entirely. The cards cascade in on load via the shared{" "}
@@ -137,35 +143,82 @@ export default function DataTableDocsPage() {
         </ComponentPreview>
       </DocSection>
 
+      <DocSection title="Filtering">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          Beyond the global <code className="font-mono text-sm">searchable</code> box, pass{" "}
+          <code className="font-mono text-sm">filters</code> to add per-column faceted filters. Each
+          field becomes a multi-select dropdown in the toolbar (with the count of matching rows per
+          option) and a removable chip below it; a <code className="font-mono text-sm">Reset</code>{" "}
+          clears them all. Filtered columns use the built-in{" "}
+          <code className="font-mono text-sm">filterFn: &quot;arrIncludesSome&quot;</code>.
+        </p>
+        <ComponentPreview previewClassName="block" code={FILTERING_CODE}>
+          <FacetedFilterDemo />
+        </ComponentPreview>
+        <p className="mt-6 text-pretty text-muted-foreground">
+          The parts are exported too:{" "}
+          <code className="font-mono text-sm">DataTableFacetedFilter</code> and{" "}
+          <code className="font-mono text-sm">DataTableActiveFilters</code>, for hand-composed
+          toolbars over a table instance you own.
+        </p>
+      </DocSection>
+
       <DocSection title="Remembering view state">
         <p className="mt-4 text-pretty text-muted-foreground">
           Pass a <code className="font-mono text-sm">persistKey</code> and the table remembers how
-          the user left it — which columns are visible, the sort, the rows/cards layout, and the page
-          size — by writing them to <code className="font-mono text-sm">localStorage</code> under that
+          the user left it (which columns are visible, the sort, the rows/cards layout, and the page
+          size) by writing them to <code className="font-mono text-sm">localStorage</code> under that
           key. It&rsquo;s SSR-safe: the server renders the defaults and the saved state is applied
           after mount, so hydration stays clean. Hide a column or switch to cards below, then reload
-          the page — it comes back the same.
+          the page, and it comes back the same.
         </p>
         <ComponentPreview previewClassName="block" code={PERSIST_CODE}>
           <PersistenceDemo />
         </ComponentPreview>
         <p className="mt-6 text-pretty text-muted-foreground">
           Use a key that&rsquo;s unique per table (and per user, if you scope storage that way).
-          Persistence is best-effort — unavailable or full storage fails quietly and the table just
+          Persistence is best-effort: unavailable or full storage fails quietly and the table just
           opens at its defaults.
         </p>
       </DocSection>
 
       <DocSection title="Cell types">
         <p className="mt-4 text-pretty text-muted-foreground">
-          A column&rsquo;s <code className="font-mono text-sm">cell</code> renders anything —
-          an avatar beside two-line text (<code className="font-mono text-sm">TableCellText</code>),
-          a status <code className="font-mono text-sm">Badge</code>, a right-aligned figure
-          (<code className="font-mono text-sm">meta.numeric</code> adds{" "}
-          <code className="font-mono text-sm">tabular-nums</code>), or a row-action menu.
+          A column&rsquo;s <code className="font-mono text-sm">cell</code> renders anything, so a
+          row reads like a record rather than a wall of text. Compose the cells from the same DS
+          parts you use everywhere else: an avatar beside two-line text
+          (<code className="font-mono text-sm">TableCellText</code>), a status{" "}
+          <a href="/docs/components/badge" className="underline underline-offset-4">Badge</a>, a row
+          of tag chips, a directional trend delta tinted{" "}
+          <code className="font-mono text-sm">success</code>/<code className="font-mono text-sm">destructive</code>,
+          an inline sparkline built on{" "}
+          <a href="/docs/components/chart" className="underline underline-offset-4">Chart</a> in
+          sparkline mode, and an overlapping{" "}
+          <a href="/docs/components/avatar" className="underline underline-offset-4">Avatar</a> stack
+          with a <code className="font-mono text-sm">+N</code> overflow. Numbers right-align with{" "}
+          <code className="font-mono text-sm">meta.numeric</code> (it adds{" "}
+          <code className="font-mono text-sm">tabular-nums</code>).
         </p>
         <ComponentPreview previewClassName="block" code={CELL_TYPES_CODE}>
           <CellTypesDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Column tooltips">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          Two per-column hints ride along on{" "}
+          <code className="font-mono text-sm">meta</code>, both backed by the shared{" "}
+          <a href="/docs/components/tooltip" className="underline underline-offset-4">Tooltip</a>.{" "}
+          <code className="font-mono text-sm">headerTooltip</code> appends a small info icon after
+          the header label, for explaining what a column measures without crowding the title (hover
+          the Balance header). <code className="font-mono text-sm">cellTooltip</code> is a function
+          given the cell context that returns the hint to show for each cell. Return{" "}
+          <code className="font-mono text-sm">null</code> to skip one. It pairs naturally with a
+          clamped column: truncate the cell and reveal the full value on hover or focus (hover a
+          member name). Both triggers are keyboard-reachable.
+        </p>
+        <ComponentPreview previewClassName="block" code={COLUMN_TOOLTIPS_CODE}>
+          <ColumnTooltipsDemo />
         </ComponentPreview>
       </DocSection>
 
@@ -183,7 +236,7 @@ export default function DataTableDocsPage() {
 
       <DocSection title="Row hover">
         <p className="mt-4 text-pretty text-muted-foreground">
-          Rows highlight on hover by default — only body rows, never the header. Pass{" "}
+          Rows highlight on hover by default: only body rows, never the header. Pass{" "}
           <code className="font-mono text-sm">hoverable={`{false}`}</code> to opt out (the
           striped example below does, so the zebra pattern stays crisp).
         </p>
@@ -221,11 +274,23 @@ export default function DataTableDocsPage() {
           <code className="font-mono text-sm">initialGrouping</code> column collapses rows
           into expandable groups. Give a column an{" "}
           <code className="font-mono text-sm">aggregationFn</code> and{" "}
-          <code className="font-mono text-sm">aggregatedCell</code> to summarize each group —
+          <code className="font-mono text-sm">aggregatedCell</code> to summarize each group;
           here the balance column sums per team.
         </p>
         <ComponentPreview previewClassName="block" code={GROUPING_CODE}>
           <GroupingDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Expandable rows">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          Pass <code className="font-mono text-sm">renderSubRow</code> to reveal a detail panel under
+          a row. It prepends a caret toggle column and renders your node full-width beneath the
+          expanded row. Limit which rows can expand with{" "}
+          <code className="font-mono text-sm">getRowCanExpand</code>.
+        </p>
+        <ComponentPreview previewClassName="block" code={EXPANDABLE_CODE}>
+          <ExpandableRowDemo />
         </ComponentPreview>
       </DocSection>
 
@@ -243,10 +308,23 @@ export default function DataTableDocsPage() {
         <p className="mt-6 text-pretty text-muted-foreground">
           The selection control is the shared{" "}
           <a href="/docs/components/checkbox" className="underline underline-offset-4">Checkbox</a>{" "}
-          component — checked, indeterminate, and disabled states:
+          component, in checked, indeterminate, and disabled states:
         </p>
         <ComponentPreview code={CHECKBOX_CODE}>
           <CheckboxDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Bulk actions">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          With selection on, pass{" "}
+          <code className="font-mono text-sm">renderSelectionActions</code> and a floating pill rises
+          while rows are selected: the live count, a clear button, and your actions. The renderer
+          receives the selected rows and the table instance, so an action can read the selection and
+          reset it. Select a couple of rows below.
+        </p>
+        <ComponentPreview previewClassName="block" code={BULK_ACTIONS_CODE}>
+          <BulkActionsDemo />
         </ComponentPreview>
       </DocSection>
 
@@ -266,8 +344,8 @@ export default function DataTableDocsPage() {
         <p className="mt-4 text-pretty text-muted-foreground">
           Pin a column to an edge with{" "}
           <code className="font-mono text-sm">meta: {`{ sticky: "left" }`}</code> (or{" "}
-          <code className="font-mono text-sm">&quot;right&quot;</code>). It stays put — tracking
-          the row&rsquo;s hover and selected background — while the rest scrolls sideways.
+          <code className="font-mono text-sm">&quot;right&quot;</code>). It stays put, tracking
+          the row&rsquo;s hover and selected background, while the rest scrolls sideways.
         </p>
         <ComponentPreview previewClassName="block" code={STICKY_COLUMN_CODE}>
           <StickyColumnDemo />
@@ -279,7 +357,7 @@ export default function DataTableDocsPage() {
           <code className="font-mono text-sm">enablePagination</code> pages the rows client-side
           and drops a{" "}
           <a href="/docs/components/pagination" className="underline underline-offset-4">Pagination</a>{" "}
-          toolbar below the table — prev/next, a &ldquo;Page X of Y&rdquo; readout, and a
+          toolbar below the table: prev/next, a &ldquo;Page X of Y&rdquo; readout, and a
           rows-per-page select. Set the initial page size with{" "}
           <code className="font-mono text-sm">pageSize</code> and the select&rsquo;s choices with{" "}
           <code className="font-mono text-sm">pageSizeOptions</code>. It shares the table&rsquo;s
@@ -296,14 +374,34 @@ export default function DataTableDocsPage() {
           <code className="font-mono text-sm">onLoadMore</code> and a{" "}
           <code className="font-mono text-sm">hasMore</code> flag, and the table fetches the next
           batch as a sentinel scrolls into view (prefetching ~200px early). Flip{" "}
-          <code className="font-mono text-sm">loadingMore</code> while the request is in flight — it
+          <code className="font-mono text-sm">loadingMore</code> while the request is in flight; it
           shows a loading row and blocks duplicate calls. You fetch and append to{" "}
           <code className="font-mono text-sm">data</code>; the sentinel watches the nearest scroll
           container (here a capped <code className="font-mono text-sm">max-h</code> wrapper) or the
-          viewport. It replaces the pagination toolbar — the two are mutually exclusive.
+          viewport. It replaces the pagination toolbar; the two are mutually exclusive.
         </p>
         <ComponentPreview previewClassName="block" code={INFINITE_SCROLL_CODE}>
           <InfiniteScrollDemo />
+        </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="Server-side data">
+        <p className="mt-4 text-pretty text-muted-foreground">
+          By default the table sorts, filters, and pages the rows it&rsquo;s given. For large or
+          remote datasets, flip the work to the server: set{" "}
+          <code className="font-mono text-sm">manualSorting</code>,{" "}
+          <code className="font-mono text-sm">manualFiltering</code>, and/or{" "}
+          <code className="font-mono text-sm">manualPagination</code>, then fetch on the{" "}
+          <code className="font-mono text-sm">onSortingChange</code> /{" "}
+          <code className="font-mono text-sm">onPaginationChange</code> /{" "}
+          <code className="font-mono text-sm">onColumnFiltersChange</code> callbacks and feed back the
+          current page as <code className="font-mono text-sm">data</code>. Pass{" "}
+          <code className="font-mono text-sm">pageCount</code> (or{" "}
+          <code className="font-mono text-sm">rowCount</code>) so the pager knows the total. The demo
+          simulates a 500ms round-trip per sort and page.
+        </p>
+        <ComponentPreview previewClassName="block" code={SERVER_SIDE_CODE}>
+          <ServerSideDemo />
         </ComponentPreview>
       </DocSection>
 
@@ -324,7 +422,7 @@ export default function DataTableDocsPage() {
       <DocSection title="Empty states">
         <p className="mt-4 text-pretty text-muted-foreground">
           When there are no rows, the table renders{" "}
-          <code className="font-mono text-sm">DataTableEmpty</code> — a preset over{" "}
+          <code className="font-mono text-sm">DataTableEmpty</code>, a preset over{" "}
           <a href="/docs/components/empty-state" className="underline underline-offset-4">EmptyState</a>{" "}
           built for the two cases a grid hits. The default is{" "}
           <code className="font-mono text-sm">kind=&quot;empty&quot;</code> (nothing here yet);
@@ -336,7 +434,7 @@ export default function DataTableDocsPage() {
         </ComponentPreview>
         <p className="mt-6 text-pretty text-muted-foreground">
           When a search or filter comes up empty, switch to{" "}
-          <code className="font-mono text-sm">kind=&quot;search&quot;</code> — the not-found icon
+          <code className="font-mono text-sm">kind=&quot;search&quot;</code>: the not-found icon
           and copy, with a &ldquo;clear filters&rdquo; escape hatch. With the built-in{" "}
           <code className="font-mono text-sm">searchable</code> toolbar this happens automatically:
           an active search that matches nothing falls back to the search-empty placeholder.
@@ -349,7 +447,7 @@ export default function DataTableDocsPage() {
       <DocSection title="Primitives">
         <p className="mt-4 text-pretty text-muted-foreground">
           For a static or fully bespoke table, skip TanStack and compose the styled primitives
-          directly — <code className="font-mono text-sm">Table</code>,{" "}
+          directly: <code className="font-mono text-sm">Table</code>,{" "}
           <code className="font-mono text-sm">TableHeader</code>,{" "}
           <code className="font-mono text-sm">TableBody</code>,{" "}
           <code className="font-mono text-sm">TableFooter</code>,{" "}
@@ -363,6 +461,37 @@ export default function DataTableDocsPage() {
         </ComponentPreview>
       </DocSection>
 
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            {
+              q: "When should I use DataTable versus composing the Table primitives directly?",
+              a: "Reach for DataTable when you need behavior driven from column defs: sorting, grouping, row selection, faceted filters, pagination, or the card layout. For a static or fully bespoke table, skip TanStack and compose Table, TableHeader, TableBody, TableRow, TableHead, and TableCell yourself, which keep the same variant, striped, hover, density, and sticky options.",
+            },
+            {
+              q: "How do I right-align a numeric column and pin one to an edge?",
+              a: "Both ride along on a column's meta. Set meta.numeric to right-align the header and cells and apply tabular-nums, and set meta.sticky to 'left' or 'right' to pin a column while the rest scrolls horizontally. Use meta.align for non-numeric center or right alignment.",
+            },
+            {
+              q: "Why does row selection lose its checks after I sort or filter?",
+              a: "Selection is keyed by row id, so without a stable key TanStack falls back to the row index and the selection no longer follows the row. Pass a stable getRowId, for example getRowId={(r) => r.id}, and the selection (and grouping) survives re-sorts.",
+            },
+            {
+              q: "How do I build a custom toolbar instead of using the searchable and toolbarActions toggles?",
+              a: "Compose the exported parts: DataTableToolbar, DataTableToolbarSection, and DataTableSearch for the rail, plus DataTableFacetedFilter and DataTableActiveFilters for filters. Drop your rail above a plain DataTable when the built-in booleans do not cover the layout you need.",
+            },
+            {
+              q: "Can the toolbar search and icon buttons be reached by keyboard, and are the tooltips accessible?",
+              a: "Yes. The search box is the Koala Input and toolbar buttons are the Koala Button, so they share the system focus rings and press feedback. The headerTooltip info icon and cellTooltip wrapper are both focusable triggers, so the hints are reachable by keyboard, not only on hover.",
+            },
+            {
+              q: "Can I use both client-side pagination and infinite scroll at the same time?",
+              a: "No, they are mutually exclusive. Setting onLoadMore (with hasMore and loadingMore) enables infinite scroll and replaces the Pagination toolbar that enablePagination would render, so choose one. For remote datasets, flip manualSorting, manualFiltering, or manualPagination and refetch on the matching on*Change callback.",
+            },
+          ]}
+        />
+      </DocSection>
+
     </>
   )
 }
@@ -370,18 +499,29 @@ export default function DataTableDocsPage() {
 
 /* ------------------------------------------------------------ code blocks --- */
 
-const SHOWCASE_CODE = `// The whole component from booleans + one actions slot.
+const SHOWCASE_CODE = `// The whole component from booleans + a filter set + an actions slot.
 <DataTable
   columns={columns}
   data={members}
   getRowId={(r) => r.id}
   enableSorting
+  enableRowSelection
   searchable
   viewOptions
   enableCardLayout
   enablePagination
   pageSize={8}
-  pageSizeOptions={[8, 16, 24, 50, 100]}
+  filters={[
+    { columnId: "status", title: "Status", options: statusOptions },
+  ]}
+  renderSelectionActions={(rows, table) => (
+    <>
+      <Button variant="ghost" size="sm" onClick={() => table.resetRowSelection()}>
+        <Export /> Export
+      </Button>
+      <Button variant="destructive" size="sm"><Trash /> Delete</Button>
+    </>
+  )}
   toolbarActions={
     <>
       <Button variant="outline" iconOnly aria-label="Filter"><FunnelSimple /></Button>
@@ -390,6 +530,107 @@ const SHOWCASE_CODE = `// The whole component from booleans + one actions slot.
     </>
   }
 />`
+
+const FILTERING_CODE = `// Each filtered column uses filterFn: "arrIncludesSome".
+const columns = [
+  { accessorKey: "status", header: "Status", filterFn: "arrIncludesSome", cell: StatusBadge },
+  { accessorKey: "team", header: "Team", filterFn: "arrIncludesSome" },
+]
+
+<DataTable
+  columns={columns}
+  data={members}
+  getRowId={(r) => r.id}
+  searchable
+  filters={[
+    {
+      columnId: "status",
+      title: "Status",
+      options: [
+        { value: "Active", label: "Active" },
+        { value: "Invited", label: "Invited" },
+        { value: "Suspended", label: "Suspended" },
+      ],
+    },
+    {
+      columnId: "team",
+      title: "Team",
+      options: [
+        { value: "Engineering", label: "Engineering", icon: <UsersThree /> },
+        { value: "Design", label: "Design", icon: <UsersThree /> },
+        { value: "Marketing", label: "Marketing", icon: <UsersThree /> },
+      ],
+    },
+  ]}
+/>`
+
+const EXPANDABLE_CODE = `<DataTable
+  columns={columns}
+  data={members}
+  getRowId={(r) => r.id}
+  // Optional: only some rows expand
+  getRowCanExpand={(row) => row.original.role !== "Viewer"}
+  renderSubRow={(row) => (
+    <div className="grid gap-4 rounded-lg bg-muted/40 p-4 sm:grid-cols-3">
+      <Field label="Email" value={row.original.email} />
+      <Field label="Role" value={row.original.role} />
+      <Field label="Team" value={row.original.team} />
+    </div>
+  )}
+/>`
+
+const BULK_ACTIONS_CODE = `<DataTable
+  columns={columns}
+  data={data}
+  getRowId={(r) => r.id}
+  enableRowSelection
+  renderSelectionActions={(rows, table) => (
+    <>
+      <Button variant="ghost" size="sm" onClick={() => table.resetRowSelection()}>
+        <Export /> Export
+      </Button>
+      <Button
+        variant="destructive"
+        size="sm"
+        onClick={() => {
+          const ids = new Set(rows.map((r) => r.original.id))
+          setData((prev) => prev.filter((m) => !ids.has(m.id)))
+          table.resetRowSelection()
+        }}
+      >
+        <Trash /> Delete
+      </Button>
+    </>
+  )}
+/>`
+
+const SERVER_SIDE_CODE = `function MembersTable() {
+  const [rows, setRows] = useState(() => fetchPage({ sorting: [], pageIndex: 0 }))
+  const [loading, setLoading] = useState(false)
+
+  async function load(query) {
+    setLoading(true)
+    const { rows, pageCount } = await fetchPage(query) // your server
+    setRows(rows)
+    setLoading(false)
+  }
+
+  return (
+    <DataTable
+      columns={columns}
+      data={rows}
+      getRowId={(r) => r.id}
+      enableSorting
+      enablePagination
+      manualSorting
+      manualPagination
+      pageCount={pageCount}
+      loading={loading}
+      onSortingChange={(sorting) => load({ sorting, pageIndex: 0 })}
+      onPaginationChange={(p) => load({ sorting, pageIndex: p.pageIndex })}
+    />
+  )
+}`
 
 const VIEW_OPTIONS_CODE = `// viewOptions: column show/hide. enableCardLayout: Rows/Cards switch + card grid.
 <DataTable
@@ -573,10 +814,82 @@ export function MembersTable({ data }: { data: Member[] }) {
   )
 }`
 
-const CELL_TYPES_CODE = `<DataTable columns={columns} data={members} getRowId={(r) => r.id} enableSorting />
+const CELL_TYPES_CODE = `import { Chart, ChartArea, ChartLine } from "@/components/ui/chart"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
 
-// columns: avatar + two-line text, muted text, status Badge,
-// numeric (meta.numeric), and a DropdownMenu row-action cell.`
+const columns: ColumnDef<Member>[] = [
+  {
+    accessorKey: "name",
+    header: "Member",
+    cell: ({ row }) => <MemberCell member={row.original} />,
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ getValue }) => <Badge variant={statusVariant[getValue<Status>()]} size="sm">{getValue<string>()}</Badge>,
+  },
+  {
+    accessorKey: "tags",
+    header: "Tags",
+    // First few as chips, the rest rolled into a tooltipped "+N".
+    cell: ({ row }) => <TagsCell tags={row.original.tags} />,
+  },
+  {
+    accessorKey: "delta",
+    header: "Trend",
+    meta: { align: "right" },
+    // Arrow + signed % tinted success/destructive, tabular-nums.
+    cell: ({ row }) => <TrendCell delta={row.original.delta} />,
+  },
+  {
+    accessorKey: "activity",
+    header: "Activity",
+    // Chart in sparkline mode; paints in currentColor, so a text-* utility themes it.
+    cell: ({ row }) => (
+      <Chart data={row.original.activity} sparkline aria-hidden className="h-8 w-24 text-success">
+        <ChartArea />
+        <ChartLine strokeWidth={2} hideActiveDot />
+      </Chart>
+    ),
+  },
+  {
+    id: "assignees",
+    header: "Assignees",
+    // Overlapping avatars with a +N overflow (the canonical Avatar stack).
+    cell: ({ row }) => <AssigneesCell people={row.original.assignees} />,
+  },
+]
+
+<DataTable columns={columns} data={members} getRowId={(r) => r.id} enableSorting />`
+
+const COLUMN_TOOLTIPS_CODE = `const columns: ColumnDef<Member>[] = [
+  {
+    accessorKey: "name",
+    header: "Member",
+    // Clamp the cell, then tooltip it with the full value so nothing is lost.
+    meta: {
+      cellTooltip: ({ row }) => \`\${row.original.name} · \${row.original.email}\`,
+    },
+    cell: ({ row }) => (
+      <span className="block max-w-[12rem] truncate">
+        {row.original.name} · {row.original.email}
+      </span>
+    ),
+  },
+  {
+    accessorKey: "balance",
+    header: "Balance",
+    // An info icon after the header label reveals this on hover/focus.
+    meta: {
+      numeric: true,
+      headerTooltip: "Outstanding balance for the current billing cycle, in USD.",
+    },
+    cell: ({ getValue }) => currency.format(getValue<number>()),
+  },
+]
+
+<DataTable columns={columns} data={members} getRowId={(r) => r.id} enableSorting />`
 
 const SORTING_CODE = `<DataTable
   columns={columns}
@@ -589,7 +902,7 @@ const SORTING_CODE = `<DataTable
 const CONTAINER_CODE = `// "minimal" (default, chromeless + flush) or "container" (bordered card)
 <DataTable columns={columns} data={members} variant="container" enableSorting />`
 
-const DEFAULT_IN_SECTION_CODE = `// Default (minimal) dropped straight into a page section — no box of its own.
+const DEFAULT_IN_SECTION_CODE = `// Default (minimal) dropped straight into a page section: no box of its own.
 <section>
   <h3 className="font-semibold">Team members</h3>
   <p className="text-sm text-muted-foreground">People with access to this workspace.</p>

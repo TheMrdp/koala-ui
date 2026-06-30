@@ -17,9 +17,23 @@ import {
   FilePlus,
   MagnifyingGlass,
   GearSix,
+  ChartBar,
+  Clock,
+  ChartPieSlice,
 } from "@phosphor-icons/react"
 
-import { Tooltip, TooltipGroup } from "@/components/ui/tooltip"
+import {
+  Tooltip,
+  TooltipGroup,
+  TooltipHeader,
+  TooltipHeaderText,
+  TooltipTitle,
+  TooltipDescription,
+  TooltipValue,
+  TooltipSeparator,
+  TooltipSection,
+  TooltipStat,
+} from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button"
 import { Kbd } from "@/components/ui/kbd"
 import { InputRoot, InputField, InputSuffixButton } from "@/components/ui/input"
@@ -58,6 +72,103 @@ export function PlacementDemo() {
         </Specimen>
       ))}
     </>
+  )
+}
+
+export function VariantsDemo() {
+  return (
+    <>
+      <Specimen label="text">
+        <Tooltip content="Save changes" variant="text">
+          <Button variant="outline" iconOnly tooltip={false} aria-label="Save changes">
+            <FloppyDisk />
+          </Button>
+        </Tooltip>
+      </Specimen>
+      <Specimen label="graph">
+        <Tooltip
+          variant="graph"
+          content={
+            <div className="space-y-0.5">
+              <div className="font-medium text-popover-foreground">Trail Runner GTX</div>
+              <div className="text-muted-foreground">1,284 units · 100% of #1</div>
+              <div className="text-muted-foreground">$92,448 revenue · +14% MoM</div>
+            </div>
+          }
+        >
+          <Button variant="outline" iconOnly tooltip={false} aria-label="Product stats">
+            <ChartBar />
+          </Button>
+        </Tooltip>
+      </Specimen>
+    </>
+  )
+}
+
+export function CapacityTooltipDemo() {
+  return (
+    <Tooltip
+      variant="graph"
+      placement="right"
+      content={
+        <>
+          <TooltipHeader>
+            <TooltipHeaderText>
+              <TooltipTitle>Friday, Jul 5</TooltipTitle>
+              <TooltipDescription>Total capacity</TooltipDescription>
+            </TooltipHeaderText>
+            <TooltipValue>08h 00m</TooltipValue>
+          </TooltipHeader>
+          <TooltipSeparator />
+          <TooltipSection tone="info">
+            <TooltipStat label="Tracked time" percent="40%" value="03h 09m" />
+            <TooltipStat label="Billable" percent="79%" value="02h 30m" indent />
+            <TooltipStat label="Non-billable" percent="21%" value="00h 39m" indent />
+          </TooltipSection>
+          <TooltipSection tone="neutral">
+            <TooltipStat label="Remaining capacity" percent="60%" value="04h 50m" />
+          </TooltipSection>
+        </>
+      }
+    >
+      <Button variant="outline" iconOnly tooltip={false} aria-label="Day capacity">
+        <Clock />
+      </Button>
+    </Tooltip>
+  )
+}
+
+export function ToneTooltipDemo() {
+  return (
+    <Tooltip
+      variant="graph"
+      placement="right"
+      content={
+        <>
+          <TooltipHeader>
+            <TooltipHeaderText>
+              <TooltipTitle>Storage</TooltipTitle>
+              <TooltipDescription>500 GB plan</TooltipDescription>
+            </TooltipHeaderText>
+            <TooltipValue>318 GB</TooltipValue>
+          </TooltipHeader>
+          <TooltipSeparator />
+          <TooltipSection tone="success">
+            <TooltipStat label="Documents" percent="22%" value="070 GB" />
+          </TooltipSection>
+          <TooltipSection tone="warning">
+            <TooltipStat label="Media" percent="49%" value="156 GB" />
+          </TooltipSection>
+          <TooltipSection tone="destructive">
+            <TooltipStat label="Backups" percent="29%" value="092 GB" />
+          </TooltipSection>
+        </>
+      }
+    >
+      <Button variant="outline" iconOnly tooltip={false} aria-label="Storage breakdown">
+        <ChartPieSlice />
+      </Button>
+    </Tooltip>
   )
 }
 
@@ -225,7 +336,7 @@ export function KeyboardShortcutDemo() {
         placement="bottom"
         content={
           <>
-            New file <Kbd size="sm" className="ml-1">⌘N</Kbd>
+            New file <Kbd variant="soft" size="sm" className="ml-1">⌘N</Kbd>
           </>
         }
       >
@@ -237,7 +348,7 @@ export function KeyboardShortcutDemo() {
         placement="bottom"
         content={
           <>
-            Search <Kbd size="sm" className="ml-1">⌘K</Kbd>
+            Search <Kbd variant="soft" size="sm" className="ml-1">⌘K</Kbd>
           </>
         }
       >
@@ -249,7 +360,7 @@ export function KeyboardShortcutDemo() {
         placement="bottom"
         content={
           <>
-            Settings <Kbd size="sm" className="ml-1">⌘,</Kbd>
+            Settings <Kbd variant="soft" size="sm" className="ml-1">⌘,</Kbd>
           </>
         }
       >

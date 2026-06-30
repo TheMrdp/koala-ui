@@ -182,8 +182,8 @@ export default function PatternsPage() {
         <ul className="mt-5 space-y-1.5 text-muted-foreground">
           <li>
             <span className="font-medium text-foreground">Never</span> put a link,
-            button, or form inside a Tooltip - screen readers won't reach it and pointer
-            users can't reliably click it.
+            button, or form inside a Tooltip - screen readers won’t reach it and pointer
+            users can’t reliably click it.
           </li>
           <li>
             If the overlay needs to be{" "}
@@ -228,7 +228,7 @@ export default function PatternsPage() {
 
         <p className="mt-4 text-pretty text-muted-foreground">
           No single detail here is a feature - each one is a fraction of a second, a pixel,
-          a rendering quirk. Stacked, they're the difference between a UI that was{" "}
+          a rendering quirk. Stacked, they’re the difference between a UI that was{" "}
           <em>built</em> and one that was <em>designed</em>.
         </p>
 

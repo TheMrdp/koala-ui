@@ -5,13 +5,17 @@ import {
   flexRender,
   getCoreRowModel,
   getExpandedRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getGroupedRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  type CellContext,
   type Column,
   type ColumnDef,
+  type ColumnFiltersState,
   type GroupingState,
   type PaginationState,
   type Row,
@@ -21,7 +25,7 @@ import {
   type Table as TanstackTable,
   type VisibilityState,
 } from "@tanstack/react-table"
-import { CaretDown, CaretUpDown, CaretUp, CaretRight, CircleNotch } from "@phosphor-icons/react"
+import { CaretDown, CaretUpDown, CaretUp, CaretRight, CircleNotch, Info } from "@phosphor-icons/react"
 
 import { useDensity, type Density } from "@/lib/density"
 import { Stagger } from "@/lib/stagger"
@@ -44,6 +48,7 @@ import {
   TableRow,
 } from "./table"
 import { Pagination } from "@/components/ui/pagination"
+import { Tooltip } from "@/components/ui/tooltip"
 import { DataTableEmpty } from "./data-table-empty"
 import {
   DataTableToolbar,
@@ -55,15 +60,20 @@ import {
   columnLabel,
   type DataTableLayout,
 } from "./data-table-view-options"
+import {
+  DataTableFacetedFilter,
+  DataTableActiveFilters,
+  type DataTableFilterField,
+} from "./data-table-faceted-filter"
+import { DataTableSelectionBar } from "./data-table-selection-bar"
 
 /**
  * Per-column display hints. TanStack's `meta` is the documented escape hatch for passing
- * presentational config from a column def down to the cell renderer — we use it for alignment
+ * presentational config from a column def down to the cell renderer: we use it for alignment
  * and column pinning so the *behavior* (TanStack) and the *look* (these primitives) stay
  * declared in one place: the `ColumnDef`.
  */
 declare module "@tanstack/react-table" {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData extends RowData, TValue> {
     /** Pin this column to an edge while the rest scrolls horizontally. */
     sticky?: "left" | "right"
@@ -74,13 +84,21 @@ declare module "@tanstack/react-table" {
     /** Display name for the column in the view-options menu and as a card-layout field label.
      *  Falls back to a string `header`; columns with neither aren't user-toggleable. */
     label?: string
-    /** Extra classes for this column's header and cells — e.g. to tighten padding or pin a width. */
+    /** Extra classes for this column's header and cells, e.g. to tighten padding or pin a width. */
     className?: string
+    /** Hint shown in the column header: appends a small info icon after the label that reveals
+     *  this content on hover/focus. Use it to explain what a column measures (e.g. how a score is
+     *  computed) without crowding the header text. */
+    headerTooltip?: React.ReactNode
+    /** Wrap every cell in this column in a tooltip. Given the cell context, return the hint to show
+     *  (or `null`/`undefined` to skip a given cell), e.g. the full, untruncated text for a clamped
+     *  column, or a timestamp behind a relative "2h ago". */
+    cellTooltip?: (context: CellContext<TData, TValue>) => React.ReactNode
   }
 }
 
 /**
- * DataTable — the TanStack-wired data grid. It owns the *behavior* (sorting, grouping, row
+ * DataTable: the TanStack-wired data grid. It owns the *behavior* (sorting, grouping, row
  * selection, column pinning) and renders into the Koala `Table` primitives, which own the
  * *look*. Drive features with flags; alignment and pinning ride along on each column's
  * `meta`. For static or fully bespoke tables, use the `Table` primitives directly.
@@ -88,7 +106,7 @@ declare module "@tanstack/react-table" {
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  /** Stable row id — required for selection/grouping to survive re-sorts. */
+  /** Stable row id, required for selection/grouping to survive re-sorts. */
   getRowId?: (row: TData, index: number) => string
 
   /** Click-to-sort headers. @default false */
@@ -107,7 +125,7 @@ export interface DataTableProps<TData, TValue> {
   /** Options offered by the rows-per-page select. @default [8, 16, 24, 50, 100] */
   pageSizeOptions?: number[]
 
-  // — Toolbar (the control rail above the table). Each piece is its own toggle. —
+  // Toolbar (the control rail above the table). Each piece is its own toggle.
   /** Force the toolbar rail on even with no search/actions. Auto-on when `searchable` or
    *  `toolbarActions` is set. @default false */
   toolbar?: boolean
@@ -115,19 +133,22 @@ export interface DataTableProps<TData, TValue> {
   searchable?: boolean
   /** Placeholder for the search box. @default "Search for anything" */
   searchPlaceholder?: string
-  /** Right-cluster slot for app actions — filter/export/primary buttons, etc. */
+  /** Right-cluster slot for app actions: filter/export/primary buttons, etc. */
   toolbarActions?: React.ReactNode
   /** Add a "View options" dropdown to the toolbar for showing/hiding columns. Give a column a
    *  `meta.label` (or a string header) for it to appear there. @default false */
   viewOptions?: boolean
+  /** Per-column faceted filters. Each field adds a multi-select dropdown to the toolbar and a
+   *  removable chip below it. The filtered columns must use `filterFn: "arrIncludesSome"`. */
+  filters?: DataTableFilterField[]
 
-  // — Layout (rows ⟷ cards) —
+  // Layout (rows vs. cards)
   /** Offer a Rows/Cards layout switch (in the view-options dropdown) and render cards when chosen.
    *  Implies `viewOptions`. @default false */
   enableCardLayout?: boolean
   /** Initial layout when `enableCardLayout` is on. @default "rows" */
   defaultLayout?: DataTableLayout
-  /** Custom card renderer for the cards layout. Defaults to a generated card — the first column as
+  /** Custom card renderer for the cards layout. Defaults to a generated card: the first column as
    *  the title, the rest as labelled fields, any icon-only action top-right. */
   renderCard?: (row: Row<TData>) => React.ReactNode
 
@@ -136,22 +157,56 @@ export interface DataTableProps<TData, TValue> {
   /** How many skeleton rows to show while `loading`. @default 5 */
   loadingRows?: number
 
-  // — Infinite scroll (load on scroll). Mutually exclusive with `enablePagination`. —
+  // Infinite scroll (load on scroll). Mutually exclusive with `enablePagination`.
   /** Called when the user scrolls near the end and there's more to load. Setting it enables
    *  infinite scroll and replaces the pagination toolbar; the consumer fetches and appends to
    *  `data`. The sentinel observes the nearest scroll container (or the viewport). */
   onLoadMore?: () => void
   /** Whether more rows can still be loaded. The sentinel stops firing (and hides) when false. */
   hasMore?: boolean
-  /** Whether a load-more fetch is in flight — shows a loading row and blocks duplicate calls. */
+  /** Whether a load-more fetch is in flight; shows a loading row and blocks duplicate calls. */
   loadingMore?: boolean
 
+  // Expandable rows (detail panel)
+  /** Render an expandable detail panel under a row. Setting it prepends a caret toggle column and
+   *  renders this node full-width beneath each expanded row. Not combined with `enableGrouping`. */
+  renderSubRow?: (row: Row<TData>) => React.ReactNode
+  /** Which rows can expand a detail panel. @default all rows (when `renderSubRow` is set) */
+  getRowCanExpand?: (row: Row<TData>) => boolean
+
+  // Bulk actions
+  /** Render bulk-action controls in a floating pill while rows are selected. Receives the selected
+   *  rows. Requires `enableRowSelection`. */
+  renderSelectionActions?: (rows: Row<TData>[], table: TanstackTable<TData>) => React.ReactNode
+
+  // Server-side mode. Flip a feature to manual to drive it from the server; you fetch on the
+  //   matching `on*Change` callback and feed back fresh `data` (and `pageCount`/`rowCount`).
+  /** Sorting is handled server-side; don't sort the rows client-side. @default false */
+  manualSorting?: boolean
+  /** Filtering/search is handled server-side; don't filter the rows client-side. @default false */
+  manualFiltering?: boolean
+  /** Pagination is handled server-side; `data` is already the current page. Pass `pageCount` or
+   *  `rowCount` so the pager knows how many pages there are. @default false */
+  manualPagination?: boolean
+  /** Total page count for `manualPagination`. Falls back to one derived from `rowCount`. */
+  pageCount?: number
+  /** Total row count across all pages; used to derive `pageCount` under `manualPagination`. */
+  rowCount?: number
+  /** Notified when the sort changes (e.g. to refetch server-side). */
+  onSortingChange?: (sorting: SortingState) => void
+  /** Notified when the page or page size changes. */
+  onPaginationChange?: (pagination: PaginationState) => void
+  /** Notified when the column filters change. */
+  onColumnFiltersChange?: (filters: ColumnFiltersState) => void
+  /** Notified when the search text changes. */
+  onGlobalFilterChange?: (value: string) => void
+
   /** Persist view state (visible columns, sorting, layout, page size) to localStorage under this
-   *  key, so the table reopens the way the user left it. SSR-safe — applied after mount. */
+   *  key, so the table reopens the way the user left it. SSR-safe: applied after mount. */
   persistKey?: string
 
-  // — Presentational passthrough to <Table> —
-  /** Surface treatment: `minimal` (chromeless, flush — the default) or `container` (bordered card). */
+  // Presentational passthrough to <Table>
+  /** Surface treatment: `minimal` (chromeless, flush, the default) or `container` (bordered card). */
   variant?: "minimal" | "container"
   density?: Density
   striped?: boolean
@@ -163,11 +218,12 @@ export interface DataTableProps<TData, TValue> {
    */
   emptyState?: React.ReactNode
   className?: string
-  /** Classes for the scroll container — e.g. `max-h-96` to drive sticky-header scroll. */
+  /** Classes for the scroll container, e.g. `max-h-96` to drive sticky-header scroll. */
   containerClassName?: string
 }
 
 const SELECT_COLUMN_ID = "__select__"
+const EXPAND_COLUMN_ID = "__expand__"
 const PERSIST_PREFIX = "koala-data-table:"
 
 export function DataTable<TData, TValue>({
@@ -188,9 +244,22 @@ export function DataTable<TData, TValue>({
   searchPlaceholder = "Search for anything",
   toolbarActions,
   viewOptions = false,
+  filters,
   enableCardLayout = false,
   defaultLayout = "rows",
   renderCard,
+  renderSubRow,
+  getRowCanExpand,
+  renderSelectionActions,
+  manualSorting = false,
+  manualFiltering = false,
+  manualPagination = false,
+  pageCount,
+  rowCount,
+  onSortingChange,
+  onPaginationChange,
+  onColumnFiltersChange,
+  onGlobalFilterChange,
   loading = false,
   loadingRows = 5,
   onLoadMore,
@@ -215,14 +284,15 @@ export function DataTable<TData, TValue>({
     pageSize,
   })
   const [globalFilter, setGlobalFilter] = React.useState("")
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   // The card layout is a sibling of the row layout, switched from the view-options dropdown.
   const [layout, setLayout] = React.useState<DataTableLayout>(defaultLayout)
   const resolvedDensity = useDensity(density)
 
-  // — Persist view state to localStorage when `persistKey` is set. Read once after mount (so the
+  // Persist view state to localStorage when `persistKey` is set. Read once after mount (so the
   //   server markup matches the defaults and hydration stays clean), then write on every change.
   //   `persistHydrated` gates the writer so it can't clobber stored state with defaults before the
-  //   read lands. —
+  //   read lands.
   const [persistHydrated, setPersistHydrated] = React.useState(false)
   React.useEffect(() => {
     if (!persistKey) return
@@ -241,7 +311,7 @@ export function DataTable<TData, TValue>({
         if (saved.pageSize) setPagination((prev) => ({ ...prev, pageSize: saved.pageSize! }))
       }
     } catch {
-      // Unreadable/garbled storage — fall back to the defaults already in state.
+      // Unreadable/garbled storage: fall back to the defaults already in state.
     }
     setPersistHydrated(true)
   }, [persistKey])
@@ -254,14 +324,50 @@ export function DataTable<TData, TValue>({
         JSON.stringify({ columnVisibility, sorting, layout, pageSize: pagination.pageSize }),
       )
     } catch {
-      // Quota/availability errors — persistence is best-effort, never fatal.
+      // Quota/availability errors: persistence is best-effort, never fatal.
     }
   }, [persistKey, persistHydrated, columnVisibility, sorting, layout, pagination.pageSize])
+
+  // Detail panels and row selection each ride a leading utility column the consumer never has to
+  // hand-roll. The expander only appears for standalone detail rows; grouping owns expansion when
+  // it's on, so the two aren't stacked.
+  const showExpander = renderSubRow != null && !enableGrouping
 
   // Prepend the selection column when row selection is on. A leading checkbox column is the
   // expected shape, and keeping it here means consumers never hand-roll the header/all toggle.
   const tableColumns = React.useMemo<ColumnDef<TData, TValue>[]>(() => {
-    if (!enableRowSelection) return columns
+    const leading: ColumnDef<TData, TValue>[] = []
+
+    if (showExpander) {
+      leading.push({
+        id: EXPAND_COLUMN_ID,
+        enableSorting: false,
+        enableHiding: false,
+        enableGrouping: false,
+        meta: { className: "w-0 pr-0" },
+        header: () => null,
+        cell: ({ row }) =>
+          row.getCanExpand() ? (
+            <button
+              type="button"
+              onClick={row.getToggleExpandedHandler()}
+              aria-label={row.getIsExpanded() ? "Collapse row" : "Expand row"}
+              aria-expanded={row.getIsExpanded()}
+              className="-mx-1 inline-flex size-7 cursor-pointer items-center justify-center rounded-md text-muted-foreground outline-none transition-colors duration-fast ease-out hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-brand"
+            >
+              <CaretRight
+                weight="bold"
+                className={cn(
+                  "size-3.5 transition-transform duration-fast ease-out",
+                  row.getIsExpanded() && "rotate-90",
+                )}
+              />
+            </button>
+          ) : null,
+      })
+    }
+
+    if (!enableRowSelection) return [...leading, ...columns]
     const selectionColumn: ColumnDef<TData, TValue> = {
       id: SELECT_COLUMN_ID,
       enableSorting: false,
@@ -293,10 +399,17 @@ export function DataTable<TData, TValue>({
         />
       ),
     }
-    return [selectionColumn, ...columns]
-  }, [columns, enableRowSelection])
+    return [...leading, selectionColumn, ...columns]
+  }, [columns, enableRowSelection, showExpander])
 
-  const table = useReactTable({
+  // Filtering is on when there's a search box or any faceted filter field. Faceted counts only
+  // make sense on the client, so they ride along with the (non-manual) filtered row model.
+  const hasFilters = (filters?.length ?? 0) > 0
+  const filteringEnabled = searchable || hasFilters
+  // Expansion drives both grouping's group rows and standalone detail panels.
+  const showExpansion = enableGrouping || renderSubRow != null
+
+  const table = useReactTable<TData>({
     data,
     columns: tableColumns,
     state: {
@@ -306,16 +419,54 @@ export function DataTable<TData, TValue>({
       columnVisibility,
       ...(enablePagination && { pagination }),
       ...(searchable && { globalFilter }),
+      ...(filteringEnabled && { columnFilters }),
     },
     getRowId,
     enableSorting,
     enableRowSelection,
     enableGrouping,
-    onSortingChange: setSorting,
+    // Server-side hand-offs: when a feature is manual, TanStack skips the matching client row
+    // model below and the consumer refetches on the on*Change callback.
+    manualSorting,
+    manualFiltering,
+    manualPagination,
+    ...(manualPagination && {
+      pageCount:
+        pageCount ?? (rowCount != null ? Math.ceil(rowCount / pagination.pageSize) : undefined),
+    }),
+    ...(renderSubRow && { getRowCanExpand: getRowCanExpand ?? (() => true) }),
     onGroupingChange: setGrouping,
     onColumnVisibilityChange: setColumnVisibility,
-    onPaginationChange: setPagination,
-    onGlobalFilterChange: setGlobalFilter,
+    // State setters wrapped to also notify the consumer (uncontrolled-with-notify): the same
+    // shape as the existing onRowSelectionChange, so server-side mode needs no extra wiring.
+    onSortingChange: (updater) => {
+      setSorting((prev) => {
+        const next = typeof updater === "function" ? updater(prev) : updater
+        onSortingChange?.(next)
+        return next
+      })
+    },
+    onPaginationChange: (updater) => {
+      setPagination((prev) => {
+        const next = typeof updater === "function" ? updater(prev) : updater
+        onPaginationChange?.(next)
+        return next
+      })
+    },
+    onGlobalFilterChange: (updater) => {
+      setGlobalFilter((prev) => {
+        const next = typeof updater === "function" ? updater(prev) : updater
+        onGlobalFilterChange?.(next)
+        return next
+      })
+    },
+    onColumnFiltersChange: (updater) => {
+      setColumnFilters((prev) => {
+        const next = typeof updater === "function" ? updater(prev) : updater
+        onColumnFiltersChange?.(next)
+        return next
+      })
+    },
     onRowSelectionChange: (updater) => {
       setRowSelection((prev) => {
         const next = typeof updater === "function" ? updater(prev) : updater
@@ -324,21 +475,24 @@ export function DataTable<TData, TValue>({
       })
     },
     getCoreRowModel: getCoreRowModel(),
-    ...(searchable && { getFilteredRowModel: getFilteredRowModel() }),
-    ...(enableSorting && { getSortedRowModel: getSortedRowModel() }),
-    ...(enableGrouping && {
-      getGroupedRowModel: getGroupedRowModel(),
-      getExpandedRowModel: getExpandedRowModel(),
+    ...(filteringEnabled && !manualFiltering && { getFilteredRowModel: getFilteredRowModel() }),
+    ...(hasFilters && !manualFiltering && {
+      getFacetedRowModel: getFacetedRowModel(),
+      getFacetedUniqueValues: getFacetedUniqueValues(),
     }),
-    ...(enablePagination && { getPaginationRowModel: getPaginationRowModel() }),
+    ...(enableSorting && !manualSorting && { getSortedRowModel: getSortedRowModel() }),
+    ...(enableGrouping && { getGroupedRowModel: getGroupedRowModel() }),
+    ...(showExpansion && { getExpandedRowModel: getExpandedRowModel() }),
+    ...(enablePagination && !manualPagination && { getPaginationRowModel: getPaginationRowModel() }),
   })
 
   const leafColumnCount = table.getVisibleLeafColumns().length
 
-  // A search/filter that came up empty is a different story than a table with no data — default
+  // A search/filter that came up empty is a different story than a table with no data; default
   // the placeholder to the matching `kind` so "no results" vs "no data yet" reads right. An
   // explicit `emptyState` always wins.
-  const isFiltered = searchable && globalFilter.trim().length > 0
+  const isFiltered =
+    (searchable && globalFilter.trim().length > 0) || columnFilters.length > 0
   const resolvedEmptyState =
     emptyState ?? <DataTableEmpty kind={isFiltered ? "search" : "empty"} />
 
@@ -348,7 +502,8 @@ export function DataTable<TData, TValue>({
   const isCards = enableCardLayout && layout === "cards"
 
   // The toolbar rail shows when explicitly on, or implicitly when it has something to hold.
-  const showToolbar = toolbar || searchable || toolbarActions != null || showViewOptions
+  const showToolbar =
+    toolbar || searchable || hasFilters || toolbarActions != null || showViewOptions
 
   const tableElement = (
     <Table
@@ -368,25 +523,68 @@ export function DataTable<TData, TValue>({
               const align = meta?.numeric ? "right" : meta?.align
               const canSort = enableSorting && header.column.getCanSort()
               const sorted = header.column.getIsSorted()
-              return (
-                <TableHead key={header.id} align={align} sticky={meta?.sticky} className={meta?.className}>
-                  {header.isPlaceholder ? null : canSort ? (
+              const hasTooltip = meta?.headerTooltip != null && !header.isPlaceholder
+              const headerText = header.isPlaceholder
+                ? null
+                : flexRender(header.column.columnDef.header, header.getContext())
+              const tooltip = hasTooltip ? <HeaderTooltip content={meta?.headerTooltip} /> : null
+
+              // The header always reads label · tooltip · sort, with the info icon glued to the
+              // right of the label. When a tooltip is present the sort caret can't share the label's
+              // <button> (the tooltip trigger is a focusable sibling, and a button may contain no
+              // focusable/`tabindex` descendant), so the label button, the icon, and the caret sit as
+              // siblings in a `group/sort` row, so the caret tracks the row's hover. Without a tooltip
+              // we keep the single-button layout (caret inside, reversed for right-aligned columns).
+              let content: React.ReactNode
+              if (header.isPlaceholder) {
+                content = null
+              } else if (canSort && hasTooltip) {
+                content = (
+                  <span className="group/sort inline-flex items-center gap-1.5">
                     <button
                       type="button"
                       onClick={header.column.getToggleSortingHandler()}
                       className={cn(
-                        "group/sort -mx-1 inline-flex h-8 items-center gap-1.5 rounded-md px-1 font-medium",
+                        "-ml-1 inline-flex h-8 items-center rounded-md pl-1 font-medium",
                         "cursor-pointer outline-none transition-colors duration-fast ease-out",
                         "hover:text-foreground focus-visible:ring-2 focus-visible:ring-brand",
-                        align === "right" && "flex-row-reverse",
                       )}
                     >
-                      {flexRender(header.column.columnDef.header, header.getContext())}
-                      <SortIndicator state={sorted} />
+                      {headerText}
                     </button>
-                  ) : (
-                    flexRender(header.column.columnDef.header, header.getContext())
-                  )}
+                    {tooltip}
+                    <SortIndicator state={sorted} />
+                  </span>
+                )
+              } else if (canSort) {
+                content = (
+                  <button
+                    type="button"
+                    onClick={header.column.getToggleSortingHandler()}
+                    className={cn(
+                      "group/sort -mx-1 inline-flex h-8 items-center gap-1.5 rounded-md px-1 font-medium",
+                      "cursor-pointer outline-none transition-colors duration-fast ease-out",
+                      "hover:text-foreground focus-visible:ring-2 focus-visible:ring-brand",
+                      align === "right" && "flex-row-reverse",
+                    )}
+                  >
+                    {headerText}
+                    <SortIndicator state={sorted} />
+                  </button>
+                )
+              } else if (hasTooltip) {
+                content = (
+                  <span className="inline-flex items-center gap-1.5">
+                    {headerText}
+                    {tooltip}
+                  </span>
+                )
+              } else {
+                content = headerText
+              }
+              return (
+                <TableHead key={header.id} align={align} sticky={meta?.sticky} className={meta?.className}>
+                  {content}
                 </TableHead>
               )
             })}
@@ -397,7 +595,7 @@ export function DataTable<TData, TValue>({
       <TableBody>
         {loading ? (
           // Skeleton rows mirror the real column layout so the table doesn't reflow when data
-          // lands. The whole region is announced via `aria-busy` on the container — the
+          // lands. The whole region is announced via `aria-busy` on the container; the
           // individual Skeletons stay decorative (aria-hidden).
           Array.from({ length: loadingRows }).map((_, rowIndex) => (
             <TableRow key={`skeleton-${rowIndex}`}>
@@ -418,13 +616,20 @@ export function DataTable<TData, TValue>({
           </TableEmpty>
         ) : (
           table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id} selected={row.getIsSelected()}>
+            <React.Fragment key={row.id}>
+            <TableRow
+              selected={row.getIsSelected()}
+              // Group children (depth > 0) only enter the DOM when their group expands: fade and
+              // rise them in on mount. Stable row ids mean a re-sort reuses the DOM, so the enter
+              // doesn't replay. Top-level/group rows (depth 0) stay put and aren't animated.
+              className={cn(row.depth > 0 && "animate-stagger-in")}
+            >
               {row.getVisibleCells().map((cell) => {
                 const meta = cell.column.columnDef.meta
                 const align = meta?.numeric ? "right" : meta?.align
                 const numeric = meta?.numeric
 
-                // Grouped cell — the column the rows are grouped by. Render an expand toggle,
+                // Grouped cell: the column the rows are grouped by. Render an expand toggle,
                 // the group value, and the subtree count.
                 if (cell.getIsGrouped()) {
                   return (
@@ -450,7 +655,7 @@ export function DataTable<TData, TValue>({
                   )
                 }
 
-                // Aggregated cell — a summary for the group row (e.g. sum/avg), if the column
+                // Aggregated cell: a summary for the group row (e.g. sum/avg), if the column
                 // defines one. Placeholder cells (grouped-away values) render nothing.
                 if (cell.getIsAggregated()) {
                   return (
@@ -466,20 +671,43 @@ export function DataTable<TData, TValue>({
                   return <TableCell key={cell.id} align={align} sticky={meta?.sticky} className={meta?.className} />
                 }
 
+                const cellContent = flexRender(cell.column.columnDef.cell, cell.getContext())
+                const tooltip = meta?.cellTooltip?.(cell.getContext())
                 return (
                   <TableCell key={cell.id} align={align} numeric={numeric} sticky={meta?.sticky} className={meta?.className}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {tooltip != null ? (
+                      <CellTooltip content={tooltip}>{cellContent}</CellTooltip>
+                    ) : (
+                      cellContent
+                    )}
                   </TableCell>
                 )
               })}
             </TableRow>
+            {showExpander && row.getIsExpanded() && (
+              // Full-width detail panel under the expanded row. Tracks the row's selected state so
+              // it reads as one unit, and drops the bottom rule (the parent row already drew it).
+              <TableRow selected={row.getIsSelected()} className="[&>td]:border-b-0">
+                <TableCell colSpan={leafColumnCount} className="p-0">
+                  {/* Grid wrapper tweens its single track 0fr→1fr (a real height expand) while the
+                      panel fades up; the inner clip hides the overflow mid-tween. One-shot on the
+                      row's expand, driven by the motion tokens via --animate-table-reveal. */}
+                  <div className="grid animate-table-reveal grid-rows-[1fr]">
+                    <div className="overflow-hidden">
+                      <div className="px-3 py-3">{renderSubRow!(row)}</div>
+                    </div>
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
+            </React.Fragment>
           ))
         )}
       </TableBody>
     </Table>
   )
 
-  // Cards layout — the same rows, the same column cells, re-flowed into a responsive card grid.
+  // Cards layout: the same rows, the same column cells, re-flowed into a responsive card grid.
   // Loading and empty states mirror the table's so switching layout never changes what's announced.
   const rows = table.getRowModel().rows
   const cardGridClass = "grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
@@ -494,7 +722,7 @@ export function DataTable<TData, TValue>({
       <div className="col-span-full">{resolvedEmptyState}</div>
     </div>
   ) : (
-    // The cards cascade in on mount via <Stagger> — on the skeleton→data hand-off, a fresh page,
+    // The cards cascade in on mount via <Stagger>: on the skeleton→data hand-off, a fresh page,
     // or a switch from the rows layout. Stable row ids mean a re-sort reuses the DOM and doesn't
     // replay (polish).
     <Stagger data-slot="data-table-cards" className={cardGridClass}>
@@ -511,8 +739,15 @@ export function DataTable<TData, TValue>({
   const infiniteScroll = onLoadMore != null
   const showPagination = enablePagination && !infiniteScroll
 
-  // Bare table when nothing wraps it — output stays identical to the pre-toolbar/pagination shape.
-  if (!showToolbar && !showPagination && !infiniteScroll) return contentElement
+  // Bulk-action pill: only when selection is on and a renderer is given. The bar shows once a
+  // row is selected; the wrapper has to exist up front to host it (so it's part of the guard).
+  const selectedRows = enableRowSelection ? table.getSelectedRowModel().rows : []
+  const hasSelectionBar = renderSelectionActions != null
+  const showSelectionBar = hasSelectionBar && selectedRows.length > 0
+
+  // Bare table when nothing wraps it: output stays identical to the pre-toolbar/pagination shape.
+  if (!showToolbar && !showPagination && !infiniteScroll && !hasSelectionBar)
+    return contentElement
 
   // Match the search box height to the table's density, the way Pagination sizes its controls.
   const searchSize = resolvedDensity === "compact" ? "sm" : "md"
@@ -523,7 +758,7 @@ export function DataTable<TData, TValue>({
         <DataTableToolbar>
           {/* Both sections always render so `justify-between` spreads search ⟷ actions even when
               only one side is present. */}
-          <DataTableToolbarSection>
+          <DataTableToolbarSection className="flex-wrap">
             {searchable && (
               <DataTableSearch
                 size={searchSize}
@@ -533,6 +768,14 @@ export function DataTable<TData, TValue>({
                 disabled={loading}
               />
             )}
+            {filters?.map((field) => (
+              <DataTableFacetedFilter
+                key={field.columnId}
+                column={table.getColumn(field.columnId)}
+                title={field.title}
+                options={field.options}
+              />
+            ))}
           </DataTableToolbarSection>
           <DataTableToolbarSection>
             {showViewOptions && (
@@ -547,6 +790,7 @@ export function DataTable<TData, TValue>({
           </DataTableToolbarSection>
         </DataTableToolbar>
       )}
+      {hasFilters && <DataTableActiveFilters table={table} filters={filters!} />}
       {contentElement}
       {infiniteScroll && (
         <LoadMoreSentinel
@@ -570,6 +814,14 @@ export function DataTable<TData, TValue>({
           showRowsPerPage
         />
       )}
+      {showSelectionBar && (
+        <DataTableSelectionBar
+          count={selectedRows.length}
+          onClear={() => table.resetRowSelection()}
+        >
+          {renderSelectionActions!(selectedRows, table)}
+        </DataTableSelectionBar>
+      )}
     </div>
   )
 }
@@ -592,7 +844,7 @@ function SkeletonCell<TData>({ column, index }: { column: Column<TData>; index: 
 
 /** Default card for the cards layout. Re-flows a row's cells: the selection checkbox and first
  *  column lead the header, an icon-only action column (no label) sits top-right, and the remaining
- *  labelled columns stack as `label — value` fields. Override the whole card with `renderCard`. */
+ *  labelled columns stack as `label: value` fields. Override the whole card with `renderCard`. */
 function DataTableCard<TData>({
   row,
   className,
@@ -660,7 +912,7 @@ function DataTableCard<TData>({
   )
 }
 
-/** Loading placeholder for the cards layout — mirrors the default card's shape (avatar + two lines
+/** Loading placeholder for the cards layout: mirrors the default card's shape (avatar + two lines
  *  in the header, a few labelled rows) so the grid doesn't reflow when data lands. */
 function SkeletonCard() {
   return (
@@ -687,7 +939,7 @@ function SkeletonCard() {
 }
 
 /** Nearest scrollable ancestor of `node`, or `null` (meaning the viewport) if none. Lets the
- *  load-more sentinel observe whichever element actually scrolls — a capped container the consumer
+ *  load-more sentinel observe whichever element actually scrolls: a capped container the consumer
  *  wrapped the table in, or the page itself. */
 function getScrollParent(node: HTMLElement | null): HTMLElement | null {
   let el = node?.parentElement ?? null
@@ -715,7 +967,7 @@ function LoadMoreSentinel({
 }) {
   const ref = React.useRef<HTMLDivElement>(null)
   // Keep the latest callback + flags in a ref so the observer (set up once) always reads current
-  // values without re-subscribing. Updated in an effect — never mutated during render.
+  // values without re-subscribing. Updated in an effect, never mutated during render.
   const stateRef = React.useRef({ onLoadMore, hasMore, loadingMore })
   React.useEffect(() => {
     stateRef.current = { onLoadMore, hasMore, loadingMore }
@@ -753,6 +1005,46 @@ function LoadMoreSentinel({
   )
 }
 
+/** Info affordance after a column header (`meta.headerTooltip`). A focusable, decorative trigger:
+ *  the header label already names the column, so this only surfaces the extra hint. `cursor-help`
+ *  signals "explanatory", not "actionable". */
+function HeaderTooltip({ content }: { content: React.ReactNode }) {
+  return (
+    <Tooltip content={content}>
+      <button
+        type="button"
+        aria-label="More information"
+        className="inline-flex size-5 shrink-0 cursor-help items-center justify-center rounded-full text-muted-foreground/70 outline-none transition-colors duration-fast ease-out hover:text-foreground focus-visible:ring-2 focus-visible:ring-brand"
+      >
+        <Info className="size-3.5" />
+      </button>
+    </Tooltip>
+  )
+}
+
+/** Wraps a cell's content in a tooltip (`meta.cellTooltip`). The trigger is a focusable, layout-
+ *  transparent `inline-block` so it shrinks to the cell content and never fights the column width:
+ *  a cell that clamps itself (`max-w-* truncate`) still truncates, and the tooltip carries the full
+ *  value. `cursor-help` marks it as explanatory; the hint is reachable by keyboard, not just hover. */
+function CellTooltip({
+  content,
+  children,
+}: {
+  content: React.ReactNode
+  children: React.ReactNode
+}) {
+  return (
+    <Tooltip content={content}>
+      <span
+        tabIndex={0}
+        className="inline-block max-w-full cursor-help rounded-sm align-middle outline-none focus-visible:ring-2 focus-visible:ring-brand"
+      >
+        {children}
+      </span>
+    </Tooltip>
+  )
+}
+
 /** Sort affordance: a muted up/down caret when unsorted, a solid directional caret when active. */
 function SortIndicator({ state }: { state: false | "asc" | "desc" }) {
   if (state === "asc") return <CaretUp weight="bold" className="size-3.5" />
@@ -765,4 +1057,12 @@ function SortIndicator({ state }: { state: false | "asc" | "desc" }) {
   )
 }
 
-export type { ColumnDef, RowSelectionState, SortingState, GroupingState, TanstackTable }
+export type {
+  ColumnDef,
+  ColumnFiltersState,
+  PaginationState,
+  RowSelectionState,
+  SortingState,
+  GroupingState,
+  TanstackTable,
+}

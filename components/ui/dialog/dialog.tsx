@@ -10,11 +10,11 @@ import { tv, type VariantProps } from "@/lib/tv"
 import { Stepper, type StepperProps } from "@/components/ui/stepper"
 
 /**
- * Dialog — a multi-part component over Radix Dialog (focus trap, scroll lock, a11y, exit
+ * Dialog: a multi-part component over Radix Dialog (focus trap, scroll lock, a11y, exit
  * animations via Presence). Pattern: one `tv` recipe with `slots`. `size` affects the
  * content width; `density` (lib/density.tsx) tightens padding/gaps/title for application
  * UI. DialogContent resolves density once and re-provides it to its children, so every
- * part stays in sync — no Context plumbing of our own. See docs/ARCHITECTURE.md §2.
+ * part stays in sync, with no Context plumbing of our own. See docs/ARCHITECTURE.md §2.
  *
  * Centering is done with a flex wrapper rather than a `-translate-1/2` so the `zoom-in`
  * enter/exit (a `transform: scale`) doesn't fight the positioning transform.
@@ -43,7 +43,7 @@ export const dialogVariants = tv({
       // Expose this surface so nested inputs blend with it (bg matches the dialog, not the page).
       "[--surface:var(--popover)]",
       // Radix focuses the content container on open (tabIndex -1, never a Tab stop) for SR
-      // announcement — suppress its focus ring so the whole modal doesn't get outlined.
+      // announcement; suppress its focus ring so the whole modal doesn't get outlined.
       "outline-none",
       "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
       "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
@@ -64,7 +64,7 @@ export const dialogVariants = tv({
     footer: "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
     // (footer top spacing lives in the `density` variant below)
     title: "leading-none font-semibold tracking-tight",
-    description: "text-sm text-pretty text-muted-foreground",
+    description: "text-base text-pretty text-muted-foreground",
     // A leading icon above the title (share, announcement, feedback…). Muted by default so
     // it reads as a quiet category marker, not a hero illustration. Size tracks density.
     icon: "text-muted-foreground [&_svg]:shrink-0",
@@ -79,8 +79,8 @@ export const dialogVariants = tv({
     // Density is Koala's cross-cutting spacing axis (see lib/density.tsx). `comfortable`
     // is the marketing default; `compact` tightens padding/gaps for application UI.
     density: {
-      comfortable: { content: "gap-4 px-4 pt-6 pb-4", header: "gap-1.5", stepper: "pb-4", footer: "mt-4", title: "text-lg", close: "size-7", icon: "[&_svg]:size-6" },
-      compact: { content: "gap-3 p-4", header: "gap-1", stepper: "pb-3", footer: "mt-2", title: "text-base", close: "size-6", icon: "[&_svg]:size-5" },
+      comfortable: { content: "gap-4 px-4 pt-6 pb-4", header: "gap-1.5", stepper: "pb-4", footer: "mt-4", title: "text-xl", close: "size-7", icon: "[&_svg]:size-6" },
+      compact: { content: "gap-3 p-4", header: "gap-1", stepper: "pb-3", footer: "mt-2", title: "text-lg", close: "size-6", icon: "[&_svg]:size-5" },
     },
     // Full-bleed top divider on the footer + bottom-flush padding, for footers carrying a
     // helper on the left and split actions on the right (announcements, checkout, task
@@ -110,13 +110,13 @@ export const dialogVariants = tv({
   },
 })
 
-/** Root — controls open state. Pass-through to Radix (supports `open`/`onOpenChange`). */
+/** Root: controls open state. Pass-through to Radix (supports `open`/`onOpenChange`). */
 export const Dialog = DialogPrimitive.Root
 
-/** Trigger — use with `asChild` to make any element open the dialog. */
+/** Trigger: use with `asChild` to make any element open the dialog. */
 export const DialogTrigger = DialogPrimitive.Trigger
 
-/** Close — use with `asChild` on footer buttons to dismiss the dialog. */
+/** Close: use with `asChild` on footer buttons to dismiss the dialog. */
 export const DialogClose = DialogPrimitive.Close
 
 export interface DialogContentProps
@@ -166,7 +166,7 @@ export function DialogContent({
 }
 
 /**
- * DialogIcon — an optional leading icon above the title. Place it as the first child of
+ * DialogIcon: an optional leading icon above the title. Place it as the first child of
  * DialogContent (the content's gap spaces it from the header). Muted and density-sized; the
  * top-right close button sits clear of it. Pass any Phosphor icon as the child.
  */
@@ -186,9 +186,9 @@ export interface DialogStepperProps extends StepperProps {
 }
 
 /**
- * DialogStepper — the dialog-flavored placement of a Stepper for multi-step (wizard) dialogs.
+ * DialogStepper: the dialog-flavored placement of a Stepper for multi-step (wizard) dialogs.
  * Drop it right after DialogHeader: it spans the content full-bleed with a divider beneath,
- * inherits the dialog's density, and defaults to horizontal. It owns no state — drive its
+ * inherits the dialog's density, and defaults to horizontal. It owns no state. Drive its
  * `value`/`onValueChange` from your own step state and swap the body per step. Compose the
  * StepperItem/StepperTrigger/StepperIndicator/StepperTitle parts (from `@/components/ui/stepper`)
  * inside it exactly as you would a standalone Stepper.

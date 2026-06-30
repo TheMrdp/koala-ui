@@ -10,14 +10,14 @@ import { cn } from "@/lib/utils"
 import { tv, type VariantProps } from "@/lib/tv"
 
 /**
- * Stepper — a multi-part progress indicator for sequential flows (onboarding, checkout,
+ * Stepper: a multi-part progress indicator for sequential flows (onboarding, checkout,
  * multi-step dialogs). There is no Radix primitive for a stepper, so behavior is hand-rolled,
  * but the house rules still hold: one `tv` recipe with `slots`, cross-part state through a
  * typed React Context (never prop-drilled or cloned), named exports, tokens only.
  *
  * State model: the Root tracks the active step (controlled `value` / uncontrolled
- * `defaultValue`). Each `StepperItem` carries a 1-based `step` and derives its own state —
- * `completed` (step < active), `active` (step === active), or `inactive` — published on a
+ * `defaultValue`). Each `StepperItem` carries a 1-based `step` and derives its own state
+ * (`completed` (step < active), `active` (step === active), or `inactive`) published on a
  * `data-state` attribute. Indicator, title, and the connecting separator all restyle off that
  * via `group-data-[state=…]/step`, so a step transition animates with no JS measurement.
  *
@@ -35,7 +35,7 @@ export const stepperVariants = tv({
     item: "group/step relative flex",
     // `group/trigger` lets the indicator react to the button's focus (the ring hugs the
     // circle, not the whole row). polish: tactile scale-on-press,
-    // matching Tabs — disable via the `static` prop. Layout (stacked vs. inline) is per-orientation.
+    // matching Tabs; disable via the `static` prop. Layout (stacked vs. inline) is per-orientation.
     trigger: [
       "group/trigger inline-flex outline-none cursor-pointer",
       "transition-transform duration-fast ease-out active:scale-[0.96]",
@@ -67,6 +67,21 @@ export const stepperVariants = tv({
     separatorFill: "block size-full bg-primary transition-transform duration-base ease-out",
   },
   variants: {
+    // Indicator fill style. `outline` (default) is the quiet ringed circle; `solid` fills every
+    // state (muted grey when upcoming, brand-filled (number) when active, brand-filled (check)
+    // when done) for the bolder, Calendly-style rail used in big multi-step wizards.
+    variant: {
+      outline: {},
+      solid: {
+        indicator: [
+          "border-transparent bg-muted text-muted-foreground",
+          // Active: brand fill, no halo ring (flat, like the upcoming/done circles).
+          "group-data-[state=active]/step:border-transparent group-data-[state=active]/step:bg-primary group-data-[state=active]/step:text-primary-foreground group-data-[state=active]/step:ring-0",
+          // Done already fills via the base rule; just drop the border so it reads fully solid.
+          "group-data-[state=completed]/step:border-transparent",
+        ],
+      },
+    },
     orientation: {
       // Stacked: circles in a row with the label centred below; the connector runs from this
       // circle's centre to the next one's, passing behind both (the circles paint over it).
@@ -92,13 +107,13 @@ export const stepperVariants = tv({
     // the indicator diameter (and, through it, every connector offset); text tiers track it.
     density: {
       comfortable: {
-        root: "[--step-size:2rem]",
+        root: "[--step-size:1.75rem]",
         indicator: "text-sm [&_svg]:size-4",
         title: "text-sm",
         description: "text-xs",
       },
       compact: {
-        root: "[--step-size:1.75rem]",
+        root: "[--step-size:1.5rem]",
         indicator: "text-xs [&_svg]:size-3.5",
         title: "text-xs",
         description: "text-xs",
@@ -106,6 +121,7 @@ export const stepperVariants = tv({
     },
   },
   defaultVariants: {
+    variant: "outline",
     orientation: "horizontal",
     density: "comfortable",
   },
@@ -131,9 +147,9 @@ const [StepperItemProvider, useStepperItemContext] = createContext<{
 export interface StepperProps
   extends Omit<React.ComponentProps<"div">, "onChange">,
     VariantProps<typeof stepperVariants> {
-  /** Active step, 1-based — controlled. Pair with `onValueChange`. */
+  /** Active step, 1-based, controlled. Pair with `onValueChange`. */
   value?: number
-  /** Initial active step, 1-based — uncontrolled. Defaults to `1`. */
+  /** Initial active step, 1-based, uncontrolled. Defaults to `1`. */
   defaultValue?: number
   /** Fired when a step is selected via its trigger. */
   onValueChange?: (step: number) => void
@@ -145,6 +161,7 @@ export interface StepperProps
  */
 export function Stepper({
   className,
+  variant,
   orientation,
   density,
   value,
@@ -152,7 +169,7 @@ export function Stepper({
   onValueChange,
   ...props
 }: StepperProps) {
-  const slots = stepperVariants({ orientation, density: useDensity(density) })
+  const slots = stepperVariants({ variant, orientation, density: useDensity(density) })
 
   // Controllable active step: prop > internal. `value` defined ⇒ controlled.
   const [internalStep, setInternalStep] = React.useState(defaultValue)
@@ -187,7 +204,7 @@ export interface StepperItemProps extends React.ComponentProps<"div"> {
   completed?: boolean
   /** Block selection of this step and mute it (e.g. steps the user can't reach yet). */
   disabled?: boolean
-  /** Swap the indicator glyph for a spinner — e.g. while the active step validates/submits. */
+  /** Swap the indicator glyph for a spinner, e.g. while the active step validates/submits. */
   loading?: boolean
 }
 
@@ -304,7 +321,7 @@ export function StepperDescription({ className, ...props }: React.ComponentProps
 
 /**
  * The connector between two steps. Place it as the last child of every item except the last;
- * its fill grows as that step completes. Decorative — hidden from assistive tech.
+ * its fill grows as that step completes. Decorative: hidden from assistive tech.
  */
 export function StepperSeparator({ className, ...props }: React.ComponentProps<"div">) {
   const { slots } = useStepperContext("StepperSeparator")

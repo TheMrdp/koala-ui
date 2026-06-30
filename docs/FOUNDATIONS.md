@@ -22,8 +22,8 @@ tokens mirror them in [`lib/motion.ts`](../lib/motion.ts).
 
 ## What Koala adds on top (the semantic layer)
 
-These are the **only** tokens we author. Everything is themeable across the four
-themes (`light`, `dark`, `cream`, `moonlight`).
+These are the **only** tokens we author. Everything is themeable across the three
+themes (`light`, `dark`, `moonlight`).
 
 ### Color - semantic tokens, not raw palette
 Components reference **roles**, never palette values, so theming is centralized:
@@ -46,11 +46,15 @@ exposed as utilities (`ease-out`, `duration-base`). Mirrored in `lib/motion.ts` 
 JS animation. **Never inline a raw `cubic-bezier()` or ms value in a component.**
 
 ### Fonts
-Inter is the **only** bundled typeface. `--font-sans` (Inter) and `--font-heading`
-(→ sans) cover UI, headings and body. `--font-mono` is a **system monospace stack**
-(`ui-monospace, SFMono-Regular, Menlo, Consolas, …`) - used for code and token labels,
-with nothing to download. Inter is wired through `next/font` in
-[`app/layout.tsx`](../app/layout.tsx).
+Two bundled typefaces. `--font-sans` (**Inter**) carries UI and body; `--font-heading`
+(**DM Sans**) is reserved for headings and applied to every `h1–h6` in `@layer base`.
+`--font-mono` is a **system monospace stack** (`ui-monospace, SFMono-Regular, Menlo,
+Consolas, …`) - used for code and token labels, with nothing to download. Both faces are
+wired through `next/font` in [`app/layout.tsx`](../app/layout.tsx); DM Sans also pulls in
+its optical-size axis (`opsz`) alongside weight. Letterfit is tuned in `globals.css`:
+`font-optical-sizing: auto` plus kerning/ligatures on `body`, and a small negative
+`letter-spacing` on `h1–h6` (DM Sans sets a touch wider than Inter, so headings want
+tightening; explicit `tracking-*` utilities still win on specificity).
 
 ---
 
@@ -59,4 +63,4 @@ with nothing to download. Inter is wired through `next/font` in
 - **Need it to change per theme, or to be a reusable design decision?** Add a
   semantic token here, then a utility consumes it.
 - **Never** hardcode hex / oklch / cubic-bezier / ms inside a component.
-- See the four themes and every token rendered live at `/docs/foundations`.
+- See the three themes and every token rendered live at `/docs/foundations`.

@@ -42,8 +42,8 @@ import {
 } from "@/components/ui/popover"
 
 /**
- * RichTextEditor — a WYSIWYG editor over Tiptap (ProseMirror). Radix ships no rich-text
- * primitive, so — as with Tooltip wrapping Tippy.js — Koala wraps a headless behavior
+ * RichTextEditor: a WYSIWYG editor over Tiptap (ProseMirror). Radix ships no rich-text
+ * primitive, so (as with Tooltip wrapping Tippy.js) Koala wraps a headless behavior
  * engine (Tiptap/StarterKit handles selection, undo, paste, keyboard, schema) and owns
  * every pixel of UI as a `tv` recipe built from our tokens. See docs/ARCHITECTURE.md.
  *
@@ -53,7 +53,7 @@ import {
  * by default, or any custom set of `RichTextEditorButton`s you pass as children. For fully
  * custom chrome, reach the live editor with the {@link useRichTextEditor} hook.
  */
-// Shared look for every icon control (main toolbar + bubble) — color, hover, pressed chip,
+// Shared look for every icon control (main toolbar + bubble): color, hover, pressed chip,
 // press scale, focus ring, and a vertical-only 40px hit extender (#16, never horizontal so it
 // can't steal a neighbour's click). The two button slots differ only in their box dimensions.
 const controlBase = [
@@ -78,17 +78,17 @@ export const richTextEditorVariants = tv({
     root: [
       "flex flex-col overflow-hidden rounded-xl border border-input bg-background text-foreground",
       "transition-[border-color,box-shadow] duration-fast ease-out",
-      "focus-within:border-brand focus-within:[box-shadow:0_0_0_3px_var(--ring-brand)]",
+      "focus-within:border-brand focus-within:brand-ring",
     ],
     // A wrapping toolbar that scrolls into a second row on narrow widths rather than clipping.
     toolbar: "flex flex-wrap items-center gap-0.5 border-b border-border bg-background",
-    // Main toolbar control — a 32px square (the 40px hit extender lives in controlBase).
+    // Main toolbar control: a 32px square (the 40px hit extender lives in controlBase).
     button: [...controlBase, "size-8"],
-    // Bubble control — minimal and deliberately wider than tall (36×28), so the floating bar
+    // Bubble control: minimal and deliberately wider than tall (36×28), so the floating bar
     // reads as a compact strip rather than a row of squares.
     bubbleButton: [...controlBase, "h-7 w-9"],
     separator: "mx-1 h-5 w-px shrink-0 bg-border",
-    // The floating selection toolbar (bubble menu) — deliberately minimal: a tight, low-chrome
+    // The floating selection toolbar (bubble menu), deliberately minimal: a tight, low-chrome
     // bar of 28px controls. Concentric: rounded-lg outer vs the rounded-md buttons inside its
     // p-0.5 padding. Enters with a fade+zoom from its lower edge (it sits above the selection);
     // exit is handled by the engine hiding it (subtly, #6).
@@ -102,30 +102,32 @@ export const richTextEditorVariants = tv({
     // The EditorContent wrapper. It hosts the ProseMirror prose styling via descendant
     // selectors so every block/mark reads from our tokens (no @tailwindcss/typography dep).
     content: [
-      // Body copy is the SECONDARY color, not full foreground — so a document reads as calm
+      // Body copy is the SECONDARY color, not full foreground, so a document reads as calm
       // muted text with only its headings (and emphasis) in the strong foreground. Keeps the
       // surface from being a wall of bright white.
       "text-sm text-muted-foreground",
       "[&_.tiptap]:outline-none",
       // Block rhythm: space only *between* top-level blocks, so no leading/trailing gap.
       "[&_.tiptap>*+*]:mt-3",
-      // Headings — a descending type scale, all lifted to the strong foreground so they stand
-      // out against the muted body.
-      "[&_.tiptap_h1]:text-xl [&_.tiptap_h1]:font-semibold [&_.tiptap_h1]:tracking-tight [&_.tiptap_h1]:text-foreground",
-      "[&_.tiptap_h2]:text-lg [&_.tiptap_h2]:font-semibold [&_.tiptap_h2]:tracking-tight [&_.tiptap_h2]:text-foreground",
-      "[&_.tiptap_h3]:text-base [&_.tiptap_h3]:font-semibold [&_.tiptap_h3]:text-foreground",
+      // Headings follow @tailwindcss/typography's `prose-sm` scale (matched to our 14px body):
+      // 30 / 20 / 18px, all lifted to the strong foreground so they stand out against the muted
+      // copy. We map onto Tailwind's own type-scale tokens, whose paired line-heights already
+      // resolve to prose-sm's heading leading (1.2 / 1.4 / 1.556) - so leading needs no override.
+      "[&_.tiptap_h1]:text-3xl [&_.tiptap_h1]:font-semibold [&_.tiptap_h1]:tracking-tight [&_.tiptap_h1]:text-foreground",
+      "[&_.tiptap_h2]:text-xl [&_.tiptap_h2]:font-semibold [&_.tiptap_h2]:tracking-tight [&_.tiptap_h2]:text-foreground",
+      "[&_.tiptap_h3]:text-lg [&_.tiptap_h3]:font-semibold [&_.tiptap_h3]:text-foreground",
       // H4 shares the body size but is set apart by weight + the foreground color.
       "[&_.tiptap_h4]:text-sm [&_.tiptap_h4]:font-semibold [&_.tiptap_h4]:text-foreground",
       "[&_.tiptap_p]:leading-relaxed",
-      // Lists — disc/decimal with a comfortable indent; tighten nested lists and list paragraphs.
+      // Lists: disc/decimal with a comfortable indent; tighten nested lists and list paragraphs.
       "[&_.tiptap_ul]:list-disc [&_.tiptap_ul]:pl-5 [&_.tiptap_ol]:list-decimal [&_.tiptap_ol]:pl-5",
       "[&_.tiptap_li]:my-0.5 [&_.tiptap_li_p]:my-0",
       "[&_.tiptap_li_ul]:mt-1 [&_.tiptap_li_ol]:mt-1",
       // Bold lifts out of the muted body to the foreground, so emphasis actually reads.
       "[&_.tiptap_strong]:font-semibold [&_.tiptap_strong]:text-foreground",
-      // Links carry the accent, underlined — same treatment as inline doc links.
+      // Links carry the accent, underlined: same treatment as inline doc links.
       "[&_.tiptap_a]:cursor-pointer [&_.tiptap_a]:text-brand [&_.tiptap_a]:underline [&_.tiptap_a]:underline-offset-2",
-      // Placeholder — Tiptap's Placeholder extension stamps data-placeholder on the empty
+      // Placeholder: Tiptap's Placeholder extension stamps data-placeholder on the empty
       // first node; render it as muted ghost text that never blocks the caret.
       "[&_.tiptap_p.is-editor-empty:first-child]:before:pointer-events-none",
       "[&_.tiptap_p.is-editor-empty:first-child]:before:float-left",
@@ -134,11 +136,11 @@ export const richTextEditorVariants = tv({
       "[&_.tiptap_p.is-editor-empty:first-child]:before:content-[attr(data-placeholder)]",
     ],
     // Applied directly to the contenteditable (.tiptap) via editorProps, so the whole padded
-    // area — not just the text — focuses the caret on click.
+    // area (not just the text) focuses the caret on click.
     editable: "min-h-32 outline-none",
   },
   variants: {
-    // Density tunes the toolbar and writing-area padding (and nothing else — never radius
+    // Density tunes the toolbar and writing-area padding (and nothing else, never radius
     // or color). `comfortable` is the spacious marketing default; `compact` tightens for
     // dense app surfaces (see lib/density.tsx).
     density: {
@@ -173,7 +175,7 @@ export interface RichTextEditorProps
   defaultValue?: string
   /** Ghost text shown while the document is empty. @default "Write something…" */
   placeholder?: string
-  /** Toggle editing without unmounting — set `false` for a read-only render. @default true */
+  /** Toggle editing without unmounting: set `false` for a read-only render. @default true */
   editable?: boolean
   /** Called with the serialized HTML on every edit. */
   onChange?: (html: string) => void
@@ -237,7 +239,7 @@ export function RichTextEditor({
 export type RichTextEditorToolbarProps = React.ComponentProps<typeof ToolbarPrimitive.Root>
 
 /**
- * The formatting toolbar (Radix Toolbar — roving focus, arrow-key navigation, ARIA).
+ * The formatting toolbar (Radix Toolbar: roving focus, arrow-key navigation, ARIA).
  * With no children it renders the essential controls; pass `RichTextEditorButton`s and
  * `RichTextEditorSeparator`s for a custom set. Triggers share one gliding tooltip.
  */
@@ -263,10 +265,10 @@ export interface RichTextEditorButtonProps
   extends Omit<React.ComponentProps<typeof ToolbarPrimitive.Button>, "aria-pressed" | "size"> {
   /** Visually mark the control active (e.g. the cursor is inside bold text). */
   pressed?: boolean
-  /** Accessible label + hover tooltip — required, since the button is icon-only. */
+  /** Accessible label + hover tooltip, required since the button is icon-only. */
   tooltip: string
   /**
-   * Keyboard shortcut shown as a `Kbd` chip in the tooltip (e.g. `"⌘B"`). Display only — it
+   * Keyboard shortcut shown as a `Kbd` chip in the tooltip (e.g. `"⌘B"`). Display only: it
    * doesn't bind the key (Tiptap's StarterKit already owns the mark shortcuts).
    */
   shortcut?: string
@@ -357,7 +359,7 @@ export function RichTextEditorContent({
 // ─── Bubble menu (the on-selection floating toolbar) ──────────────────────────────
 
 /**
- * The platform modifier glyph for shortcut hints — `⌘` on Apple, `Ctrl` elsewhere. Resolved
+ * The platform modifier glyph for shortcut hints: `⌘` on Apple, `Ctrl` elsewhere. Resolved
  * once via a lazy `useState` initializer (not an effect): it's only read inside tooltip
  * content, which Tippy renders lazily on hover, so there's no hydration concern.
  */
@@ -377,7 +379,7 @@ export type RichTextEditorBubbleMenuProps = Omit<
 >
 
 /**
- * A floating toolbar that surfaces over the current text selection — select a word
+ * A floating toolbar that surfaces over the current text selection: select a word
  * (double-click) or drag across text and it appears. Built on Tiptap's BubbleMenu
  * (Floating UI positioning). With no children it renders the inline marks + link; pass
  * your own `RichTextEditorButton`s for a custom set.
@@ -675,14 +677,14 @@ function DefaultToolbar() {
 /**
  * The link control: a popover with a URL field. Opening prefills the current link (if the
  * caret sits in one); submitting an empty field removes the link. Composes the DS Popover,
- * Input, and Button — never hand-rolled — so it re-themes and stays consistent.
+ * Input, and Button (never hand-rolled) so it re-themes and stays consistent.
  */
 function LinkButton({ active }: { active: boolean }) {
   const { editor, slots } = useRichTextEditorContext("RichTextEditorLinkButton")
   const [open, setOpen] = React.useState(false)
   const [url, setUrl] = React.useState("")
 
-  // Prefill from the link under the caret as the popover opens (not in an effect — this is
+  // Prefill from the link under the caret as the popover opens (not in an effect, this is
   // an event, so it avoids a cascading render).
   const handleOpenChange = (next: boolean) => {
     if (next && editor) setUrl((editor.getAttributes("link").href as string) ?? "")

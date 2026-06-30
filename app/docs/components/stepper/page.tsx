@@ -11,6 +11,7 @@ import { ComponentPreview } from "@/components/docs/component-preview"
 import { CodeSnippet } from "@/components/docs/code-snippet"
 import { Installation } from "@/components/docs/installation"
 import { DocHeader, DocSection } from "@/components/docs/doc-page"
+import { Faq } from "@/components/docs/faq"
 import { NavigableStepperDemo, WizardDialogDemo } from "./stepper-demos"
 
 export const metadata = {
@@ -22,7 +23,7 @@ export default function StepperDocsPage() {
     <>
       <DocHeader
         title="Stepper"
-        description="A progress indicator for sequential flows — onboarding, checkout, and multi-step dialogs. Each step derives completed/active/inactive from a single active value; the connecting line fills as you advance, with no JS measurement."
+        description="A progress indicator for sequential flows: onboarding, checkout, and multi-step dialogs. Each step derives completed/active/inactive from a single active value; the connecting line fills as you advance, with no JS measurement."
       />
 
       <ComponentPreview
@@ -230,7 +231,7 @@ export function Example() {
 
       <DocSection title="Density">
         <p className="mt-4 text-pretty text-muted-foreground">
-          Density retunes the indicator size, connector geometry, and text — without touching
+          Density retunes the indicator size, connector geometry, and text, without touching
           color or radius. <code className="font-mono text-sm">comfortable</code> suits onboarding;{" "}
           <code className="font-mono text-sm">compact</code> fits dense app UI and dialogs.
         </p>
@@ -330,7 +331,7 @@ export function Example() {
         <p className="mt-4 text-pretty text-muted-foreground">
           The headline use case. Reach for{" "}
           <code className="font-mono text-sm">DialogStepper</code> (from{" "}
-          <code className="font-mono text-sm">@/components/ui/dialog</code>) — it places the stepper
+          <code className="font-mono text-sm">@/components/ui/dialog</code>). It places the stepper
           full-bleed with a divider beneath and inherits the dialog&apos;s density. Drive its{" "}
           <code className="font-mono text-sm">value</code> from the dialog&apos;s own step state and
           swap the body per step; future steps are{" "}
@@ -361,6 +362,19 @@ export function Example() {
         >
           <WizardDialogDemo />
         </ComponentPreview>
+      </DocSection>
+
+      <DocSection title="FAQ">
+        <Faq
+          items={[
+            { q: "Do I need to track the active step myself?", a: "Only if you want navigation. The Stepper is controllable: pass `value` and `onValueChange` to drive it from your Back and Next buttons, or use `defaultValue` for a static read-only progress indicator. Step numbers are 1-based." },
+            { q: "How does each StepperItem know if it is completed or active?", a: "It derives that from the root's active value and its own 1-based `step` prop: a step is completed when it is below the active step, active when equal, and inactive otherwise. The state is published on `data-state` so the indicator, title, and separator restyle off it with no JS measurement." },
+            { q: "When should I use the loading and disabled props on a StepperItem?", a: "Set `loading` on the active step to swap its number for a spinner while it validates or submits. Mark steps the user cannot reach yet `disabled` so their trigger is blocked and the step is muted, which is how you stop people skipping ahead in a wizard." },
+            { q: "Do I have to wrap each step in a StepperTrigger?", a: "Only for navigable steppers. `StepperTrigger` is the clickable region that selects its step. For a pure read-only progress indicator, omit it and place `StepperIndicator` and `StepperTitle` directly in the item." },
+            { q: "What is the difference between the outline and solid variant?", a: "`outline` (the default) is a quiet ringed circle with a brand halo on the active step. `solid` fills every state with a flat tone for the bolder Calendly-style rail used in larger multi-step wizards." },
+            { q: "How do I put a stepper in a dialog?", a: "Reach for `DialogStepper` from `@/components/ui/dialog`. It places the stepper full-bleed with a divider beneath and inherits the dialog's density, so you only drive its `value` from the dialog's own step state." },
+          ]}
+        />
       </DocSection>
 
     </>

@@ -1,5 +1,5 @@
 /**
- * Motion tokens — single source of truth for JS-driven animation.
+ * Motion tokens: single source of truth for JS-driven animation.
  *
  * These MUST stay in sync with the CSS custom properties defined in `app/globals.css`
  * (`--ease-*`, `--duration-*`). For CSS/Tailwind, prefer the utilities backed by those
@@ -15,6 +15,8 @@ export const easing = {
   inOut: "cubic-bezier(0.77, 0, 0.175, 1)",
   /** Sheets / drawers. `--ease-drawer` */
   drawer: "cubic-bezier(0.32, 0.72, 0, 1)",
+  /** Playful overshoot for confirmations / pops. `--ease-spring` */
+  spring: "cubic-bezier(0.34, 1.56, 0.64, 1)",
 } as const;
 
 /** Easing curves as cubic-bezier point arrays, for libraries that want tuples (e.g. Framer Motion). */
@@ -22,6 +24,7 @@ export const easingPoints = {
   out: [0.23, 1, 0.32, 1],
   inOut: [0.77, 0, 0.175, 1],
   drawer: [0.32, 0.72, 0, 1],
+  spring: [0.34, 1.56, 0.64, 1],
 } as const;
 
 /** Durations in milliseconds. Keys match the `--duration-*` CSS variables. */

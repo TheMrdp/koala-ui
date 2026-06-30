@@ -10,7 +10,7 @@ import { createContext } from "@/lib/create-context"
 
 // A single recipe for the whole component. The strength *tone* (red→green) is uniform
 // across all filled segments and the label, so it's applied per element via the
-// className arg (TONE_FILL / TONE_TEXT) rather than as a tv variant — tailwind-merge
+// className arg (TONE_FILL / TONE_TEXT) rather than as a tv variant. tailwind-merge
 // (through lib/tv) lets the tone color win over the muted base cleanly.
 const passwordStrengthVariants = tv({
   slots: {
@@ -32,7 +32,7 @@ const passwordStrengthVariants = tv({
 // ─── Rules & scoring ────────────────────────────────────────────────────────────
 
 export interface PasswordRule {
-  /** Stable key — also used as the React key in the requirements list. */
+  /** Stable key, also used as the React key in the requirements list. */
   id: string
   /** Human-readable requirement, shown in `PasswordStrengthList`. */
   label: string
@@ -89,7 +89,7 @@ const TONE_TEXT: Record<Tone, string> = {
 
 const SEGMENT_COUNT = 4
 
-/** Pure helper — score a password against a rule set. Exposed for headless use. */
+/** Pure helper: score a password against a rule set. Exposed for headless use. */
 export function getPasswordStrength(
   value: string,
   rules: PasswordRule[] = defaultPasswordRules,

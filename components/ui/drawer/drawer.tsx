@@ -10,19 +10,19 @@ import { createContext } from "@/lib/create-context"
 import { tv, type VariantProps } from "@/lib/tv"
 
 /**
- * Drawer — a panel that slides in from an edge of the viewport. Built on Radix Dialog
- * (focus trap, scroll lock, Escape, a11y, exit animations via Presence) — the same
+ * Drawer: a panel that slides in from an edge of the viewport. Built on Radix Dialog
+ * (focus trap, scroll lock, Escape, a11y, exit animations via Presence), the same
  * foundation as Dialog, specialized into an edge sheet. Pattern: one `tv` recipe with
  * `slots`; `side`, `size` and `density` flow to the parts through a typed Context.
  *
  * Mobile is a first-class target, not an afterthought:
- *  - Side panels are `w-full max-w-*` — they fill a phone screen but cap to a panel on
+ *  - Side panels are `w-full max-w-*`: they fill a phone screen but cap to a panel on
  *    desktop. `bottom` is the native mobile sheet (rounded top, grab handle, safe-area
  *    inset for the home indicator); `top` mirrors it for notifications/menus.
  *  - **Swipe-to-dismiss** (`swipeToClose`, on by default): drag the handle or header
  *    toward the edge to flick the drawer closed, the gesture every mobile user expects.
  *    The drag only arms after a small slop so taps on header controls still register, and
- *    it never starts on the scrollable body — so a drag and a scroll never fight.
+ *    it never starts on the scrollable body, so a drag and a scroll never fight.
  *
  * Animation uses the `ease-drawer` curve + `duration-base` tokens (lib/motion.ts), the
  * dedicated sheet easing. See docs/ARCHITECTURE.md §2.
@@ -43,13 +43,13 @@ export const drawerVariants = tv({
       "fixed z-50 flex flex-col bg-popover text-popover-foreground shadow-lg",
       // Expose this surface so nested inputs blend with the drawer (not the page).
       "[--surface:var(--popover)] border-border-soft",
-      // Radix focuses the content container on open (tabIndex -1) for SR announcement —
+      // Radix focuses the content container on open (tabIndex -1) for SR announcement;
       // suppress its focus ring so the whole sheet isn't outlined.
       "outline-none",
       "data-[state=open]:animate-in data-[state=closed]:animate-out",
       "duration-base ease-drawer",
     ],
-    // The grab handle on bottom/top sheets — the universal "drag me" affordance. The bar
+    // The grab handle on bottom/top sheets: the universal "drag me" affordance. The bar
     // stays a slim 6px, but a transparent pseudo-element widens its drag/touch target well
     // past 40px (polish) so it's easy to grab with a thumb.
     handle: [
@@ -122,7 +122,7 @@ export const drawerVariants = tv({
     },
   },
   compoundVariants: [
-    // Side panels (left/right): `size` caps the width — full-bleed on phones, a panel on desktop.
+    // Side panels (left/right): `size` caps the width, full-bleed on phones, a panel on desktop.
     { side: ["left", "right"], size: "sm", class: { content: "max-w-sm" } },
     { side: ["left", "right"], size: "md", class: { content: "max-w-md" } },
     { side: ["left", "right"], size: "lg", class: { content: "max-w-lg" } },
@@ -152,16 +152,16 @@ interface DrawerContextValue {
 
 const [DrawerProvider, useDrawerContext] = createContext<DrawerContextValue>("Drawer")
 
-/** Root — controls open state. Pass-through to Radix (`open` / `onOpenChange`). */
+/** Root: controls open state. Pass-through to Radix (`open` / `onOpenChange`). */
 export const Drawer = DialogPrimitive.Root
 
-/** Trigger — use with `asChild` to make any element open the drawer. */
+/** Trigger: use with `asChild` to make any element open the drawer. */
 export const DrawerTrigger = DialogPrimitive.Trigger
 
-/** Close — use with `asChild` on footer buttons to dismiss the drawer. */
+/** Close: use with `asChild` on footer buttons to dismiss the drawer. */
 export const DrawerClose = DialogPrimitive.Close
 
-// — Swipe-to-dismiss ————————————————————————————————————————————————————————
+// Swipe-to-dismiss
 // Which axis a side is dragged along, and the sign of the *closing* direction (px).
 const SWIPE_AXIS: Record<DrawerSide, { axis: "x" | "y"; sign: 1 | -1 }> = {
   top: { axis: "y", sign: -1 },
@@ -169,7 +169,7 @@ const SWIPE_AXIS: Record<DrawerSide, { axis: "x" | "y"; sign: 1 | -1 }> = {
   bottom: { axis: "y", sign: 1 },
   left: { axis: "x", sign: -1 },
 }
-// Movement (px) before a drag is recognized — below this, the press stays a tap/click so
+// Movement (px) before a drag is recognized; below this, the press stays a tap/click so
 // buttons inside the header still fire.
 const SWIPE_SLOP = 6
 
@@ -189,7 +189,7 @@ function useDrawerSwipe(side: DrawerSide, enabled: boolean) {
   const [offset, setOffset] = React.useState(0)
   const [dragging, setDragging] = React.useState(false)
 
-  // Mutated only in handlers — never read during render.
+  // Mutated only in handlers, never read during render.
   const armed = React.useRef(false)
   const active = React.useRef(false)
   const start = React.useRef({ x: 0, y: 0 })
@@ -256,7 +256,7 @@ function useDrawerSwipe(side: DrawerSide, enabled: boolean) {
       // unmounts on close, discarding this state.
       el.querySelector<HTMLElement>("[data-drawer-close]")?.click()
     } else {
-      // Spring back to the edge — the re-enabled transition animates offset → 0.
+      // Spring back to the edge: the re-enabled transition animates offset → 0.
       setDragging(false)
       setOffset(0)
     }
@@ -363,7 +363,7 @@ export function DrawerContent({
 }
 
 /**
- * DrawerHeader — the title block at the panel's edge. It doubles as a drag region for
+ * DrawerHeader: the title block at the panel's edge. It doubles as a drag region for
  * swipe-to-dismiss, so users can grab the title area, not just the handle.
  */
 export function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
@@ -378,13 +378,13 @@ export function DrawerHeader({ className, ...props }: React.ComponentProps<"div"
   )
 }
 
-/** DrawerBody — the scrollable content region between header and footer. */
+/** DrawerBody: the scrollable content region between header and footer. */
 export function DrawerBody({ className, ...props }: React.ComponentProps<"div">) {
   const { slots } = useDrawerContext("DrawerBody")
   return <div data-slot="drawer-body" className={slots.body({ className })} {...props} />
 }
 
-/** DrawerFooter — pinned action row at the panel's far edge. */
+/** DrawerFooter: pinned action row at the panel's far edge. */
 export function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
   const { slots } = useDrawerContext("DrawerFooter")
   return <div data-slot="drawer-footer" className={slots.footer({ className })} {...props} />
@@ -414,7 +414,7 @@ export function DrawerDescription({
   )
 }
 
-// — In-sheet navigation ————————————————————————————————————————————————————
+// In-sheet navigation
 // A mobile bottom sheet often drills into nested views (an action sheet that opens a
 // "Share to…" sub-panel, a settings menu, a filter flow) without ever leaving the sheet.
 // `DrawerNav` is a small in-place navigation stack: it swaps `DrawerView` pages with a
@@ -437,7 +437,7 @@ const [DrawerNavProvider, useDrawerNavContext] =
   createContext<DrawerNavContextValue>("DrawerNav")
 
 /**
- * Public navigation handle for advanced flows — drive the stack from anywhere inside a
+ * Public navigation handle for advanced flows: drive the stack from anywhere inside a
  * `DrawerNav` (e.g. navigate after an async action). Prefer `DrawerNavTrigger` /
  * `DrawerNavBack` for the common declarative cases.
  */
@@ -449,7 +449,7 @@ export function useDrawerNav() {
 /**
  * Measure an element's height into state via a ResizeObserver, lint-safe: the observer is
  * wired in a callback ref (commit phase, not render) and only its async callback calls
- * setState — never an effect body, and no ref is read during render. Drives the smooth
+ * setState, never an effect body, and no ref is read during render. Drives the smooth
  * height transition as views of different sizes come and go.
  */
 function useMeasuredHeight() {
@@ -480,7 +480,7 @@ export interface DrawerNavProps extends Omit<React.ComponentProps<"div">, "onCha
 }
 
 /**
- * DrawerNav — the in-sheet navigation stack. Wrap the `DrawerView` pages in it; place a
+ * DrawerNav: the in-sheet navigation stack. Wrap the `DrawerView` pages in it; place a
  * `DrawerNavTrigger` on any control that should drill in, and a `DrawerNavBack` in a view's
  * header to pop. The stack resets automatically when the drawer closes (the content
  * unmounts), so each open starts at `defaultView`.
@@ -536,12 +536,12 @@ export function DrawerNav({
 }
 
 export interface DrawerViewProps extends React.ComponentProps<"div"> {
-  /** Identifier this page is shown for — matches `defaultView` / a `DrawerNavTrigger`'s `view`. */
+  /** Identifier this page is shown for: matches `defaultView` / a `DrawerNavTrigger`'s `view`. */
   view: string
 }
 
 /**
- * DrawerView — one page in the navigation stack. Only the active page renders; it enters
+ * DrawerView: one page in the navigation stack. Only the active page renders; it enters
  * with a horizontal push (from the right going forward, from the left on back). Compose
  * `DrawerHeader` / `DrawerBody` / `DrawerFooter` inside it exactly as in a flat drawer. A
  * view taller than the sheet should cap its own `DrawerBody` so the sheet stays bounded.
@@ -559,7 +559,7 @@ export function DrawerView({ view, className, children, ...props }: DrawerViewPr
       data-direction={direction ?? undefined}
       className={slots.view({
         className: cn(
-          // No horizontal slide on the very first view (direction null) — the sheet itself
+          // No horizontal slide on the very first view (direction null): the sheet itself
           // is already sliding up; only animate once the user navigates.
           direction && "animate-in duration-base ease-drawer",
           direction === "forward" && "slide-in-from-right",
@@ -581,7 +581,7 @@ export interface DrawerNavTriggerProps extends React.ComponentProps<"button"> {
   asChild?: boolean
 }
 
-/** DrawerNavTrigger — drills into `view` when clicked. Wrap a row/button with `asChild`. */
+/** DrawerNavTrigger: drills into `view` when clicked. Wrap a row/button with `asChild`. */
 export function DrawerNavTrigger({
   view,
   asChild = false,
@@ -608,7 +608,7 @@ export interface DrawerNavBackProps extends React.ComponentProps<"button"> {
 }
 
 /**
- * DrawerNavBack — pops the stack. Renders nothing at the root view, so you can place it
+ * DrawerNavBack: pops the stack. Renders nothing at the root view, so you can place it
  * unconditionally in a shared header. Defaults to a caret glyph; pass children to override.
  */
 export function DrawerNavBack({

@@ -11,7 +11,7 @@ import {
   EmojiPickerContent,
 } from "@/components/ui/emoji-picker"
 
-/** Hero — the inline picker, echoing the last pick below it. */
+/** Hero: the inline picker, echoing the last pick below it. */
 export function EmojiPickerInlineDemo() {
   const [emoji, setEmoji] = React.useState("👋")
   return (
@@ -24,7 +24,7 @@ export function EmojiPickerInlineDemo() {
   )
 }
 
-/** The common flow — a trigger button opens the picker in a popover and closes on select. */
+/** The common flow: a trigger button opens the picker in a popover and closes on select. */
 export function EmojiPickerPopoverDemo() {
   const [emoji, setEmoji] = React.useState<string | null>(null)
   return (
@@ -44,7 +44,7 @@ export function EmojiPickerPopoverDemo() {
   )
 }
 
-/** Density — the spacing axis retunes width, viewport height, grid gap and glyph size. */
+/** Density: the spacing axis retunes width, viewport height, grid gap and glyph size. */
 export function EmojiPickerDensityDemo() {
   return (
     <div className="flex flex-wrap items-start justify-center gap-6">
@@ -60,7 +60,7 @@ export function EmojiPickerDensityDemo() {
   )
 }
 
-/** Minimal — drop the preview footer and the recents/presets rows; keep search + categories. */
+/** Minimal: drop the preview footer and the recents/presets rows; keep search + categories. */
 export function EmojiPickerMinimalDemo() {
   return (
     <EmojiPicker

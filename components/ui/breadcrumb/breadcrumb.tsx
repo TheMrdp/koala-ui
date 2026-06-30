@@ -4,7 +4,7 @@ import { CaretRight, DotsThree } from "@phosphor-icons/react/ssr"
 
 import { cn } from "@/lib/utils"
 
-// Breadcrumb — a multi-part navigation landmark. No shared variants, so no
+// Breadcrumb: a multi-part navigation landmark. No shared variants, so no
 // Context or tv slots: each part is a thin wrapper that merges `className` last.
 
 export function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
@@ -53,7 +53,7 @@ export function BreadcrumbLink({ asChild, className, ...props }: BreadcrumbLinkP
       data-slot="breadcrumb-link"
       className={cn(
         // polish: visible element may be well below the 40px hit
-        // target — extend vertically with a pseudo-element that stays inert to layout.
+        // target, so extend vertically with a pseudo-element that stays inert to layout.
         "relative rounded-sm",
         // polish: name exact properties, never `transition: all`.
         "transition-colors duration-fast ease-out hover:text-foreground",
@@ -101,7 +101,7 @@ export function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps
       aria-label="More pages"
       className={cn(
         // Visual footprint is just the glyph (~16px) so the collapsed crumb sits tight
-        // between its separators — a fixed 36px box read as an airy gap. The 40px tap
+        // between its separators (a fixed 36px box read as an airy gap). The 40px tap
         // target is restored by a centered pseudo-element (polish).
         "relative flex items-center justify-center text-muted-foreground",
         "before:absolute before:inset-1/2 before:size-10 before:-translate-x-1/2 before:-translate-y-1/2 before:content-['']",
