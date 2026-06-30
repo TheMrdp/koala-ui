@@ -28,11 +28,17 @@
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs"
 import { join, dirname, isAbsolute } from "node:path"
+import { homedir } from "node:os"
 import { execSync } from "node:child_process"
 
 const DEFAULT_PUBLIC_REPO = "TheMrdp/koala-ui"
 const DEFAULT_BRANCH = "main"
 const CONTACT = "https://github.com/TheMrdp/koala-ui"
+// The entitlement API (Supabase Edge Functions). Override with $KOALAUI_API or --api.
+const DEFAULT_API = "https://api.koalaui.com"
+const PURCHASE_URL = "https://koalaui.com/pro"
+// Where the saved license key lives (set by `koalaui login`).
+const CONFIG_PATH = join(homedir(), ".koalaui", "config.json")
 
 // ── tiny ANSI ──────────────────────────────────────────────────────────────
 const c = {
@@ -61,6 +67,8 @@ function parseArgs(argv) {
     pro: null,
     branch: DEFAULT_BRANCH,
     token: null,
+    license: null,
+    api: null,
     overwrite: false,
     install: true,
   }
@@ -71,6 +79,8 @@ function parseArgs(argv) {
     else if (a === "--pro") out.pro = argv[++i]
     else if (a === "--branch") out.branch = argv[++i]
     else if (a === "--token") out.token = argv[++i]
+    else if (a === "--license") out.license = argv[++i]
+    else if (a === "--api") out.api = argv[++i]
     else if (a === "--overwrite") out.overwrite = true
     else if (a === "--no-install") out.install = false
     else if (a === "-y" || a === "--yes") {}
@@ -100,6 +110,29 @@ function requireToken(opts, itemName) {
         `  Don't have access yet? → ${CONTACT}`
     )
   return token
+}
+
+// ── license + config (~/.koalaui/config.json) ────────────────────────────────
+function loadConfig() {
+  try {
+    return JSON.parse(readFileSync(CONFIG_PATH, "utf8"))
+  } catch {
+    return {}
+  }
+}
+function saveConfig(patch) {
+  const cfg = { ...loadConfig(), ...patch }
+  mkdirSync(dirname(CONFIG_PATH), { recursive: true })
+  writeFileSync(CONFIG_PATH, JSON.stringify(cfg, null, 2) + "\n")
+  return cfg
+}
+/** License key, in priority: --license › $KOALAUI_LICENSE › saved config. */
+function resolveLicense(opts) {
+  return opts.license || process.env.KOALAUI_LICENSE || loadConfig().license || null
+}
+/** Entitlement API base, in priority: --api › $KOALAUI_API › saved config › default. */
+function resolveApi(opts) {
+  return (opts.api || process.env.KOALAUI_API || loadConfig().api || DEFAULT_API).replace(/\/+$/, "")
 }
 
 // ── registry access (remote or local checkout) ───────────────────────────────
@@ -135,6 +168,8 @@ function makeRegistry(opts) {
 
   // REMOTE mode (default)
   const branch = opts.branch
+  const license = resolveLicense(opts)
+  const api = resolveApi(opts)
   async function rawPublic(repo, path) {
     const res = await fetch(`https://raw.githubusercontent.com/${repo}/${branch}/${path}`)
     if (res.status === 404) throw new Error(`not found: ${path} (${repo}@${branch})`)
@@ -160,6 +195,28 @@ function makeRegistry(opts) {
     if (!res.ok) throw new Error(`${res.status} fetching ${path}`)
     return res.text()
   }
+  // BUYER path: trade the license key for the gated file at the entitlement API. The server
+  // validates the key and proxies the source from the private repo; the buyer never gets a token.
+  async function proViaLicense(item, path) {
+    const res = await fetch(`${api}/cli-entitlement`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ key: license, repo: item.repo, path }),
+    })
+    if (res.status === 403) {
+      let body = {}
+      try {
+        body = await res.json()
+      } catch {}
+      fail(
+        `your license can't install ${c.bold(item.name)} (a ${c.bold("PRO")} section).\n` +
+          `  ${body.error || "invalid or inactive license"}.\n` +
+          `  Manage or buy access → ${body.purchase || PURCHASE_URL}`
+      )
+    }
+    if (!res.ok) throw new Error(`${res.status} fetching ${path} via entitlement API`)
+    return (await res.json()).content
+  }
   return {
     label: `${DEFAULT_PUBLIC_REPO}@${branch}`,
     async meta() {
@@ -170,7 +227,15 @@ function makeRegistry(opts) {
       return rawPublic(DEFAULT_PUBLIC_REPO, path)
     },
     async fetch(item, path) {
-      return item.tier === "pro" ? apiPrivate(item.repo, path, item.name) : rawPublic(item.repo, path)
+      if (item.tier !== "pro") return rawPublic(item.repo, path)
+      // A buyer's license is the default gate. A repo token (owner/dev) is the fallback.
+      if (license) return proViaLicense(item, path)
+      if (resolveToken(opts.token)) return apiPrivate(item.repo, path, item.name)
+      fail(
+        `${c.bold(item.name)} is a ${c.bold("PRO")} section - it needs a license.\n` +
+          `  Activate one:  ${c.cyan("koalaui login <key>")}\n` +
+          `  Get a license → ${PURCHASE_URL}`
+      )
     },
   }
 }
@@ -280,7 +345,7 @@ async function cmdAdd(reg, opts) {
 
   const involvesPro = [...resolved.values()].some((i) => i.tier === "pro")
   log(c.bold(`\nKoala UI - adding ${names.join(", ")} ${c.dim(`(${reg.label})`)}\n`))
-  if (involvesPro) info(`includes ${c.bold("PRO")} content 🔒 - using your repo access`)
+  if (involvesPro) info(`includes ${c.bold("PRO")} content 🔒`)
   const extra = [...resolved.keys()].filter((n) => !names.includes(n))
   if (extra.length) info(`pulling dependencies: ${c.dim(extra.join(", "))}`)
 
@@ -307,6 +372,34 @@ async function cmdAdd(reg, opts) {
   log()
 }
 
+// ── license commands ──────────────────────────────────────────────────────────
+function cmdLogin(opts) {
+  const key = opts._[0]
+  if (!key) fail(`usage: ${c.cyan("koalaui login <license-key>")}`)
+  const patch = { license: key }
+  if (opts.api) patch.api = opts.api
+  saveConfig(patch)
+  ok(`license saved to ${c.dim(CONFIG_PATH)}`)
+  info(`now add a gated section, e.g. ${c.cyan("koalaui add hero-section")}`)
+}
+function cmdLogout() {
+  const cfg = loadConfig()
+  delete cfg.license
+  mkdirSync(dirname(CONFIG_PATH), { recursive: true })
+  writeFileSync(CONFIG_PATH, JSON.stringify(cfg, null, 2) + "\n")
+  ok("license removed")
+}
+function cmdWhoami(opts) {
+  const key = resolveLicense(opts)
+  if (!key) {
+    info(`no license configured. Activate one: ${c.cyan("koalaui login <key>")}`)
+    return
+  }
+  const masked = key.length > 16 ? `${key.slice(0, 12)}…${key.slice(-4)}` : key
+  log(`license: ${c.bold(masked)}`)
+  log(`api:     ${c.dim(resolveApi(opts))}`)
+}
+
 function help() {
   log(`
 ${c.bold("koalaui")} - add Koala UI components & sections to your project
@@ -315,16 +408,24 @@ ${c.bold("Usage")}
   koalaui init                 set up tokens, core lib helpers and base deps
   koalaui add <item...>        copy items (and their deps) into your project
   koalaui list                 list available items (free + pro)
+  koalaui login <key>          save your PRO license key
+  koalaui logout               remove the saved license
+  koalaui whoami               show the active license
 
-${c.bold("Tiers")}  free = no auth · PRO = needs repo access (a GitHub token):
-  $KOALAUI_TOKEN › $GH_TOKEN › $GITHUB_TOKEN › ${c.cyan("gh auth token")}
+${c.bold("Tiers")}
+  free    components + lib + tokens - no auth
+  PRO 🔒  sections / templates - need a license:
+          buy at ${PURCHASE_URL}, then ${c.cyan("koalaui login <key>")}
+          (owner/dev: a GitHub token to the private repo also works)
 
 ${c.bold("Options")}
   --cwd <dir>        target project root (default: cwd)
+  --license <key>    PRO license key (overrides saved / $KOALAUI_LICENSE)
+  --api <url>        entitlement API base (overrides $KOALAUI_API)
   --registry <dir>   read FREE files from a local checkout (dev)
   --pro <dir>        read PRO files from a local checkout (dev; default ../koala-ui-pro)
   --branch <b>       branch (default: ${DEFAULT_BRANCH})
-  --token <t>        GitHub token (overrides env / gh)
+  --token <t>        GitHub token (owner/dev PRO access)
   --overwrite        overwrite existing files
   --no-install       write files but don't run the package manager
   -h, --help         show this help
@@ -337,6 +438,9 @@ async function main() {
   const cmd = opts._.shift()
   if (opts.help || !cmd || cmd === "help") return help()
   try {
+    if (cmd === "login") return cmdLogin(opts)
+    if (cmd === "logout") return cmdLogout()
+    if (cmd === "whoami") return cmdWhoami(opts)
     const reg = makeRegistry(opts)
     if (cmd === "list") return await cmdList(reg)
     if (cmd === "init") return await cmdInit(reg, opts)
